@@ -1,0 +1,189 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Person {
+  personalEmailId String @id @unique
+
+  gender Gender
+
+  firstName  String
+  middleName String?
+  lastName   String?
+
+  phoneNumber Int[]
+
+  dateOfBirth DateTime
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHERS
+  PREFER_NOT_TO_SAY
+}
+
+model NITSStudent {
+  scholarId Int @id @unique
+
+  instituteEmailId String @unique
+
+  branch Branch
+
+  degree Degree
+
+  clubMember ClubMember?
+}
+
+enum Degree {
+  BACHELORS
+  MASTERS
+  DOCTORATE
+}
+
+enum Branch {
+  CHEMISTRY
+  CIVIL_ENGINEERING
+  COMPUTER_SCIENCE_AND_ENGINEERING
+  ELECTRICAL_ENGINEERING
+  ELECTRONICS_AND_COMMUNICATION_ENGINEERING
+  ELECTRONICS_AND_INSTRUMENTATION_ENGINEERING
+  HISTORY
+  HUMANITIES_AND_SOCIAL_SCIENCES
+  MANAGEMENT_STUDIES
+  MATHEMATICS
+  MECHANICAL_ENGINEERING
+  PHYISCS
+}
+
+model ClubMember {
+  scholarId Int         @id @unique
+  student   NITSStudent @relation(fields: [scholarId], references: [scholarId])
+
+  password String
+
+  domain Domain
+
+  image String
+
+  linkedInUrl String
+  githubUrl   String
+  facebookUrl String?
+  discordId   String?
+
+  isAdmin Boolean
+
+  tenure Tenure[]
+
+  contributions Project[] @relation("contribution")
+  mentorships   Project[] @relation("mentoring")
+
+  attendance MeetingAttendance[]
+}
+
+enum Domain {
+  ANDROID
+  CLOUD_AND_DEVOPS
+  FLUTTER
+  UI_UX
+  WEB
+}
+
+model Tenure {
+  id String @id @default(uuid())
+
+  scholarId Int
+  member    ClubMember @relation(fields: [scholarId], references: [scholarId])
+
+  startYear Int
+
+  isModerator Boolean
+  isHead      Boolean
+
+  role Role
+
+  position ClubPosition
+
+  @@unique([scholarId, startYear, position])
+}
+
+enum ClubPosition {
+  MEMBER
+  CORE_MEMBER
+  LEAD
+}
+
+enum Role {
+  EDITORIAL
+  MANAGEMENT
+  OUTREACH
+  MARKETING
+}
+
+model Project {
+  id String @id @default(uuid())
+
+  name   String
+  status ProjectStatus
+
+  tags String[]
+
+  logoImageUrl   String
+  bannerImageUrl String
+
+  description String
+
+  links String[]
+
+  contributors ClubMember[] @relation("contribution")
+  mentors      ClubMember[] @relation("mentoring")
+}
+
+enum ProjectStatus {
+  UPCOMING
+  ONGOING
+  COMPLETED
+  DROPPED
+}
+
+model Technology {
+  name String @id @unique
+}
+
+model Meeting {
+  id String @id @default(uuid())
+
+  topic String
+  time  DateTime
+  venue String
+  links String[]
+
+  mode Mode
+
+  attendance MeetingAttendance[]
+}
+
+enum Mode {
+  OFFLINE
+  ONLINE
+}
+
+model MeetingAttendance {
+  id String @id @default(uuid())
+
+  meetingId String
+  meeting   Meeting @relation(fields: [meetingId], references: [id])
+
+  scholarId Int
+  member    ClubMember @relation(fields: [scholarId], references: [scholarId])
+
+  reason String?
+}
