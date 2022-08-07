@@ -22,6 +22,8 @@ model Person {
 
   attendedSessions  Session[] @relation("speaks")
   speakerForSession Session[] @relation("attends")
+
+  NITSStudent NITSStudent?
 }
 
 enum Gender {
@@ -33,6 +35,9 @@ enum Gender {
 
 model NITSStudent {
   scholarId Int @id @unique
+
+  personalEmailId String @unique
+  person          Person @relation(fields: [personalEmailId], references: [personalEmailId])
 
   instituteEmailId String @unique
 
