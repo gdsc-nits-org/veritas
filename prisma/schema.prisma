@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -22,6 +19,9 @@ model Person {
   phoneNumber Int[]
 
   dateOfBirth DateTime
+
+  attendedSessions  Session[] @relation("speaks")
+  speakerForSession Session[] @relation("attends")
 }
 
 enum Gender {
@@ -39,6 +39,10 @@ model NITSStudent {
   branch Branch
 
   degree Degree
+
+  registeredEvents Event[]
+
+  interviewApplications Interview[]
 
   clubMember ClubMember?
 }
@@ -95,6 +99,7 @@ enum Domain {
   FLUTTER
   UI_UX
   WEB
+  OTHERS
 }
 
 model Tenure {
@@ -186,4 +191,118 @@ model MeetingAttendance {
   member    ClubMember @relation(fields: [scholarId], references: [scholarId])
 
   reason String?
+}
+
+enum EventLevel {
+  GDSC
+  NITS
+}
+
+enum EventType {
+  BOOTCAMP
+  FIRESIDE_CHAT
+  STUDY_JAM
+  HANDS_ON_WORKSHOP
+  SPEAKER_SESSION
+  INFO_SESSION
+  HACKATHON
+  DEMO_DAY
+  EXPLORE_WORKSHOP
+}
+
+enum SessionStatus {
+  UPCOMING
+  ONGOING
+  COMPLETED
+  DROPPED
+}
+
+model Event {
+  id   String @id @default(uuid())
+  name String
+
+  sessions Session[]
+
+  level EventLevel
+  type  EventType
+
+  domain Domain[]
+
+  mode  Mode
+  venue String
+  url   String
+
+  description String
+  tags        String[]
+
+  registrations NITSStudent[]
+}
+
+model Session {
+  id   String @id @default(uuid())
+  name String
+
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id])
+
+  topics String[]
+
+  status SessionStatus
+
+  startTime DateTime
+  endTime   DateTime
+
+  attendees Person[] @relation("attends")
+  speakers  Person[] @relation("speaks")
+}
+
+enum InterviewPurpose {
+  MEMBER_RECRUITMENT
+  CORE_MEMBER_RECRUITMENT
+  EVENT
+  PROJECT
+  OTHERS
+}
+
+enum InterviewApplicationStatus {
+  ACCEPTED
+  PENDING
+  REJECTED
+  ERROR
+}
+
+model InterviewSession {
+  id String @id @default(uuid())
+
+  purpose InterviewPurpose
+
+  mode  Mode
+  url   String?
+  venue String
+
+  interviewDate DateTime
+
+  questions String[]
+
+  interviewApplications Interview[]
+}
+
+model Interview {
+  interviewSessionId String
+  interview          InterviewSession @relation(fields: [interviewSessionId], references: [id])
+
+  applicantId Int
+  applicant   NITSStudent @relation(fields: [applicantId], references: [scholarId])
+
+  applicationStatus InterviewApplicationStatus
+  applicationDate   DateTime
+
+  answers String[]
+
+  message String?
+
+  domain Domain
+  resume String
+
+  @@unique([interviewSessionId, applicantId])
 }
