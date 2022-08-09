@@ -141,7 +141,7 @@ enum Role {
 model Project {
   id String @id @default(uuid())
 
-  name   String
+  name   String        @unique
   status ProjectStatus
 
   tags String[]
