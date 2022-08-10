@@ -14,6 +14,7 @@ export const createProject = async (req: Request, res: Response) => {
     tags,
     links,
   } = req.body as Project;
+
   const {
     contributors,
     mentors,
@@ -29,7 +30,7 @@ export const createProject = async (req: Request, res: Response) => {
       bannerImageUrl,
       logoImageUrl,
       status,
-      tags,
+      tags: tags.map((t) => t.toLowerCase()),
       links,
       contributors: {
         connect: contributors,
