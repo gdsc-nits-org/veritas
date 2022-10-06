@@ -1,3 +1,5 @@
-import * as EventController from "./event";
+import * as Event from "./event";
+import * as Project from "./project";
+import * as Health from "./health";
 
-export { EventController };
+export { Event, Project, Health };

@@ -1,39 +1,58 @@
-import express from "express";
+// ==================== TOP OF FILE CONFIG =====================
+
 import dotenv from "dotenv";
-import cors from "cors";
-import helment from "helmet";
-import morgan from "morgan";
-
-import * as Routers from "@routes";
-
 dotenv.config();
 
+// ========================== IMPORTS ==========================
+import express from "express";
+import cors from "cors";
+import helmet from "helmet";
+import morgan from "morgan";
+import pc from "picocolors";
+
+import * as Routers from "@routes";
+import * as Constants from "@constants";
+import * as Utils from "@utils";
+import * as Controllers from "@controllers";
+
 const app = express();
-const ROOT_URL = process.env.ROOT_URL!;
 
 // ========================== MIDDLEWARES ==========================
 app
   .use(
     cors({
-      origin: process.env.CLIENT!,
-      credentials: true,
+      origin: "*",
     })
   )
-  .use(helment())
+  .use(helmet())
   .use(morgan(process.env.NODE_ENV === "development" ? "dev" : "short"))
   .use(express.json())
   .use(express.urlencoded({ extended: true }));
 
-// ========================== MIDDLEWARES END ==========================
-
 // ========================== ROUTES ==========================
 
-app.use(`${ROOT_URL}/event`, Routers.EventRouter);
+app.get(`${Constants.Server.ROOT}/`, Controllers.Health.check);
 
-// ========================== ROUTES END ==========================
+// ========================== ROUTERS ==========================
+
+app.use(`${Constants.Server.ROOT}/event`, Routers.EventRouter);
+
+// ======================== ERROR HANDLERS ====================
+
+app.use(Utils.Error.errorLogger);
+app.use(Utils.Error.errorHandler);
+
+// ========================== APP ==========================
 
 app.listen(process.env.PORT!, () => {
   console.log(
-    `Server listening at port:${process.env.PORT} in mode:${process.env.NODE_ENV}`
+    pc.bgGreen(
+      pc.black(
+        "Server listening on port:" +
+          pc.bold(pc.italic(` ${process.env.PORT} `)) +
+          ", in mode:" +
+          pc.bold(pc.italic(` ${process.env.NODE_ENV} `))
+      )
+    )
   );
 });

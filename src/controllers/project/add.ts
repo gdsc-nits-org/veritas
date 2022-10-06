@@ -1,27 +1,17 @@
-import { projectExists, projectNotCreated } from "@errors/project";
+import * as Utils from "@utils";
 import { prisma } from "@utils/prisma";
+import * as Errors from "@errors";
 import { ClubMember, Project } from "@prisma/client";
-import { Request, Response } from "express";
-import success from "@success/success";
+import * as Interfaces from "@interfaces";
 
-export const createProject = async (req: Request, res: Response) => {
-  const {
-    name,
-    description,
-    bannerImageUrl,
-    logoImageUrl,
-    status,
-    tags,
-    links,
-  } = req.body as Project;
+const createProject: Interfaces.Controller.Async = async (req, res, next) => {
+  const { name, description, bannerImageUrl, logoImageUrl, status, tags, links } =
+    req.body as Project;
 
-  const {
-    contributors,
-    mentors,
-  }: { contributors: ClubMember; mentors: ClubMember } = req.body;
+  const { contributors, mentors }: { contributors: ClubMember; mentors: ClubMember } = req.body;
 
   if (await prisma.project.findFirst({ where: { name } }))
-    return res.json(projectExists);
+    return next(Errors.Project.projectExists);
 
   const project = await prisma.project.create({
     data: {
@@ -40,7 +30,12 @@ export const createProject = async (req: Request, res: Response) => {
       },
     },
   });
-  if (!project) return res.json(projectNotCreated);
 
-  return res.json(success(project));
+  if (!project) {
+    return next(Errors.Project.projectNotCreated);
+  }
+
+  return res.json(Utils.Response.Success(project));
 };
+
+export { createProject };

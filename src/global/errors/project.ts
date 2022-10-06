@@ -1,11 +1,11 @@
-import error from "./error";
+import * as Utils from "@utils";
 
-const projectNotFound = error("Project does not exist");
-const projectExists = error("Project name is already in Use");
-const projectNotCreated = error("Error while creating project");
-const projectUpdateFail = error("Error while updateing project");
-const projectsFetchFail = error("Error while fetching projects");
-const projectDeleteFail = error("Failed to delte project");
+const projectNotFound = Utils.Response.Error("Project does not exist", 404);
+const projectExists = Utils.Response.Error("Project name is already in Use", 403);
+const projectNotCreated = Utils.Response.Error("Error while creating project");
+const projectUpdateFail = Utils.Response.Error("Error while updateing project");
+const projectsFetchFail = Utils.Response.Error("Error while fetching projects");
+const projectDeleteFail = Utils.Response.Error("Failed to delete project");
 
 export {
   projectNotFound,

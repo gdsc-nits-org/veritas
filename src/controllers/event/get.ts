@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { prisma } from "@utils/prisma";
 
 import * as Errors from "@errors";
-import success from "@success/success";
+import * as Utils from "@utils";
 
 async function getEvent(req: Request, res: Response) {
   try {
@@ -14,13 +14,13 @@ async function getEvent(req: Request, res: Response) {
     });
 
     if (!event) {
-      return res.json(Errors.EventError.eventNotFound);
+      return res.json(Errors.Event.eventNotFound);
     }
 
-    return res.json(success(event));
+    return res.json(Utils.Response.Success(event));
   } catch (err) {
     console.log(err);
-    return res.json(Errors.SystemError.serverError);
+    return res.json(Errors.System.serverError);
   }
 }
 
@@ -33,10 +33,10 @@ async function getAllEvents(req: Request, res: Response) {
       take: amount ? parseInt(amount as string) : 0,
     });
 
-    return res.json(success(events));
+    return res.json(Utils.Response.Success(events));
   } catch (err) {
     console.log(err);
-    return res.json(Errors.SystemError.serverError);
+    return res.json(Errors.System.serverError);
   }
 }
 

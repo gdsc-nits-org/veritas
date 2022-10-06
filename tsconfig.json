@@ -2,23 +2,22 @@
   "compilerOptions": {
     "paths": {
       "@interfaces": ["src/global/interfaces"],
-      "@interfaces/*": ["src/global/interfaces/*"],
-      "@repo-types/*": ["src/global/types/*"],
       "@errors": ["src/global/errors"],
-      "@errors/*": ["src/global/errors/*"],
-      "@success/*": ["src/global/success/*"],
-      "@routes": ["./src/routes"],
+      "@success": ["src/global/success"],
+      "@constants": ["src/global/constants"],
+      "@routes": ["src/routes"],
       "@globals/*": ["src/global/*"],
-      "@controllers": ["./src/controllers"],
-      "@utils/*": ["./src/utils/*"],
-      "@middlewares/*": ["./src/middlewares/*"],
+      "@controllers": ["src/controllers"],
+      "@utils": ["src/utils"],
+      "@utils/*": ["src/utils/*"],
+      "@middlewares": ["src/middlewares"],
       "@types/*": ["./node_modules/@types"],
       "@prisma/*": ["./node_modules/@prisma"]
     },
+    "moduleResolution": "node",
     "incremental": true,
-    "target": "ES6",
+    "target": "ES5",
     "experimentalDecorators": true,
-    "module": "commonjs",
     "rootDir": "./",
     "baseUrl": ".",
     "declaration": true,
@@ -40,7 +39,9 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "typeRoots": ["@types", "./node_modules/@types"],
+    "resolveJsonModule": true
   },
   "ts-node": {
     "require": ["tsconfig-paths/register"]

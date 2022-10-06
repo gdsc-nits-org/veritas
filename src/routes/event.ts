@@ -4,7 +4,7 @@ import * as Controllers from "@controllers";
 
 const router: Router = Router({ mergeParams: true });
 
-router.get("/all", Controllers.EventController.getAllEvents);
-router.get("/:eventId", Controllers.EventController.getEvent);
+router.get("/all", Controllers.Event.getAllEvents);
+router.get("/:eventId", Controllers.Event.getEvent);
 
 export default router;

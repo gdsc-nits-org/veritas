@@ -1,5 +1,5 @@
-import error from "./error";
+import * as Utils from "@utils";
 
-const eventNotFound = error("Event with the given id not found.");
+const eventNotFound = Utils.Response.Error("Event with the given id not found.", 404);
 
 export { eventNotFound };

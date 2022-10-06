@@ -3,22 +3,18 @@ import { prisma } from "@utils/prisma";
 import * as Interfaces from "@interfaces";
 import * as Errors from "@errors";
 
-const checkPerson: Interfaces.PersonInterface.CheckMiddleware = async (
-  req,
-  res,
-  next
-) => {
+const checkPerson: Interfaces.Middleware.Async = async (req, res, next) => {
   try {
     const { personalEmailId } = req.params;
 
     if ((await prisma.person.count({ where: { personalEmailId } })) !== 0) {
       next();
     } else {
-      res.json(Errors.PersonError.personNotFound);
+      res.json(Errors.Person.personNotFound);
     }
   } catch (err) {
     console.log(err);
-    res.json(Errors.SystemError.serverError);
+    res.json(Errors.System.serverError);
   }
 };
 

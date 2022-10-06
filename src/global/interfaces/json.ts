@@ -1,6 +1,6 @@
-interface JSONResponse<T = string> {
-  success: boolean;
+interface Response<T = string> {
+  status: number;
   msg: T;
 }
 
-export { JSONResponse };
+export { Response };

@@ -1,5 +1,5 @@
-import error from "./error";
+import * as Utils from "@utils";
 
-const personNotFound = error("Person Not Found.");
+const personNotFound = Utils.Response.Error("Person Not Found.", 404);
 
 export { personNotFound };

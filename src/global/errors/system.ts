@@ -1,5 +1,5 @@
-import error from "@errors/error";
+import * as Utils from "@utils";
 
-const serverError = error("Internal Server Error.");
+const serverError = Utils.Response.Error("Internal Server Error.");
 
 export { serverError };

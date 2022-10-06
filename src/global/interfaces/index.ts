@@ -1,5 +1,5 @@
-import * as PersonInterface from "./person";
-import * as JSONInterface from "./json";
-import * as ProjectInterface from "./project";
+import * as Controller from "./controller";
+import * as Middleware from "./middleware";
+import * as JSON from "./json";
 
-export { PersonInterface, JSONInterface, ProjectInterface };
+export { Controller, Middleware, JSON };

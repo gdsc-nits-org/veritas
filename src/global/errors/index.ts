@@ -1,5 +1,6 @@
-import * as SystemError from "./system";
-import * as PersonError from "./person";
-import * as EventError from "./event";
+import * as System from "./system";
+import * as Person from "./person";
+import * as Event from "./event";
+import * as Project from "./project";
 
-export { SystemError, PersonError, EventError };
+export { System, Person, Event, Project };
