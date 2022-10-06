@@ -1,0 +1,31 @@
+openapi: 3.0.0
+
+info:
+  title: Vertias API
+  version: 0.1.0
+  description: The Central API for Google Developer Student Clubs, National Institute of Technology, Silchar. The name is derived from Vertias, the Roman Goddess of Truth.
+
+servers:
+  - url: http://localhost:5000/api/v1
+    description: Localhost
+
+paths:
+  /:
+    get:
+      description: Health Check for API
+      tags:
+        - Health
+      responses:
+        200:
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: string
+                    example: Health Check OK!

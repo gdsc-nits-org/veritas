@@ -30,7 +30,6 @@ enum Gender {
   MALE
   FEMALE
   OTHERS
-  PREFER_NOT_TO_SAY
 }
 
 model NITSStudent {
@@ -117,10 +116,9 @@ model Tenure {
 
   isModerator Boolean
   isHead      Boolean
+  position    ClubPosition
 
   role Role
-
-  position ClubPosition
 
   @@unique([scholarId, startYear, position])
 }
@@ -145,6 +143,8 @@ model Project {
   status ProjectStatus
 
   tags String[]
+
+  domains Domain[]
 
   logoImageUrl   String
   bannerImageUrl String

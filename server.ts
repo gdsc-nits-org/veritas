@@ -9,6 +9,8 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import pc from "picocolors";
+import swaggerUI from "swagger-ui-express";
+import YAML from "yamljs";
 
 import * as Routers from "@routes";
 import * as Constants from "@constants";
@@ -28,6 +30,19 @@ app
   .use(morgan(process.env.NODE_ENV === "development" ? "dev" : "short"))
   .use(express.json())
   .use(express.urlencoded({ extended: true }));
+
+// ========================== DOCS ==========================
+
+const swaggerDocument = YAML.load(Constants.Server.DOCS);
+
+app.use(
+  `${Constants.Server.ROOT}/docs`,
+  swaggerUI.serve,
+  swaggerUI.setup(swaggerDocument, {
+    customCss: ".swagger-ui .topbar { display: none }",
+    customSiteTitle: "Veritas API, GDSC NIT Silchar",
+  })
+);
 
 // ========================== ROUTES ==========================
 

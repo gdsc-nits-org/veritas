@@ -24,7 +24,9 @@
     "helmet": "^5.1.1",
     "morgan": "^1.10.0",
     "nodemailer": "^6.7.7",
-    "picocolors": "^1.0.0"
+    "picocolors": "^1.0.0",
+    "swagger-ui-express": "^4.5.0",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "@prisma/client": "^4.1.1",
@@ -33,6 +35,8 @@
     "@types/morgan": "^1.9.3",
     "@types/node": "^18.6.4",
     "@types/nodemailer": "^6.4.5",
+    "@types/swagger-ui-express": "^4.1.3",
+    "@types/yamljs": "^0.2.31",
     "@typescript-eslint/eslint-plugin": "^5.32.0",
     "@typescript-eslint/parser": "^5.32.0",
     "eslint": "^8.21.0",
@@ -53,6 +57,9 @@
     ],
     "*.prisma": [
       "pnpm prisma:format"
+    ],
+    "swagger.yaml": [
+      "pnpm prettier --write ."
     ]
   },
   "nodemonConfig": {
