@@ -27,7 +27,7 @@ app
     })
   )
   .use(helmet())
-  .use(morgan(process.env.NODE_ENV === "development" ? "dev" : "short"))
+  .use(morgan(process.env.NODE_ENV === "production" ? "short" : "dev"))
   .use(express.json())
   .use(express.urlencoded({ extended: true }));
 
@@ -50,7 +50,8 @@ app.get(`${Constants.Server.ROOT}/`, Controllers.Health.check);
 
 // ========================== ROUTERS ==========================
 
-app.use(`${Constants.Server.ROOT}/event`, Routers.EventRouter);
+app.use(`${Constants.Server.ROOT}/event`, Routers.Event);
+app.use(`${Constants.Server.ROOT}/person`, Routers.Person);
 
 // ======================== ERROR HANDLERS ====================
 

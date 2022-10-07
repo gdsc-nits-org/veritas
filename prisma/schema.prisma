@@ -16,7 +16,7 @@ model Person {
   middleName String?
   lastName   String?
 
-  phoneNumber Int[]
+  phoneNumber String[]
 
   dateOfBirth DateTime
 

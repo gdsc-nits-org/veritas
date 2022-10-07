@@ -1,5 +1,5 @@
-import personRouter from "./person";
-import EventRouter from "./event";
-import projectRouter from "./project";
+import Person from "./person";
+import Event from "./event";
+import Project from "./project";
 
-export { personRouter, projectRouter, EventRouter };
+export { Person, Project, Event };

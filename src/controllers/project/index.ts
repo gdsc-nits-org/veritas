@@ -3,4 +3,10 @@ import { deleteProject } from "./delete";
 import { getAllProjects, getProject } from "./get";
 import { updateProject } from "./update";
 
-export { createProject, deleteProject, getAllProjects, getProject, updateProject };
+export {
+  createProject,
+  deleteProject,
+  getAllProjects,
+  getProject,
+  updateProject,
+};
