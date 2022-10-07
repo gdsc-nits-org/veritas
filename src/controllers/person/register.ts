@@ -5,6 +5,7 @@ import * as Interfaces from "@interfaces";
 import * as Errors from "@errors";
 import * as Constants from "@constants";
 import * as Utils from "@utils";
+import * as Success from "@success";
 
 const register: Interfaces.Controller.Async = async (req, res, next) => {
   const {
@@ -22,7 +23,7 @@ const register: Interfaces.Controller.Async = async (req, res, next) => {
   // Personal Email ID Already Checked By Middleware
 
   // Gender
-  if (!(gender in Gender)) {
+  if (!gender || !(gender in Gender)) {
     return next(Errors.Person.invalidGender);
   }
 
@@ -65,7 +66,7 @@ const register: Interfaces.Controller.Async = async (req, res, next) => {
 
   // Send Email
 
-  res.json(Utils.Response.Success("Registration Successfully."));
+  res.json(Success.Person.registerSuccessful);
 };
 
 export { register };

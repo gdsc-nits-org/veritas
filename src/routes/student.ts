@@ -3,15 +3,16 @@ import { Router } from "express";
 import * as Middleware from "@middlewares";
 import * as Controllers from "@controllers";
 
-const router: Router = Router({ mergeParams: true });
+const router: Router = Router();
 
 router.post(
   "/register",
   Middleware.Person.checkPersonalEmail,
-  Middleware.Person.checkNotExists,
-  Controllers.Person.register
+  Middleware.Person.checkExists,
+  Middleware.Student.checkScholarId,
+  Middleware.Student.checkInstituteEmail,
+  Middleware.Student.checkNotExists,
+  Controllers.Student.register
 );
-
-router.get("/search", Controllers.Person.searchPerson);
 
 export default router;

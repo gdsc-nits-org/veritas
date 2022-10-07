@@ -23,7 +23,7 @@ model Person {
   attendedSessions  Session[] @relation("speaks")
   speakerForSession Session[] @relation("attends")
 
-  NITSStudent NITSStudent?
+  student Student?
 }
 
 enum Gender {
@@ -32,8 +32,8 @@ enum Gender {
   OTHERS
 }
 
-model NITSStudent {
-  scholarId Int @id @unique
+model Student {
+  scholarId String @id @unique
 
   personalEmailId String @unique
   person          Person @relation(fields: [personalEmailId], references: [personalEmailId])
@@ -73,8 +73,8 @@ enum Branch {
 }
 
 model ClubMember {
-  scholarId Int         @id @unique
-  student   NITSStudent @relation(fields: [scholarId], references: [scholarId])
+  scholarId String  @id @unique
+  student   Student @relation(fields: [scholarId], references: [scholarId])
 
   password String
 
@@ -109,7 +109,7 @@ enum Domain {
 model Tenure {
   id String @id @default(uuid())
 
-  scholarId Int
+  scholarId String
   member    ClubMember @relation(fields: [scholarId], references: [scholarId])
 
   startYear Int
@@ -192,7 +192,7 @@ model MeetingAttendance {
   meetingId String
   meeting   Meeting @relation(fields: [meetingId], references: [id])
 
-  scholarId Int
+  scholarId String
   member    ClubMember @relation(fields: [scholarId], references: [scholarId])
 
   reason String?
@@ -240,7 +240,7 @@ model Event {
   description String
   tags        String[]
 
-  registrations NITSStudent[]
+  registrations Student[]
 }
 
 model Session {
@@ -296,8 +296,8 @@ model Interview {
   interviewSessionId String
   interview          InterviewSession @relation(fields: [interviewSessionId], references: [id])
 
-  applicantId Int
-  applicant   NITSStudent @relation(fields: [applicantId], references: [scholarId])
+  applicantId String
+  applicant   Student @relation(fields: [applicantId], references: [scholarId])
 
   applicationStatus InterviewApplicationStatus
   applicationDate   DateTime

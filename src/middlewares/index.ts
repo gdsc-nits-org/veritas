@@ -1,4 +1,4 @@
 import * as Person from "./person";
-import * as Email from "./email";
+import * as Student from "./student";
 
-export { Person, Email };
+export { Person, Student };
