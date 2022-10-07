@@ -14,4 +14,6 @@ router.post(
   Controllers.Member.register
 );
 
+router.get("/search", Controllers.Member.searchMember);
+
 export default router;

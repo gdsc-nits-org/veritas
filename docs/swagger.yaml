@@ -360,3 +360,32 @@ paths:
                   msg:
                     type: string
                     example: Not Found.
+
+  /member/search:
+    get:
+      description: Check Existence of Member
+      tags:
+        - Member
+
+      parameters:
+        - in: query
+          name: scholarId
+          required: true,
+          schema:
+            type: string
+            example: "2012039"
+
+      responses:
+        200:
+          description: Boolean depending on whether member is registered or not.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: boolean
+                    example: true
