@@ -29,3 +29,363 @@ paths:
                   msg:
                     type: string
                     example: Health Check OK!
+
+  /person/register:
+    post:
+      description: Register a Person
+      tags:
+        - Person
+
+      requestBody:
+        description: A JSON object containing person information
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                [personalEmailId, gender, firstName, dateOfBirth, phoneNumber]
+              properties:
+                personalEmailId:
+                  type: string
+                  example: hello@world.com
+                gender:
+                  type: string
+                  enum: [MALE, FEMALE, OTHERS]
+                  example: MALE
+                firstName:
+                  type: string
+                  example: Harry
+                middleName:
+                  type: string
+                  example: James
+                lastName:
+                  type: string
+                  example: Potter
+                dateOfBirth:
+                  oneOf:
+                    - type: string
+                    - type: number
+                  description: The Date String or Date Epoch
+                  example: Fri Oct 07 2022 08:15:15 GMT+0530 (India Standard Time)
+                phoneNumber:
+                  type: array
+                  items:
+                    type: string
+                  example: ["9152539529", "09152539529", "+919152539529"]
+
+      responses:
+        200:
+          description: Registered Successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: string
+                    example: Registration Successfully.
+        401:
+          description: Incorrect Credentials.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 401
+                  msg:
+                    type: string
+                    example: Incorrect Credentials.
+        404:
+          description: Not Found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 401
+                  msg:
+                    type: string
+                    example: Not Found.
+
+  /person/search:
+    get:
+      description: Check Existence of Person
+      tags:
+        - Person
+
+      parameters:
+        - in: query
+          name: email
+          required: true,
+          schema:
+            type: string
+            example: hello@world.com
+
+      responses:
+        200:
+          description: Boolean depending on whether person is registered or not.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: boolean
+                    example: true
+
+  /student/register:
+    post:
+      description: Register a Student
+      tags:
+        - Student
+
+      requestBody:
+        description: A JSON object containing student information
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                [personalEmailId, gender, firstName, dateOfBirth, phoneNumber]
+              properties:
+                scholarId:
+                  type: string
+                  example: "2012039"
+                personalEmailId:
+                  type: string
+                  example: hello@world.com
+                instituteEmailId:
+                  type: string
+                  example: hello@world.com
+                branch:
+                  type: string
+                  enum:
+                    - CHEMISTRY
+                    - COMPUTER_SCIENCE_AND_ENGINEERING
+                    - ELECTRICAL_ENGINEERING
+                    - ELECTRONICS_AND_COMMUNICATION_ENGINEERING
+                    - ELECTRONICS_AND_INSTRUMENTATION_ENGINEERING
+                    - HISTORY
+                    - HUMANITIES_AND_SOCIAL_SCIENCES
+                    - MANAGEMENT_STUDIES
+                    - MATHEMATICS
+                    - MECHANICAL_ENGINEERING
+                    - PHYISCS
+                  example: COMPUTER_SCIENCE_AND_ENGINEERING
+                degree:
+                  type: string
+                  enum:
+                    - BACHELORS
+                    - MASTERS
+                    - DOCTORATE
+                  example: BACHELORS
+      responses:
+        200:
+          description: Registered Successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: string
+                    example: Registration Successfully.
+        401:
+          description: Incorrect Credentials.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 401
+                  msg:
+                    type: string
+                    example: Incorrect Credentials.
+        404:
+          description: Not Found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 401
+                  msg:
+                    type: string
+                    example: Not Found.
+
+  /student/search:
+    get:
+      description: Check Existence of Student
+      tags:
+        - Student
+
+      parameters:
+        - in: query
+          name: scholarId
+          required: true,
+          schema:
+            type: string
+            example: "2012039"
+
+      responses:
+        200:
+          description: Boolean depending on whether student is registered or not.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: boolean
+                    example: true
+
+  /member/register:
+    post:
+      description: Register a Member
+      tags:
+        - Member
+
+      requestBody:
+        description: A JSON object containing member information
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                [
+                  scholarId,
+                  password,
+                  domain,
+                  role,
+                  image,
+                  linkedInUrl,
+                  githubUrl,
+                ]
+              properties:
+                scholarId:
+                  type: string
+                  example: "2012039"
+                password:
+                  type: string
+                  example: Hello@World123
+                image:
+                  type: string
+                  example: https://avatars.githubusercontent.com/u/74897009
+                domain:
+                  type: string
+                  enum:
+                    - ANDROID
+                    - FLUTTER
+                    - UI_UX
+                    - WEB
+                  example: WEB
+                role:
+                  type: string
+                  enum:
+                    - EDITORIAL
+                    - MANAGEMENT
+                    - OUTREACH
+                    - MARKETING
+                  example: MANAGEMENT
+                linkedInUrl:
+                  type: string
+                  example: https://www.linkedin.com/in/helloworld
+                githubUrl:
+                  type: string
+                  example: https://github.com/helloworld
+                facebookUrl:
+                  type: string
+                  example: https://www.facebook.com/helloworld
+                discordId:
+                  type: string
+                  example: "123456789012345678"
+
+      responses:
+        200:
+          description: Registered Successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: string
+                    example: Registration Successfully.
+        401:
+          description: Incorrect Credentials.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 401
+                  msg:
+                    type: string
+                    example: Incorrect Credentials.
+        404:
+          description: Not Found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 401
+                  msg:
+                    type: string
+                    example: Not Found.
+
+  /member/search:
+    get:
+      description: Check Existence of Member
+      tags:
+        - Member
+
+      parameters:
+        - in: query
+          name: scholarId
+          required: true,
+          schema:
+            type: string
+            example: "2012039"
+
+      responses:
+        200:
+          description: Boolean depending on whether member is registered or not.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: boolean
+                    example: true

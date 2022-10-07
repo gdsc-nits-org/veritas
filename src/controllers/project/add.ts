@@ -5,10 +5,20 @@ import { ClubMember, Project } from "@prisma/client";
 import * as Interfaces from "@interfaces";
 
 const createProject: Interfaces.Controller.Async = async (req, res, next) => {
-  const { name, description, bannerImageUrl, logoImageUrl, status, tags, links } =
-    req.body as Project;
+  const {
+    name,
+    description,
+    bannerImageUrl,
+    logoImageUrl,
+    status,
+    tags,
+    links,
+  } = req.body as Project;
 
-  const { contributors, mentors }: { contributors: ClubMember; mentors: ClubMember } = req.body;
+  const {
+    contributors,
+    mentors,
+  }: { contributors: ClubMember; mentors: ClubMember } = req.body;
 
   if (await prisma.project.findFirst({ where: { name } }))
     return next(Errors.Project.projectExists);

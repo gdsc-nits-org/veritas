@@ -4,11 +4,25 @@ import * as Interfaces from "@interfaces";
 import { prisma } from "@utils/prisma";
 import { ClubMember, Project } from "@prisma/client";
 
-export const updateProject: Interfaces.Controller.Async = async (req, res, next) => {
+export const updateProject: Interfaces.Controller.Async = async (
+  req,
+  res,
+  next
+) => {
   const { id } = req.params;
-  const { name, description, bannerImageUrl, logoImageUrl, status, tags, links } =
-    req.body as Project;
-  const { contributors, mentors }: { contributors: ClubMember; mentors: ClubMember } = req.body;
+  const {
+    name,
+    description,
+    bannerImageUrl,
+    logoImageUrl,
+    status,
+    tags,
+    links,
+  } = req.body as Project;
+  const {
+    contributors,
+    mentors,
+  }: { contributors: ClubMember; mentors: ClubMember } = req.body;
 
   if (!(await prisma.project.findFirst({ where: { name } })))
     return next(Errors.Project.projectNotFound);

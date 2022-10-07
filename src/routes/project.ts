@@ -1,7 +1,7 @@
 import * as Controllers from "@controllers";
 import { Router } from "express";
 
-const router: Router = Router();
+const router: Router = Router({ mergeParams: true });
 
 router.get("/all", Controllers.Project.getAllProjects);
 router.get("/:id", Controllers.Project.getProject);

@@ -2,20 +2,46 @@ import { prisma } from "@utils/prisma";
 
 import * as Interfaces from "@interfaces";
 import * as Errors from "@errors";
+import * as Utils from "@utils";
 
-const checkPerson: Interfaces.Middleware.Async = async (req, res, next) => {
-  try {
-    const { personalEmailId } = req.params;
+const checkExists: Interfaces.Middleware.Async = async (req, _res, next) => {
+  const { personalEmailId } = req.body as Interfaces.Person.RegisterBody;
 
-    if ((await prisma.person.count({ where: { personalEmailId } })) !== 0) {
-      next();
-    } else {
-      res.json(Errors.Person.personNotFound);
-    }
-  } catch (err) {
-    console.log(err);
-    res.json(Errors.System.serverError);
+  if (
+    (await prisma.person.count({
+      where: { personalEmailId },
+      take: 1,
+    })) !== 0
+  ) {
+    next();
+  } else {
+    next(Errors.Person.personNotFound);
   }
 };
 
-export { checkPerson };
+const checkNotExists: Interfaces.Middleware.Async = async (req, _res, next) => {
+  const { personalEmailId } = req.body as Interfaces.Person.RegisterBody;
+
+  if (
+    (await prisma.person.count({
+      where: { personalEmailId },
+      take: 1,
+    })) !== 0
+  ) {
+    next(Errors.Person.personAlreadyExists);
+  } else {
+    next();
+  }
+};
+
+const checkPersonalEmail: Interfaces.Middleware.Sync = (req, _res, next) => {
+  const { personalEmailId } = req.body as Interfaces.Person.RegisterBody;
+
+  if (!Utils.Email.validatePersonalEmailId(personalEmailId)) {
+    return next(Errors.Person.invalidEmailID);
+  }
+
+  next();
+};
+
+export { checkExists, checkNotExists, checkPersonalEmail };
