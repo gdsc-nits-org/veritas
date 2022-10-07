@@ -7,6 +7,6 @@ const phoneNumber = /^((\+91)|0)?([0-9]{10})$/;
 const scholarId = /^[1-2][0-9](([1-2][0-9]{4})|(3[0-9]{5}))$/;
 
 const instituteEmail =
-  /^[a-z]+_(([0-9]{2}[a-z]{2})|(rs))@[a-z]{3,4}[.]nits[.]ac[.]in$/;
+  /^[a-z]+[0-9]{2}_(ug|pg|rs)@[a-z]{3,4}[.]nits[.]ac[.]in$/;
 
 export { email, name, phoneNumber, scholarId, instituteEmail };

@@ -15,4 +15,6 @@ router.post(
   Controllers.Student.register
 );
 
+router.get("/search", Controllers.Student.searchStudent);
+
 export default router;

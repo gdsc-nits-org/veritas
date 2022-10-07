@@ -1,7 +1,6 @@
 import { prisma } from "@utils/prisma";
 
 import * as Interfaces from "@interfaces";
-import * as Constants from "@constants";
 import * as Errors from "@errors";
 import * as Utils from "@utils";
 
@@ -13,10 +12,11 @@ const searchPerson: Interfaces.Controller.Async = async (req, res, next) => {
     return next(Errors.Person.invalidEmailID);
   }
 
-  if (!email || !Constants.Validation.email.test(email)) {
+  if (!Utils.Email.validatePersonalEmailId(email)) {
     return next(Errors.Person.invalidEmailID);
   }
 
+  // Find
   if (
     (await prisma.person.count({
       where: {

@@ -128,3 +128,105 @@ paths:
                   msg:
                     type: boolean
                     example: true
+
+  /student/register:
+    post:
+      description: Register a Student
+      tags:
+        - Student
+
+      requestBody:
+        description: A JSON object containing student information
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                [personalEmailId, gender, firstName, dateOfBirth, phoneNumber]
+              properties:
+                scholarId:
+                  type: string
+                  example: "2012039"
+                personalEmailId:
+                  type: string
+                  example: hello@world.com
+                instituteEmailId:
+                  type: string
+                  example: hello@world.com
+                branch:
+                  type: string
+                  enum:
+                    - CHEMISTRY
+                    - COMPUTER_SCIENCE_AND_ENGINEERING
+                    - ELECTRICAL_ENGINEERING
+                    - ELECTRONICS_AND_COMMUNICATION_ENGINEERING
+                    - ELECTRONICS_AND_INSTRUMENTATION_ENGINEERING
+                    - HISTORY
+                    - HUMANITIES_AND_SOCIAL_SCIENCES
+                    - MANAGEMENT_STUDIES
+                    - MATHEMATICS
+                    - MECHANICAL_ENGINEERING
+                    - PHYISCS
+                  example: COMPUTER_SCIENCE_AND_ENGINEERING
+                degree:
+                  type: string
+                  enum:
+                    - BACHELORS
+                    - MASTERS
+                    - DOCTORATE
+                  example: BACHELORS
+      responses:
+        200:
+          description: Registered Successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: string
+                    example: Registration Successfully.
+        401:
+          description: Incorrect Credentials.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 401
+                  msg:
+                    type: string
+                    example: Incorrect Credentials.
+  /student/search:
+    get:
+      description: Check Existence of Student
+      tags:
+        - Student
+
+      parameters:
+        - in: query
+          name: scholarId
+          required: true,
+          schema:
+            type: string
+            example: "2012039"
+
+      responses:
+        200:
+          description: Boolean depending on whether student is registered or not.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: boolean
+                    example: true
