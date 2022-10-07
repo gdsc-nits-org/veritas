@@ -17,4 +17,6 @@ router.post(
 
 router.get("/search", Controllers.Student.searchStudent);
 
+// TODO: Delete student, given admin priviledge
+
 export default router;

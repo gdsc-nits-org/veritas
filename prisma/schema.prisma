@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["interactiveTransactions"]
 }
 
 datasource db {
@@ -78,8 +79,6 @@ model ClubMember {
 
   password String
 
-  domain Domain
-
   image String
 
   linkedInUrl String
@@ -97,15 +96,6 @@ model ClubMember {
   attendance MeetingAttendance[]
 }
 
-enum Domain {
-  ANDROID
-  CLOUD_AND_DEVOPS
-  FLUTTER
-  UI_UX
-  WEB
-  OTHERS
-}
-
 model Tenure {
   id String @id @default(uuid())
 
@@ -114,6 +104,8 @@ model Tenure {
 
   startYear Int
 
+  domain MemberDomain
+
   isModerator Boolean
   isHead      Boolean
   position    ClubPosition
@@ -121,6 +113,22 @@ model Tenure {
   role Role
 
   @@unique([scholarId, startYear, position])
+}
+
+enum MemberDomain {
+  ANDROID
+  FLUTTER
+  UI_UX
+  WEB
+}
+
+enum Domain {
+  ANDROID
+  CLOUD_AND_DEVOPS
+  FLUTTER
+  UI_UX
+  WEB
+  OTHERS
 }
 
 enum ClubPosition {

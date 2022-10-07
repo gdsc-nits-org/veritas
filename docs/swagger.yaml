@@ -100,6 +100,20 @@ paths:
                   msg:
                     type: string
                     example: Incorrect Credentials.
+        404:
+          description: Not Found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 401
+                  msg:
+                    type: string
+                    example: Not Found.
+
   /person/search:
     get:
       description: Check Existence of Person
@@ -202,6 +216,20 @@ paths:
                   msg:
                     type: string
                     example: Incorrect Credentials.
+        404:
+          description: Not Found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 401
+                  msg:
+                    type: string
+                    example: Not Found.
+
   /student/search:
     get:
       description: Check Existence of Student
@@ -230,3 +258,105 @@ paths:
                   msg:
                     type: boolean
                     example: true
+
+  /member/register:
+    post:
+      description: Register a Member
+      tags:
+        - Member
+
+      requestBody:
+        description: A JSON object containing member information
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                [
+                  scholarId,
+                  password,
+                  domain,
+                  role,
+                  image,
+                  linkedInUrl,
+                  githubUrl,
+                ]
+              properties:
+                scholarId:
+                  type: string
+                  example: "2012039"
+                password:
+                  type: string
+                  example: Hello@World123
+                image:
+                  type: string
+                  example: https://avatars.githubusercontent.com/u/74897009
+                domain:
+                  type: string
+                  enum:
+                    - ANDROID
+                    - FLUTTER
+                    - UI_UX
+                    - WEB
+                  example: WEB
+                role:
+                  type: string
+                  enum:
+                    - EDITORIAL
+                    - MANAGEMENT
+                    - OUTREACH
+                    - MARKETING
+                  example: MANAGEMENT
+                linkedInUrl:
+                  type: string
+                  example: https://www.linkedin.com/in/helloworld
+                githubUrl:
+                  type: string
+                  example: https://github.com/helloworld
+                facebookUrl:
+                  type: string
+                  example: https://www.facebook.com/helloworld
+                discordId:
+                  type: string
+                  example: "123456789012345678"
+
+      responses:
+        200:
+          description: Registered Successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: string
+                    example: Registration Successfully.
+        401:
+          description: Incorrect Credentials.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 401
+                  msg:
+                    type: string
+                    example: Incorrect Credentials.
+        404:
+          description: Not Found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 401
+                  msg:
+                    type: string
+                    example: Not Found.

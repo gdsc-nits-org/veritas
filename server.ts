@@ -53,6 +53,7 @@ app.get(`${Constants.Server.ROOT}/`, Controllers.Health.check);
 app.use(`${Constants.Server.ROOT}/event`, Routers.Event);
 app.use(`${Constants.Server.ROOT}/person`, Routers.Person);
 app.use(`${Constants.Server.ROOT}/student`, Routers.Student);
+app.use(`${Constants.Server.ROOT}/member`, Routers.Member);
 
 // ======================== ERROR HANDLERS ====================
 
