@@ -319,6 +319,9 @@ paths:
                 discordId:
                   type: string
                   example: "123456789012345678"
+                year:
+                  type: number
+                  example: 2022
 
       responses:
         200:
@@ -356,7 +359,7 @@ paths:
                 properties:
                   status:
                     type: number
-                    example: 401
+                    example: 404
                   msg:
                     type: string
                     example: Not Found.
@@ -389,3 +392,82 @@ paths:
                   msg:
                     type: boolean
                     example: true
+
+  /core/new:
+    post:
+      description: Promote Member to Core Member or Lead
+      tags:
+        - Core
+
+      requestBody:
+        description: A JSON object containing member information
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [scholarId, domain, role]
+              properties:
+                scholarId:
+                  type: string
+                  example: "2012039"
+                domain:
+                  type: string
+                  enum:
+                    - ANDROID
+                    - CLOUD_AND_DEVOPS
+                    - FLUTTER
+                    - UI_UX
+                    - WEB
+                  example: CLOUD_AND_DEVOPS
+                role:
+                  type: string
+                  enum:
+                    - EDITORIAL
+                    - MANAGEMENT
+                    - OUTREACH
+                    - MARKETING
+                  example: MANAGEMENT
+                year:
+                  type: number
+                  example: 2022
+                isHead:
+                  type: boolean
+                  example: false
+                isModerator:
+                  type: boolean
+                  example: true
+                position:
+                  type: string
+                  enum:
+                    - MEMBER
+                    - CORE_MEMBER
+                    - LEAD
+                  example: CORE_MEMBER
+
+      responses:
+        200:
+          description: Promotion Successful.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: boolean
+                    example: Promotion Successful.
+        401:
+          description: Invalid Credentials.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 401
+                  msg:
+                    type: boolean
+                    example: Invalid Credentials.

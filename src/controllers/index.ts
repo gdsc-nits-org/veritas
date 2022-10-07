@@ -4,5 +4,6 @@ import * as Health from "./health";
 import * as Person from "./person";
 import * as Student from "./student";
 import * as Member from "./member";
+import * as Core from "./core";
 
-export { Event, Project, Health, Person, Student, Member };
+export { Event, Project, Health, Person, Student, Member, Core };

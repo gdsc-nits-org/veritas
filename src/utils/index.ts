@@ -6,5 +6,16 @@ import * as Email from "./email";
 import * as Password from "./password";
 import * as Url from "./url";
 import * as Discord from "./discord";
+import { hash } from "./hash";
 
-export { Response, Error, Date, ScholarId, Email, Password, Url, Discord };
+export {
+  Response,
+  Error,
+  Date,
+  ScholarId,
+  Email,
+  Password,
+  Url,
+  Discord,
+  hash,
+};

@@ -66,7 +66,7 @@ const register: Interfaces.Controller.Async = async (req, res, next) => {
             scholarId,
           },
         },
-        password,
+        password: await Utils.hash(password),
         image,
         linkedInUrl,
         githubUrl,
