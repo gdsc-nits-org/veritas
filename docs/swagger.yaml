@@ -87,3 +87,44 @@ paths:
                   msg:
                     type: string
                     example: Registration Successfully.
+        401:
+          description: Incorrect Credentials.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 401
+                  msg:
+                    type: string
+                    example: Incorrect Credentials.
+  /person/search:
+    get:
+      description: Check Existence of Person
+      tags:
+        - Person
+
+      parameters:
+        - in: query
+          name: email
+          required: true,
+          schema:
+            type: string
+            example: hello@world.com
+
+      responses:
+        200:
+          description: Boolean depending on whether person is registered or not.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: boolean
+                    example: true

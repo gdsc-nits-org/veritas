@@ -1,3 +1,4 @@
 import { register } from "./register";
+import { searchPerson } from "./search";
 
-export { register };
+export { register, searchPerson };
