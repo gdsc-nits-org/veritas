@@ -86,8 +86,6 @@ model ClubMember {
   facebookUrl String?
   discordId   String?
 
-  isAdmin Boolean
-
   tenure Tenure[]
 
   contributions Project[] @relation("contribution")

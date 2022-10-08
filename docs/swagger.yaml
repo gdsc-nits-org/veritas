@@ -419,6 +419,8 @@ paths:
               type: object
               required:
                 [
+                  adminScholarId,
+                  adminPassword,
                   scholarId,
                   password,
                   domain,
@@ -428,6 +430,12 @@ paths:
                   githubUrl,
                 ]
               properties:
+                adminScholarId:
+                  type: string
+                  example: "2012039"
+                adminPassword:
+                  type: string
+                  example: Hello@World123
                 scholarId:
                   type: string
                   example: "2012039"
@@ -665,8 +673,14 @@ paths:
           application/json:
             schema:
               type: object
-              required: [scholarId, domain, role]
+              required: [adminScholarId, adminPassword, scholarId, domain, role]
               properties:
+                adminScholarId:
+                  type: string
+                  example: "2012039"
+                adminPassword:
+                  type: string
+                  example: Hello@World123
                 scholarId:
                   type: string
                   example: "2012039"
@@ -707,6 +721,54 @@ paths:
       responses:
         200:
           description: Promotion Successful.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: boolean
+                    example: Promotion Successful.
+        401:
+          description: Invalid Credentials.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 401
+                  msg:
+                    type: boolean
+                    example: Invalid Credentials.
+  /lead/chapter/declare:
+    post:
+      description: Declare a chapter as transitioned.
+      tags:
+        - Lead
+
+      requestBody:
+        description: A JSON object containing credentials
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [adminScholarId, adminPassword]
+              properties:
+                adminScholarId:
+                  type: string
+                  example: "2012039"
+                adminPassword:
+                  type: string
+                  example: Hello@World123
+
+      responses:
+        200:
+          description: Declaration Successful.
           content:
             application/json:
               schema:

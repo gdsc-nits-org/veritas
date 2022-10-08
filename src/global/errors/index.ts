@@ -6,5 +6,6 @@ import * as Student from "./student";
 import * as Member from "./member";
 import * as Core from "./core";
 import * as Auth from "./auth";
+import * as Chapter from "./chapter";
 
-export { System, Person, Event, Project, Student, Member, Core, Auth };
+export { System, Person, Event, Project, Student, Member, Core, Auth, Chapter };
