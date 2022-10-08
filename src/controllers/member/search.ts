@@ -34,6 +34,30 @@ const searchMember: Interfaces.Controller.Async = async (req, res, next) => {
               dateOfBirth: true,
               gender: true,
               phoneNumber: true,
+              attendedSessions: {
+                select: {
+                  name: true,
+                  event: {
+                    select: {
+                      name: true,
+                    },
+                  },
+                  startTime: true,
+                  endTime: true,
+                },
+              },
+              speakerForSession: {
+                select: {
+                  name: true,
+                  event: {
+                    select: {
+                      name: true,
+                    },
+                  },
+                  startTime: true,
+                  endTime: true,
+                },
+              },
             },
           },
           instituteEmailId: true,
@@ -51,7 +75,23 @@ const searchMember: Interfaces.Controller.Async = async (req, res, next) => {
     },
   });
 
-  res.json(Utils.Response.Success(member));
+  const tenures = await prisma.tenure.findMany({
+    where: {
+      scholarId,
+    },
+    orderBy: {
+      startYear: "desc",
+    },
+    select: {
+      position: true,
+      isModerator: true,
+      isHead: true,
+      role: true,
+      startYear: true,
+    },
+  });
+
+  res.json(Utils.Response.Success({ ...member, tenures }));
 };
 
 export { searchMember };
