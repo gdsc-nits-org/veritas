@@ -15,7 +15,7 @@ router.post(
   Controllers.Student.register
 );
 
-router.get("/search", Controllers.Student.searchStudent);
+router.get("/check", Controllers.Student.searchStudent);
 
 // TODO: Delete student, given admin priviledge
 

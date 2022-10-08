@@ -10,6 +10,8 @@ router.post(
   Middlewares.Member.checkExists,
   Middlewares.Student.checkScholarId,
   Middlewares.Core.roleCheck,
+  Middlewares.Auth.checkAuth,
+  Middlewares.Auth.minPermission("MODERATOR", "PREV_AND_CURR"),
   Controllers.Core.promote
 );
 

@@ -11,9 +11,11 @@ router.post(
   Middlewares.Member.checkPasswordValidity,
   Middlewares.Student.checkExists,
   Middlewares.Member.checkNotExists,
+  Middlewares.Auth.checkAuth,
+  Middlewares.Auth.minPermission("MODERATOR"),
   Controllers.Member.register
 );
 
-router.get("/search", Controllers.Member.searchMember);
+router.get("/check", Controllers.Member.searchMember);
 
 export default router;

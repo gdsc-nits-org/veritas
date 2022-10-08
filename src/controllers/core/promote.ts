@@ -19,7 +19,16 @@ const promote: Interfaces.Controller.Async = async (req, res) => {
             scholarId,
           },
         },
-        startYear: year!,
+        chapter: {
+          connectOrCreate: {
+            where: {
+              year: year!,
+            },
+            create: {
+              year: year!,
+            },
+          },
+        },
         domain,
         isModerator: isModerator!,
         isHead: isHead!,

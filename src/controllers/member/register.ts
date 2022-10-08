@@ -83,7 +83,16 @@ const register: Interfaces.Controller.Async = async (req, res, next) => {
             scholarId,
           },
         },
-        startYear: year!,
+        chapter: {
+          connectOrCreate: {
+            where: {
+              year: year!,
+            },
+            create: {
+              year: year!,
+            },
+          },
+        },
         domain,
         isModerator: false,
         isHead: false,

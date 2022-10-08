@@ -49,10 +49,10 @@ const roleCheck: Interfaces.Middleware.Async = async (req, _res, next) => {
     return next(Errors.Core.improperPosition);
   }
 
-  // Check duplicates
-  // TODO: Needs testing
-  // TODO: Check if core is already lead or lead is already core
+  // TODO: Code below needs thorough testing
+
   if (position === "LEAD") {
+    // Check if another lead is present
     if (
       (await prisma.tenure.count({
         where: {
@@ -60,26 +60,26 @@ const roleCheck: Interfaces.Middleware.Async = async (req, _res, next) => {
           startYear: year,
         },
         take: 1,
-      })) === 0
+      })) !== 0
     ) {
-      return next();
-    } else {
       return next(Errors.Core.leadExists);
     }
+  }
+
+  // Check if about to be core is already promoted.
+  // If about to be lead, check if lead is present as a core member
+  if (
+    (await prisma.tenure.count({
+      where: {
+        scholarId,
+        startYear: year,
+      },
+      take: 1,
+    })) === 0
+  ) {
+    return next();
   } else {
-    if (
-      (await prisma.tenure.count({
-        where: {
-          scholarId,
-          startYear: year,
-        },
-        take: 1,
-      })) === 0
-    ) {
-      return next();
-    } else {
-      return next(Errors.Core.alreadyPromoted);
-    }
+    return next(Errors.Core.alreadyPromoted);
   }
 };
 

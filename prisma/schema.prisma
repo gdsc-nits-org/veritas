@@ -96,6 +96,13 @@ model ClubMember {
   attendance MeetingAttendance[]
 }
 
+model Chapter {
+  year       Int     @id
+  transition Boolean @default(true) // For handover transition
+
+  tenures Tenure[]
+}
+
 model Tenure {
   id String @id @default(uuid())
 
@@ -103,6 +110,7 @@ model Tenure {
   member    ClubMember @relation(fields: [scholarId], references: [scholarId])
 
   startYear Int
+  chapter   Chapter @relation(fields: [startYear], references: [year])
 
   domain MemberDomain
 
