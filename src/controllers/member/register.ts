@@ -72,7 +72,6 @@ const register: Interfaces.Controller.Async = async (req, res, next) => {
         githubUrl,
         facebookUrl: facebookUrl ?? null,
         discordId: discordId ?? null,
-        isAdmin: false,
       },
     });
 

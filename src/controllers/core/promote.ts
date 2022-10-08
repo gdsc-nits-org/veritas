@@ -36,17 +36,6 @@ const promote: Interfaces.Controller.Async = async (req, res) => {
         role,
       },
     });
-
-    if (position === "LEAD" || isModerator || isHead) {
-      await prisma.clubMember.update({
-        where: {
-          scholarId,
-        },
-        data: {
-          isAdmin: true,
-        },
-      });
-    }
   });
 
   res.json(Success.Core.promotionSuccessful);
