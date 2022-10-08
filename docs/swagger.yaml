@@ -198,6 +198,42 @@ paths:
                         items:
                           type: string
                         example: ["9152539529", "09152539529", "+919152539529"]
+                      attendedSessions:
+                        type: object
+                        parameters:
+                          name:
+                            type: string
+                            example: Web Blitz Day 1
+                          event:
+                            type: object
+                            parameters:
+                              name:
+                                type: string
+                                example: Web Blitz
+                          startTime:
+                            type: string
+                            example: Sat Oct 08 2022 21:19:19 GMT+0530 (India Standard Time)
+                          endTime:
+                            type: string
+                            example: Sat Oct 08 2022 21:19:19 GMT+0530 (India Standard Time)
+                      speakerForSession:
+                        type: object
+                        parameters:
+                          name:
+                            type: string
+                            example: Web Blitz Day 1
+                          event:
+                            type: object
+                            parameters:
+                              name:
+                                type: string
+                                example: Web Blitz
+                          startTime:
+                            type: string
+                            example: Sat Oct 08 2022 21:19:19 GMT+0530 (India Standard Time)
+                          endTime:
+                            type: string
+                            example: Sat Oct 08 2022 21:19:19 GMT+0530 (India Standard Time)
 
   /student/register:
     post:
@@ -212,7 +248,7 @@ paths:
             schema:
               type: object
               required:
-                [personalEmailId, gender, firstName, dateOfBirth, phoneNumber]
+                [scholarId, personalEmailId, instituteEmailId, degree, branch]
               properties:
                 scholarId:
                   type: string
@@ -382,6 +418,42 @@ paths:
                                   type: string
                                 example:
                                   ["9152539529", "09152539529", "+919152539529"]
+                              attendedSessions:
+                                type: object
+                                parameters:
+                                  name:
+                                    type: string
+                                    example: Web Blitz Day 1
+                                  event:
+                                    type: object
+                                    parameters:
+                                      name:
+                                        type: string
+                                        example: Web Blitz
+                                  startTime:
+                                    type: string
+                                    example: Sat Oct 08 2022 21:19:19 GMT+0530 (India Standard Time)
+                                  endTime:
+                                    type: string
+                                    example: Sat Oct 08 2022 21:19:19 GMT+0530 (India Standard Time)
+                              speakerForSession:
+                                type: object
+                                parameters:
+                                  name:
+                                    type: string
+                                    example: Web Blitz Day 1
+                                  event:
+                                    type: object
+                                    parameters:
+                                      name:
+                                        type: string
+                                        example: Web Blitz
+                                  startTime:
+                                    type: string
+                                    example: Sat Oct 08 2022 21:19:19 GMT+0530 (India Standard Time)
+                                  endTime:
+                                    type: string
+                                    example: Sat Oct 08 2022 21:19:19 GMT+0530 (India Standard Time)
                           branch:
                             type: string
                             enum:
@@ -636,6 +708,42 @@ paths:
                                   type: string
                                 example:
                                   ["9152539529", "09152539529", "+919152539529"]
+                              attendedSessions:
+                                type: object
+                                parameters:
+                                  name:
+                                    type: string
+                                    example: Web Blitz Day 1
+                                  event:
+                                    type: object
+                                    parameters:
+                                      name:
+                                        type: string
+                                        example: Web Blitz
+                                  startTime:
+                                    type: string
+                                    example: Sat Oct 08 2022 21:19:19 GMT+0530 (India Standard Time)
+                                  endTime:
+                                    type: string
+                                    example: Sat Oct 08 2022 21:19:19 GMT+0530 (India Standard Time)
+                              speakerForSession:
+                                type: object
+                                parameters:
+                                  name:
+                                    type: string
+                                    example: Web Blitz Day 1
+                                  event:
+                                    type: object
+                                    parameters:
+                                      name:
+                                        type: string
+                                        example: Web Blitz
+                                  startTime:
+                                    type: string
+                                    example: Sat Oct 08 2022 21:19:19 GMT+0530 (India Standard Time)
+                                  endTime:
+                                    type: string
+                                    example: Sat Oct 08 2022 21:19:19 GMT+0530 (India Standard Time)
                           instituteEmailId:
                             type: string
                             example: helloworld20_ug@cse.nits.ac.in
@@ -660,6 +768,35 @@ paths:
                           facebookUrl:
                             type: string
                             example: https://www.facebook.com/helloworld
+                          tenures:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                role:
+                                  type: string
+                                  enum:
+                                    - EDITORIAL
+                                    - MANAGEMENT
+                                    - OUTREACH
+                                    - MARKETING
+                                  example: MANAGEMENT
+                                startYear:
+                                  type: number
+                                  example: 2022
+                                isHead:
+                                  type: boolean
+                                  example: false
+                                isModerator:
+                                  type: boolean
+                                  example: true
+                                position:
+                                  type: string
+                                  enum:
+                                    - MEMBER
+                                    - CORE_MEMBER
+                                    - LEAD
+                                  example: CORE_MEMBER
 
   /core/new:
     post:
@@ -745,6 +882,7 @@ paths:
                   msg:
                     type: boolean
                     example: Invalid Credentials.
+
   /lead/chapter/declare:
     post:
       description: Declare a chapter as transitioned.

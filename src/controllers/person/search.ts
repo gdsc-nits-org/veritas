@@ -29,6 +29,30 @@ const searchPerson: Interfaces.Controller.Async = async (req, res, next) => {
       gender: true,
       dateOfBirth: true,
       phoneNumber: true,
+      attendedSessions: {
+        select: {
+          name: true,
+          event: {
+            select: {
+              name: true,
+            },
+          },
+          startTime: true,
+          endTime: true,
+        },
+      },
+      speakerForSession: {
+        select: {
+          name: true,
+          event: {
+            select: {
+              name: true,
+            },
+          },
+          startTime: true,
+          endTime: true,
+        },
+      },
     },
   });
 
