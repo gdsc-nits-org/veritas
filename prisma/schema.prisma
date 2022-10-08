@@ -86,14 +86,19 @@ model ClubMember {
   facebookUrl String?
   discordId   String?
 
-  isAdmin Boolean
-
   tenure Tenure[]
 
   contributions Project[] @relation("contribution")
   mentorships   Project[] @relation("mentoring")
 
   attendance MeetingAttendance[]
+}
+
+model Chapter {
+  year       Int     @id
+  transition Boolean @default(true) // For handover transition
+
+  tenures Tenure[]
 }
 
 model Tenure {
@@ -103,6 +108,7 @@ model Tenure {
   member    ClubMember @relation(fields: [scholarId], references: [scholarId])
 
   startYear Int
+  chapter   Chapter @relation(fields: [startYear], references: [year])
 
   domain MemberDomain
 
@@ -117,6 +123,7 @@ model Tenure {
 
 enum MemberDomain {
   ANDROID
+  CLOUD_AND_DEVOPS
   FLUTTER
   UI_UX
   WEB

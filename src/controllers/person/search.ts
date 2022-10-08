@@ -17,18 +17,22 @@ const searchPerson: Interfaces.Controller.Async = async (req, res, next) => {
   }
 
   // Find
-  if (
-    (await prisma.person.count({
-      where: {
-        personalEmailId: email,
-      },
-      take: 1,
-    })) === 0
-  ) {
-    res.json(Utils.Response.Success(false));
-  } else {
-    res.json(Utils.Response.Success(true));
-  }
+  const person = await prisma.person.findFirst({
+    where: {
+      personalEmailId: email,
+    },
+    select: {
+      personalEmailId: true,
+      firstName: true,
+      middleName: true,
+      lastName: true,
+      gender: true,
+      dateOfBirth: true,
+      phoneNumber: true,
+    },
+  });
+
+  res.json(Utils.Response.Success(person));
 };
 
 export { searchPerson };

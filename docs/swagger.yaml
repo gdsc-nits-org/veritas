@@ -114,7 +114,7 @@ paths:
                     type: string
                     example: Not Found.
 
-  /person/search:
+  /person/check:
     get:
       description: Check Existence of Person
       tags:
@@ -142,6 +142,62 @@ paths:
                   msg:
                     type: boolean
                     example: true
+
+  /person/search:
+    get:
+      description: Get Details of Person
+      tags:
+        - Person
+
+      parameters:
+        - in: query
+          name: email
+          required: true,
+          schema:
+            type: string
+            example: hello@world.com
+
+      responses:
+        200:
+          description: Boolean depending on whether person is registered or not.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: object
+                    properties:
+                      personalEmailId:
+                        type: string
+                        example: hello.world@gmail.com
+                      firstName:
+                        type: string
+                        example: Harry
+                      middleName:
+                        type: string
+                        example: James
+                      lastName:
+                        type: string
+                        example: Potter
+                      gender:
+                        type: string
+                        enum: [MALE, FEMALE, OTHERS]
+                        example: MALE
+                      dateOfBirth:
+                        oneOf:
+                          - type: string
+                          - type: number
+                        description: The Date String or Date Epoch
+                        example: Fri Oct 07 2022 08:15:15 GMT+0530 (India Standard Time)
+                      phoneNumber:
+                        type: array
+                        items:
+                          type: string
+                        example: ["9152539529", "09152539529", "+919152539529"]
 
   /student/register:
     post:
@@ -230,7 +286,7 @@ paths:
                     type: string
                     example: Not Found.
 
-  /student/search:
+  /student/check:
     get:
       description: Check Existence of Student
       tags:
@@ -259,6 +315,96 @@ paths:
                     type: boolean
                     example: true
 
+  /student/search:
+    get:
+      description: Get Details of Student
+      tags:
+        - Student
+
+      parameters:
+        - in: query
+          name: scholarId
+          required: true,
+          schema:
+            type: string
+            example: "2012039"
+
+      responses:
+        200:
+          description: Boolean depending on whether student is registered or not.
+          content:
+            application/json:
+              schema:
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: object
+                    properties:
+                      status:
+                        type: number
+                        example: 200
+                      msg:
+                        type: object
+                        properties:
+                          scholarId:
+                            type: string
+                            example: "2012039"
+                          person:
+                            type: object
+                            properties:
+                              personalEmailId:
+                                type: string
+                                example: hello.world@gmail.com
+                              firstName:
+                                type: string
+                                example: Harry
+                              middleName:
+                                type: string
+                                example: James
+                              lastName:
+                                type: string
+                                example: Potter
+                              gender:
+                                type: string
+                                enum: [MALE, FEMALE, OTHERS]
+                                example: MALE
+                              dateOfBirth:
+                                oneOf:
+                                  - type: string
+                                  - type: number
+                                description: The Date String or Date Epoch
+                                example: Fri Oct 07 2022 08:15:15 GMT+0530 (India Standard Time)
+                              phoneNumber:
+                                type: array
+                                items:
+                                  type: string
+                                example:
+                                  ["9152539529", "09152539529", "+919152539529"]
+                          branch:
+                            type: string
+                            enum:
+                              - CHEMISTRY
+                              - COMPUTER_SCIENCE_AND_ENGINEERING
+                              - ELECTRICAL_ENGINEERING
+                              - ELECTRONICS_AND_COMMUNICATION_ENGINEERING
+                              - ELECTRONICS_AND_INSTRUMENTATION_ENGINEERING
+                              - HISTORY
+                              - HUMANITIES_AND_SOCIAL_SCIENCES
+                              - MANAGEMENT_STUDIES
+                              - MATHEMATICS
+                              - MECHANICAL_ENGINEERING
+                              - PHYISCS
+                            example: COMPUTER_SCIENCE_AND_ENGINEERING
+                          degree:
+                            type: string
+                            enum:
+                              - BACHELORS
+                              - MASTERS
+                              - DOCTORATE
+                            example: BACHELORS
+
   /member/register:
     post:
       description: Register a Member
@@ -273,6 +419,8 @@ paths:
               type: object
               required:
                 [
+                  adminScholarId,
+                  adminPassword,
                   scholarId,
                   password,
                   domain,
@@ -282,6 +430,12 @@ paths:
                   githubUrl,
                 ]
               properties:
+                adminScholarId:
+                  type: string
+                  example: "2012039"
+                adminPassword:
+                  type: string
+                  example: Hello@World123
                 scholarId:
                   type: string
                   example: "2012039"
@@ -319,6 +473,9 @@ paths:
                 discordId:
                   type: string
                   example: "123456789012345678"
+                year:
+                  type: number
+                  example: 2022
 
       responses:
         200:
@@ -356,12 +513,12 @@ paths:
                 properties:
                   status:
                     type: number
-                    example: 401
+                    example: 404
                   msg:
                     type: string
                     example: Not Found.
 
-  /member/search:
+  /member/check:
     get:
       description: Check Existence of Member
       tags:
@@ -389,3 +546,250 @@ paths:
                   msg:
                     type: boolean
                     example: true
+
+  /member/search:
+    get:
+      description: Get Details of Member
+      tags:
+        - Member
+
+      parameters:
+        - in: query
+          name: scholarId
+          required: true,
+          schema:
+            type: string
+            example: "2012039"
+
+      responses:
+        200:
+          description: Boolean depending on whether student is registered or not.
+          content:
+            application/json:
+              schema:
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: object
+                    properties:
+                      status:
+                        type: number
+                        example: 200
+                      msg:
+                        type: object
+                        properties:
+                          scholarId:
+                            type: string
+                            example: "2012039"
+                          branch:
+                            type: string
+                            enum:
+                              - CHEMISTRY
+                              - COMPUTER_SCIENCE_AND_ENGINEERING
+                              - ELECTRICAL_ENGINEERING
+                              - ELECTRONICS_AND_COMMUNICATION_ENGINEERING
+                              - ELECTRONICS_AND_INSTRUMENTATION_ENGINEERING
+                              - HISTORY
+                              - HUMANITIES_AND_SOCIAL_SCIENCES
+                              - MANAGEMENT_STUDIES
+                              - MATHEMATICS
+                              - MECHANICAL_ENGINEERING
+                              - PHYISCS
+                            example: COMPUTER_SCIENCE_AND_ENGINEERING
+                          degree:
+                            type: string
+                            enum:
+                              - BACHELORS
+                              - MASTERS
+                              - DOCTORATE
+                            example: BACHELORS
+                          person:
+                            type: object
+                            properties:
+                              personalEmailId:
+                                type: string
+                                example: hello.world@gmail.com
+                              firstName:
+                                type: string
+                                example: Harry
+                              middleName:
+                                type: string
+                                example: James
+                              lastName:
+                                type: string
+                                example: Potter
+                              gender:
+                                type: string
+                                enum: [MALE, FEMALE, OTHERS]
+                                example: MALE
+                              dateOfBirth:
+                                oneOf:
+                                  - type: string
+                                  - type: number
+                                description: The Date String or Date Epoch
+                                example: Fri Oct 07 2022 08:15:15 GMT+0530 (India Standard Time)
+                              phoneNumber:
+                                type: array
+                                items:
+                                  type: string
+                                example:
+                                  ["9152539529", "09152539529", "+919152539529"]
+                          instituteEmailId:
+                            type: string
+                            example: helloworld20_ug@cse.nits.ac.in
+                          contributions:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                name:
+                                  type: string
+                            example:
+                              [{ name: "AttendO" }, { name: "Resource Hub" }]
+                          image:
+                            type: string
+                            example: https://avatars.githubusercontent.com/u/74897009
+                          linkedInUrl:
+                            type: string
+                            example: https://www.linkedin.com/in/helloworld
+                          githubUrl:
+                            type: string
+                            example: https://github.com/helloworld
+                          facebookUrl:
+                            type: string
+                            example: https://www.facebook.com/helloworld
+
+  /core/new:
+    post:
+      description: Promote Member to Core Member or Lead
+      tags:
+        - Core
+
+      requestBody:
+        description: A JSON object containing member information
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [adminScholarId, adminPassword, scholarId, domain, role]
+              properties:
+                adminScholarId:
+                  type: string
+                  example: "2012039"
+                adminPassword:
+                  type: string
+                  example: Hello@World123
+                scholarId:
+                  type: string
+                  example: "2012039"
+                domain:
+                  type: string
+                  enum:
+                    - ANDROID
+                    - CLOUD_AND_DEVOPS
+                    - FLUTTER
+                    - UI_UX
+                    - WEB
+                  example: CLOUD_AND_DEVOPS
+                role:
+                  type: string
+                  enum:
+                    - EDITORIAL
+                    - MANAGEMENT
+                    - OUTREACH
+                    - MARKETING
+                  example: MANAGEMENT
+                year:
+                  type: number
+                  example: 2022
+                isHead:
+                  type: boolean
+                  example: false
+                isModerator:
+                  type: boolean
+                  example: true
+                position:
+                  type: string
+                  enum:
+                    - MEMBER
+                    - CORE_MEMBER
+                    - LEAD
+                  example: CORE_MEMBER
+
+      responses:
+        200:
+          description: Promotion Successful.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: boolean
+                    example: Promotion Successful.
+        401:
+          description: Invalid Credentials.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 401
+                  msg:
+                    type: boolean
+                    example: Invalid Credentials.
+  /lead/chapter/declare:
+    post:
+      description: Declare a chapter as transitioned.
+      tags:
+        - Lead
+
+      requestBody:
+        description: A JSON object containing credentials
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [adminScholarId, adminPassword]
+              properties:
+                adminScholarId:
+                  type: string
+                  example: "2012039"
+                adminPassword:
+                  type: string
+                  example: Hello@World123
+
+      responses:
+        200:
+          description: Declaration Successful.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: boolean
+                    example: Promotion Successful.
+        401:
+          description: Invalid Credentials.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 401
+                  msg:
+                    type: boolean
+                    example: Invalid Credentials.

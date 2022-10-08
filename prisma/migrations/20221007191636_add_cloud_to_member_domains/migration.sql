@@ -1,0 +1,2 @@
+-- AlterEnum
+ALTER TYPE "MemberDomain" ADD VALUE 'CLOUD_AND_DEVOPS';

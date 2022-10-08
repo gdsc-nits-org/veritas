@@ -15,8 +15,10 @@ router.post(
   Controllers.Student.register
 );
 
+router.get("/check", Controllers.Student.checkStudent);
 router.get("/search", Controllers.Student.searchStudent);
 
 // TODO: Delete student, given admin priviledge
+// TODO: Branch change update student details
 
 export default router;
