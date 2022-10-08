@@ -16,6 +16,7 @@ router.post(
   Controllers.Member.register
 );
 
-router.get("/check", Controllers.Member.searchMember);
+router.get("/check", Controllers.Member.checkMember);
+router.get("/search", Controllers.Member.searchMember);
 
 export default router;

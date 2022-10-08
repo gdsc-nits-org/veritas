@@ -17,16 +17,41 @@ const searchMember: Interfaces.Controller.Async = async (req, res, next) => {
   }
 
   // Find
-  if (
-    (await prisma.clubMember.count({
-      where: { scholarId },
-      take: 1,
-    })) === 0
-  ) {
-    res.json(Utils.Response.Success(false));
-  } else {
-    res.json(Utils.Response.Success(true));
-  }
+  const member = await prisma.clubMember.findFirst({
+    where: { scholarId },
+    select: {
+      student: {
+        select: {
+          scholarId: true,
+          branch: true,
+          degree: true,
+          person: {
+            select: {
+              personalEmailId: true,
+              firstName: true,
+              middleName: true,
+              lastName: true,
+              dateOfBirth: true,
+              gender: true,
+              phoneNumber: true,
+            },
+          },
+          instituteEmailId: true,
+        },
+      },
+      contributions: {
+        select: {
+          name: true,
+        },
+      },
+      image: true,
+      linkedInUrl: true,
+      githubUrl: true,
+      facebookUrl: true,
+    },
+  });
+
+  res.json(Utils.Response.Success(member));
 };
 
 export { searchMember };

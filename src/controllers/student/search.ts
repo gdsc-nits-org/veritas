@@ -17,16 +17,27 @@ const searchStudent: Interfaces.Controller.Async = async (req, res, next) => {
   }
 
   // Find
-  if (
-    (await prisma.student.count({
-      where: { scholarId },
-      take: 1,
-    })) === 0
-  ) {
-    res.json(Utils.Response.Success(false));
-  } else {
-    res.json(Utils.Response.Success(true));
-  }
+  const student = await prisma.student.findFirst({
+    where: { scholarId },
+    select: {
+      scholarId: true,
+      person: {
+        select: {
+          personalEmailId: true,
+          firstName: true,
+          middleName: true,
+          lastName: true,
+          gender: true,
+          dateOfBirth: true,
+          phoneNumber: true,
+        },
+      },
+      branch: true,
+      degree: true,
+    },
+  });
+
+  res.json(Utils.Response.Success(student));
 };
 
 export { searchStudent };

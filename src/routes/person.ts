@@ -12,6 +12,7 @@ router.post(
   Controllers.Person.register
 );
 
-router.get("/check", Controllers.Person.searchPerson);
+router.get("/check", Controllers.Person.checkPerson);
+router.get("/search", Controllers.Person.searchPerson);
 
 export default router;
