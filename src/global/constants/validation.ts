@@ -6,8 +6,9 @@ const phoneNumber = /^((\+91)|0)?([0-9]{10})$/;
 // BTech & MTech have 7 digits - 2 for year, 1 for degree, 1 for dept, 3 for roll no.
 const scholarId = /^[1-2][0-9](([1-2][0-9]{4})|(3[0-9]{5}))$/;
 
+// Some students don't have year in email, idk why or how.
 const instituteEmail =
-  /^[a-z]+[0-9]{2}_(ug|pg|rs)@[a-z]{3,4}[.]nits[.]ac[.]in$/;
+  /^[a-z]+([0-9]{2})?_(ug|pg|rs)@[a-z]{2,4}[.]nits[.]ac[.]in$/;
 
 // 1 Capital, 1 Digit, 1 Special Character, Total 8-20 characters both inclusive
 // (?=.*?) is lookahead in JS RegExp
