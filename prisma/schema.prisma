@@ -267,7 +267,7 @@ model Session {
   name String
 
   eventId String
-  event   Event  @relation(fields: [eventId], references: [id])
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
 
   topics String[]
 

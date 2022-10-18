@@ -7,4 +7,12 @@ const eventUpdatedSuccesfully = Utils.Response.Success(
   "Event updated successfully."
 );
 
-export { eventCreatedSuccesfully, eventUpdatedSuccesfully };
+const eventDeletedSuccessfully = Utils.Response.Success(
+  "Event deleted successfully."
+);
+
+export {
+  eventCreatedSuccesfully,
+  eventUpdatedSuccesfully,
+  eventDeletedSuccessfully,
+};
