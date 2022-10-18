@@ -49,12 +49,8 @@ const getAllEvents: Interfaces.Controller.Async = async (req, res) => {
     take: amount ? parseInt(amount as string) : 0,
     include: {
       registrations: {
-        include: {
-          student: {
-            select: {
-              _count: true,
-            },
-          },
+        select: {
+          _count: true,
         },
       },
       organizers: {

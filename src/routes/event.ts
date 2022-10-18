@@ -37,7 +37,7 @@ router.post(
   Controllers.Event.rsvpForEvent
 );
 
-router.post(
+router.patch(
   "/:eventId",
   Middlewares.Auth.checkAuth,
   Middlewares.Auth.minPermission(),
