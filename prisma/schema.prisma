@@ -99,6 +99,7 @@ model Chapter {
   transition Boolean @default(true) // For handover transition
 
   tenures Tenure[]
+  events  Event[]
 }
 
 model Tenure {
@@ -243,6 +244,9 @@ model Event {
 
   sessions Session[]
 
+  year    Int
+  chapter Chapter @relation(fields: [year], references: [year])
+
   level EventLevel
   type  EventType
 
@@ -272,8 +276,12 @@ model Session {
   startTime DateTime
   endTime   DateTime
 
+  year Int
+
   attendees Person[] @relation("attends")
   speakers  Person[] @relation("speaks")
+
+  @@unique([name, eventId, year])
 }
 
 enum InterviewPurpose {
