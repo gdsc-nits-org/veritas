@@ -1,14 +1,17 @@
 import { prisma } from "@utils/prisma";
 
-import { Event } from "@prisma/client";
 import * as Utils from "@utils";
 import * as Interfaces from "@interfaces";
 import * as Success from "@success";
 
+/**
+ * @description `organizers` should be the complete list or organizer list in the updated event too.
+ */
 const updateEvent: Interfaces.Controller.Async = async (req, res) => {
   const { eventId } = req.params;
 
-  const { description, domain, mode, tags, url, venue } = req.body as Event;
+  const { description, domain, mode, tags, url, venue, organizers } =
+    req.body as Interfaces.Event.EventBody;
 
   /**
    * Check if event exist
@@ -33,6 +36,9 @@ const updateEvent: Interfaces.Controller.Async = async (req, res) => {
       tags: Utils.Tags.appendWithoutDuplicates(event!.tags, tags),
       url,
       venue,
+      organizers: {
+        connect: organizers.map((org) => ({ scholarId: org })),
+      },
     },
   });
 

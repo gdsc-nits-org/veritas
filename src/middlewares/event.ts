@@ -3,6 +3,9 @@ import { prisma } from "@utils/prisma";
 import * as Interfaces from "@interfaces";
 import * as Errors from "@errors";
 
+/**
+ * @description Checks whether event with the given `eventId` exists
+ */
 const checkEventExist: Interfaces.Middleware.Async = async (
   req,
   _res,
@@ -23,4 +26,32 @@ const checkEventExist: Interfaces.Middleware.Async = async (
   }
 };
 
-export { checkEventExist };
+/**
+ * @description Check whether the user with given `personalEmailId` already registered for the event with `eventId`
+ */
+const checkAlreadyRegistered: Interfaces.Middleware.Async = async (
+  req,
+  _res,
+  next
+) => {
+  const { personalEmailId } = req.body as Interfaces.Event.EventRSVPBody;
+
+  const { eventId } = req.params;
+
+  if (
+    (await prisma.event.count({
+      where: {
+        id: eventId,
+        registrations: {
+          some: { personalEmailId },
+        },
+      },
+    })) > 0
+  ) {
+    return next(Errors.Event.alreadyRSVP);
+  } else {
+    return next();
+  }
+};
+
+export { checkEventExist, checkAlreadyRegistered };
