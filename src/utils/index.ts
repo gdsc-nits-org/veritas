@@ -8,6 +8,7 @@ import * as Url from "./url";
 import * as Discord from "./discord";
 import { hash } from "./hash";
 import * as Auth from "./auth";
+import * as Tags from "./tags";
 
 export {
   Response,
@@ -20,4 +21,5 @@ export {
   Discord,
   hash,
   Auth,
+  Tags,
 };
