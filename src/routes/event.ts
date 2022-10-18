@@ -6,17 +6,37 @@ import * as Middlewares from "@middlewares";
 const router: Router = Router({ mergeParams: true });
 
 router.get("/all", Controllers.Event.getAllEvents);
+
+router.get(
+  "/:eventId/registrations",
+  Middlewares.Auth.checkAuth,
+  Middlewares.Auth.minPermission(),
+  Middlewares.Event.checkEventExist,
+  Controllers.Event.getEventRegistrations
+);
+
 router.get(
   "/:eventId",
   Middlewares.Event.checkEventExist,
   Controllers.Event.getEvent
 );
+
 router.post(
   "/new",
   Middlewares.Auth.checkAuth,
   Middlewares.Auth.minPermission(),
   Controllers.Event.createEvent
 );
+
+router.post(
+  "/:eventId/rsvp",
+  Middlewares.Person.checkPersonalEmail,
+  Middlewares.Person.checkExists,
+  Middlewares.Event.checkEventExist,
+  Middlewares.Event.checkAlreadyRegistered,
+  Controllers.Event.rsvpForEvent
+);
+
 router.post(
   "/:eventId",
   Middlewares.Auth.checkAuth,

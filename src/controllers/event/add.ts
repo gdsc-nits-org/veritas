@@ -1,6 +1,5 @@
 import { prisma } from "@utils/prisma";
 
-import { Event } from "@prisma/client";
 import * as Interfaces from "@interfaces";
 import * as Success from "@success";
 import * as Errors from "@errors";
@@ -17,7 +16,8 @@ const createEvent: Interfaces.Controller.Async = async (req, res, next) => {
     year,
     venue,
     url,
-  } = req.body as Event;
+    organizers,
+  } = req.body as Interfaces.Event.EventBody;
 
   /**
    * Check whether event with same name, year and type exist. If exists then return error.
@@ -49,6 +49,9 @@ const createEvent: Interfaces.Controller.Async = async (req, res, next) => {
       year,
       venue,
       url,
+      organizers: {
+        connect: organizers.map((org) => ({ scholarId: org })),
+      },
     },
   });
 

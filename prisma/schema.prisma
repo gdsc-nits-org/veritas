@@ -24,6 +24,8 @@ model Person {
   attendedSessions  Session[] @relation("speaks")
   speakerForSession Session[] @relation("attends")
 
+  registeredEvents Event[]
+
   student Student?
 }
 
@@ -44,8 +46,6 @@ model Student {
   branch Branch
 
   degree Degree
-
-  registeredEvents Event[]
 
   interviewApplications Interview[]
 
@@ -90,6 +90,8 @@ model ClubMember {
 
   contributions Project[] @relation("contribution")
   mentorships   Project[] @relation("mentoring")
+
+  eventsOrganized Event[]
 
   attendance MeetingAttendance[]
 }
@@ -259,7 +261,9 @@ model Event {
   description String
   tags        String[]
 
-  registrations Student[]
+  organizers ClubMember[]
+
+  registrations Person[]
 }
 
 model Session {

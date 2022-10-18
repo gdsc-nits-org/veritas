@@ -11,8 +11,13 @@ const eventDeletedSuccessfully = Utils.Response.Success(
   "Event deleted successfully."
 );
 
+const successfullyRsvpToEvent = Utils.Response.Success(
+  "RSVP successfull for the event."
+);
+
 export {
   eventCreatedSuccesfully,
   eventUpdatedSuccesfully,
   eventDeletedSuccessfully,
+  successfullyRsvpToEvent,
 };
