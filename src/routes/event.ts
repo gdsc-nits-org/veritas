@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import * as Routes from "@routes";
+import session from "./session";
 import * as Controllers from "@controllers";
 import * as Middlewares from "@middlewares";
 
@@ -38,11 +38,7 @@ router.post(
   Controllers.Event.rsvpForEvent
 );
 
-router.use(
-  "/:eventId/session",
-  Middlewares.Event.checkEventExist,
-  Routes.Session
-);
+router.use("/:eventId/session", Middlewares.Event.checkEventExist, session);
 
 router.patch(
   "/:eventId",

@@ -10,6 +10,14 @@ const router: Router = Router({ mergeParams: true });
 router.get("/", Controllers.Session.getAllSessionsOfTheEvent);
 
 router.get(
+  "/:sessionId/attendance",
+  Middlewares.Auth.checkAuth,
+  Middlewares.Auth.minPermission(),
+  Middlewares.Session.checkSessionExist,
+  Controllers.Session.getSessionAttendance
+);
+
+router.get(
   "/:sessionId",
   Middlewares.Session.checkSessionExist,
   Controllers.Session.getSessionsOfTheEvent

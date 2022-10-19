@@ -89,6 +89,7 @@ const getEventRegistrations: Interfaces.Controller.Async = async (req, res) => {
           phoneNumber: true,
         },
       },
+      id: true,
       name: true,
       description: true,
       type: true,
