@@ -103,6 +103,7 @@ const getSessionAttendance: Interfaces.Controller.Async = async (req, res) => {
           gender: true,
         },
       },
+      id: true,
       name: true,
       status: true,
     },
