@@ -5,5 +5,6 @@ import * as Member from "./member";
 import * as Core from "./core";
 import * as Chapter from "./chapter";
 import * as Event from "./event";
+import * as Session from "./session";
 
-export { Health, Person, Student, Member, Core, Chapter, Event };
+export { Health, Person, Student, Member, Core, Chapter, Event, Session };
