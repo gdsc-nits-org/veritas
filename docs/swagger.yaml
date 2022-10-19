@@ -932,7 +932,7 @@ paths:
                     type: boolean
                     example: Invalid Credentials.
 
-  /event/all:
+  /event:
     get:
       description: Get all the events under GDSC
       tags:

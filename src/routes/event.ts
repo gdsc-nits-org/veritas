@@ -1,11 +1,12 @@
 import { Router } from "express";
 
+import * as Routes from "@routes";
 import * as Controllers from "@controllers";
 import * as Middlewares from "@middlewares";
 
 const router: Router = Router({ mergeParams: true });
 
-router.get("/all", Controllers.Event.getAllEvents);
+router.get("/", Controllers.Event.getAllEvents);
 
 router.get(
   "/:eventId/registrations",
@@ -35,6 +36,12 @@ router.post(
   Middlewares.Event.checkEventExist,
   Middlewares.Event.checkAlreadyRegistered,
   Controllers.Event.rsvpForEvent
+);
+
+router.use(
+  "/:eventId/session",
+  Middlewares.Event.checkEventExist,
+  Routes.Session
 );
 
 router.patch(

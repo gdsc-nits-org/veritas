@@ -11,6 +11,7 @@ const eventAlreadyExist = Utils.Response.Error(
 const eventNotCreated = Utils.Response.Error("Event not created.", 500);
 const eventNotUpdated = Utils.Response.Error("Event couldn't be updated.", 500);
 const alreadyRSVP = Utils.Response.Error("Already RSVP'd for the event.", 409);
+const eventEnded = Utils.Response.Error("Event has ended.", 403);
 
 export {
   eventNotFound,
@@ -18,4 +19,5 @@ export {
   eventNotCreated,
   eventNotUpdated,
   alreadyRSVP,
+  eventEnded,
 };

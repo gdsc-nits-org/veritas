@@ -54,4 +54,29 @@ const checkAlreadyRegistered: Interfaces.Middleware.Async = async (
   }
 };
 
-export { checkEventExist, checkAlreadyRegistered };
+const checkEventEnded: Interfaces.Middleware.Async = async (
+  req,
+  _res,
+  next
+) => {
+  const { eventId } = req.params;
+
+  const lastSession = await prisma.session.findFirst({
+    where: {
+      eventId,
+    },
+    orderBy: {
+      endTime: "desc",
+    },
+  });
+
+  if (!lastSession) return next();
+
+  if (lastSession.endTime < new Date()) {
+    return next(Errors.Event.eventEnded);
+  } else {
+    return next();
+  }
+};
+
+export { checkEventExist, checkAlreadyRegistered, checkEventEnded };

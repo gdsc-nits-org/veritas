@@ -79,7 +79,7 @@ const getEventRegistrations: Interfaces.Controller.Async = async (req, res) => {
     where: {
       id: eventId,
     },
-    include: {
+    select: {
       registrations: {
         select: {
           firstName: true,
@@ -89,6 +89,9 @@ const getEventRegistrations: Interfaces.Controller.Async = async (req, res) => {
           phoneNumber: true,
         },
       },
+      name: true,
+      description: true,
+      type: true,
     },
   });
 
