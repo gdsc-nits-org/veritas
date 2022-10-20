@@ -71,4 +71,27 @@ const checkSessionEndTime: Interfaces.Middleware.Async = async (
   }
 };
 
-export { checkSessionExist, checkAlreadyAttended, checkSessionEndTime };
+const checkEmailId: Interfaces.Middleware.Async = async (req, _res, next) => {
+  const { speakers } = req.body as Interfaces.Session.CreateSessionBody;
+
+  for await (const speak of speakers) {
+    const doesSpeakerExist = await prisma.person.findFirst({
+      where: {
+        personalEmailId: speak,
+      },
+    });
+
+    if (!doesSpeakerExist) {
+      return next(Errors.Session.speakerDoesntExist);
+    }
+  }
+
+  return next();
+};
+
+export {
+  checkSessionExist,
+  checkAlreadyAttended,
+  checkSessionEndTime,
+  checkEmailId,
+};
