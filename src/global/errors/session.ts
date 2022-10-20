@@ -15,4 +15,9 @@ const sessionEnded = Utils.Response.Error(
   403
 );
 
-export { sessionNotFound, alreadyAttended, sessionEnded };
+const speakerDoesntExist = Utils.Response.Error(
+  "Speaker with given Email ID doesn't exist.",
+  403
+);
+
+export { sessionNotFound, alreadyAttended, sessionEnded, speakerDoesntExist };

@@ -26,6 +26,7 @@ router.post(
   "/new",
   Middlewares.Auth.checkAuth,
   Middlewares.Auth.minPermission(),
+  Middlewares.Event.checkScholarId,
   Controllers.Event.createEvent
 );
 
@@ -45,6 +46,7 @@ router.patch(
   Middlewares.Auth.checkAuth,
   Middlewares.Auth.minPermission(),
   Middlewares.Event.checkEventExist,
+  Middlewares.Event.checkScholarId,
   Controllers.Event.updateEvent
 );
 

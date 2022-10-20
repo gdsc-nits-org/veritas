@@ -79,4 +79,27 @@ const checkEventEnded: Interfaces.Middleware.Async = async (
   }
 };
 
-export { checkEventExist, checkAlreadyRegistered, checkEventEnded };
+const checkScholarId: Interfaces.Middleware.Async = async (req, _res, next) => {
+  const { organizers } = req.body as Interfaces.Event.EventBody;
+
+  for await (const org of organizers) {
+    const doesScholarIdExist = await prisma.clubMember.findFirst({
+      where: {
+        scholarId: org,
+      },
+    });
+
+    if (!doesScholarIdExist) {
+      return next(Errors.Event.organizerDoesntExist);
+    }
+  }
+
+  return next();
+};
+
+export {
+  checkEventExist,
+  checkAlreadyRegistered,
+  checkEventEnded,
+  checkScholarId,
+};

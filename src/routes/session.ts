@@ -27,6 +27,7 @@ router.post(
   "/new",
   Middlewares.Auth.checkAuth,
   Middlewares.Auth.minPermission(),
+  Middlewares.Session.checkEmailId,
   Controllers.Session.createNewSession
 );
 
@@ -45,6 +46,7 @@ router.patch(
   Middlewares.Auth.checkAuth,
   Middlewares.Auth.minPermission(),
   Middlewares.Session.checkSessionExist,
+  Middlewares.Session.checkEmailId,
   Controllers.Session.updateSession
 );
 
