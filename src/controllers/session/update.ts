@@ -7,7 +7,7 @@ import * as Success from "@success";
  * @description `speakers` should be updated array of email ids of speakers and same for `topics`
  */
 const updateSession: Interfaces.Controller.Async = async (req, res) => {
-  const { startTime, endTime, speakers, topics, status } =
+  const { startTime, endTime, speakers, topics, status, resources } =
     req.body as Interfaces.Session.CreateSessionBody;
 
   const { sessionId } = req.params;
@@ -21,6 +21,7 @@ const updateSession: Interfaces.Controller.Async = async (req, res) => {
       endTime: new Date(endTime),
       topics,
       status,
+      resources,
       speakers: {
         connect: speakers.map((speak) => ({ personalEmailId: speak })),
       },

@@ -285,6 +285,8 @@ model Session {
   attendees Person[] @relation("attends")
   speakers  Person[] @relation("speaks")
 
+  resources Json[]
+
   @@unique([name, eventId, year])
 }
 
