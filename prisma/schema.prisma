@@ -47,7 +47,7 @@ model Student {
 
   degree Degree
 
-  interviewApplications Interview[]
+  interviewApplications Application[]
 
   clubMember ClubMember?
 }
@@ -316,12 +316,14 @@ model InterviewSession {
 
   questions String[]
 
-  interviewApplications Interview[]
+  applicationId        String
+  interviewApplication Application @relation(fields: [applicationId], references: [id])
 }
 
-model Interview {
-  interviewSessionId String
-  interview          InterviewSession @relation(fields: [interviewSessionId], references: [id])
+model Application {
+  id String @id @default(uuid())
+
+  interviews InterviewSession[]
 
   applicantId String
   applicant   Student @relation(fields: [applicantId], references: [scholarId])
@@ -336,5 +338,5 @@ model Interview {
   domain Domain
   resume String
 
-  @@unique([interviewSessionId, applicantId])
+  @@unique([applicantId])
 }
