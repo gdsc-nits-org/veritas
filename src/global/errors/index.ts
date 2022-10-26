@@ -7,6 +7,7 @@ import * as Member from "./member";
 import * as Core from "./core";
 import * as Auth from "./auth";
 import * as Chapter from "./chapter";
+import * as Technology from "./technology";
 import * as Session from "./session";
 
 export {
@@ -19,5 +20,6 @@ export {
   Core,
   Auth,
   Chapter,
+  Technology,
   Session,
 };
