@@ -1,43 +1,102 @@
-import { Request, Response } from "express";
 import { prisma } from "@utils/prisma";
 
-import * as Errors from "@errors";
 import * as Utils from "@utils";
+import * as Interfaces from "@interfaces";
 
-async function getEvent(req: Request, res: Response) {
-  try {
-    const { eventId } = req.params;
-    const event = await prisma.event.findFirst({
-      where: {
-        id: eventId,
+const getEvent: Interfaces.Controller.Async = async (req, res) => {
+  const { eventId } = req.params;
+
+  const event = await prisma.event.findFirst({
+    where: {
+      id: eventId,
+    },
+    include: {
+      organizers: {
+        select: {
+          facebookUrl: true,
+          githubUrl: true,
+          linkedInUrl: true,
+          discordId: true,
+          image: true,
+          student: {
+            include: {
+              person: {
+                select: {
+                  firstName: true,
+                  lastName: true,
+                  middleName: true,
+                  phoneNumber: true,
+                  personalEmailId: true,
+                  gender: true,
+                  dateOfBirth: true,
+                },
+              },
+            },
+          },
+        },
       },
-    });
+    },
+  });
 
-    if (!event) {
-      return res.json(Errors.Event.eventNotFound);
-    }
+  return res.json(Utils.Response.Success(event));
+};
 
-    return res.json(Utils.Response.Success(event));
-  } catch (err) {
-    console.log(err);
-    return res.json(Errors.System.serverError);
-  }
-}
+const getAllEvents: Interfaces.Controller.Async = async (req, res) => {
+  const { page, amount } = req.query;
 
-async function getAllEvents(req: Request, res: Response) {
-  try {
-    const { page, amount } = req.query;
+  const events = await prisma.event.findMany({
+    skip: page ? parseInt(amount as string) * parseInt(page as string) : 0,
+    take: amount ? parseInt(amount as string) : 0,
+    include: {
+      registrations: {
+        select: {
+          _count: true,
+        },
+      },
+      organizers: {
+        select: {
+          student: {
+            include: {
+              person: {
+                select: {
+                  firstName: true,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  });
 
-    const events = await prisma.event.findMany({
-      skip: page ? parseInt(amount as string) * parseInt(page as string) : 0,
-      take: amount ? parseInt(amount as string) : 0,
-    });
+  return res.json(Utils.Response.Success(events));
+};
 
-    return res.json(Utils.Response.Success(events));
-  } catch (err) {
-    console.log(err);
-    return res.json(Errors.System.serverError);
-  }
-}
+const getEventRegistrations: Interfaces.Controller.Async = async (req, res) => {
+  const { eventId } = req.params;
 
-export { getEvent, getAllEvents };
+  const eventRegistrations = await prisma.event.findMany({
+    where: {
+      id: eventId,
+    },
+    select: {
+      registrations: {
+        select: {
+          firstName: true,
+          lastName: true,
+          middleName: true,
+          personalEmailId: true,
+          phoneNumber: true,
+        },
+      },
+      id: true,
+      name: true,
+      description: true,
+      type: true,
+    },
+  });
+
+  return res.json(Utils.Response.Success(eventRegistrations));
+};
+
+export { getEvent, getAllEvents, getEventRegistrations };

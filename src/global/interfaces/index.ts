@@ -6,5 +6,18 @@ import * as Student from "./student";
 import * as Member from "./member";
 import * as Core from "./core";
 import * as Auth from "./auth";
+import * as Event from "./event";
+import * as Session from "./session";
 
-export { Controller, Middleware, JSON, Person, Student, Member, Core, Auth };
+export {
+  Controller,
+  Middleware,
+  JSON,
+  Person,
+  Student,
+  Member,
+  Core,
+  Auth,
+  Event,
+  Session,
+};

@@ -12,4 +12,4 @@ router.post(
   Controllers.Lead.declareNewChapter
 );
 
-export default Router;
+export default router;

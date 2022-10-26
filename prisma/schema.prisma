@@ -24,6 +24,8 @@ model Person {
   attendedSessions  Session[] @relation("speaks")
   speakerForSession Session[] @relation("attends")
 
+  registeredEvents Event[]
+
   student Student?
 }
 
@@ -44,8 +46,6 @@ model Student {
   branch Branch
 
   degree Degree
-
-  registeredEvents Event[]
 
   interviewApplications Interview[]
 
@@ -91,6 +91,8 @@ model ClubMember {
   contributions Project[] @relation("contribution")
   mentorships   Project[] @relation("mentoring")
 
+  eventsOrganized Event[]
+
   attendance MeetingAttendance[]
 }
 
@@ -99,6 +101,7 @@ model Chapter {
   transition Boolean @default(true) // For handover transition
 
   tenures Tenure[]
+  events  Event[]
 }
 
 model Tenure {
@@ -249,6 +252,9 @@ model Event {
 
   sessions Session[]
 
+  year    Int
+  chapter Chapter @relation(fields: [year], references: [year])
+
   level EventLevel
   type  EventType
 
@@ -261,7 +267,9 @@ model Event {
   description String
   tags        String[]
 
-  registrations Student[]
+  organizers ClubMember[]
+
+  registrations Person[]
 }
 
 model Session {
@@ -269,7 +277,7 @@ model Session {
   name String
 
   eventId String
-  event   Event  @relation(fields: [eventId], references: [id])
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
 
   topics String[]
 
@@ -278,8 +286,14 @@ model Session {
   startTime DateTime
   endTime   DateTime
 
+  year Int
+
   attendees Person[] @relation("attends")
   speakers  Person[] @relation("speaks")
+
+  resources Json[]
+
+  @@unique([name, eventId, year])
 }
 
 enum InterviewPurpose {

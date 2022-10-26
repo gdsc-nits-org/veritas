@@ -12,6 +12,7 @@ import * as Auth from "./auth";
 import * as Project from "./project";
 import * as Technology from "./technology";
 import * as ClubMember from "./clubMember";
+import * as Tags from "./tags";
 
 export {
   Response,
@@ -28,4 +29,5 @@ export {
   Project,
   Technology,
   ClubMember,
+  Tags,
 };
