@@ -170,6 +170,9 @@ model Project {
 
   contributors ClubMember[] @relation("contribution")
   mentors      ClubMember[] @relation("mentoring")
+
+  technologies     Technology[]
+  InterviewSession InterviewSession[]
 }
 
 enum ProjectStatus {
@@ -180,7 +183,10 @@ enum ProjectStatus {
 }
 
 model Technology {
-  name String @id @unique
+  name    String @id @unique
+  iconURL String @default("")
+
+  projects Project[]
 }
 
 model Meeting {
@@ -305,6 +311,8 @@ model InterviewSession {
   questions String[]
 
   interviewApplications Interview[]
+  Project               Project?    @relation(fields: [projectId], references: [id])
+  projectId             String?
 }
 
 model Interview {

@@ -7,5 +7,17 @@ import * as Member from "./member";
 import * as Core from "./core";
 import * as Auth from "./auth";
 import * as Chapter from "./chapter";
+import * as Technology from "./technology";
 
-export { System, Person, Event, Project, Student, Member, Core, Auth, Chapter };
+export {
+  System,
+  Person,
+  Event,
+  Project,
+  Student,
+  Member,
+  Core,
+  Auth,
+  Chapter,
+  Technology,
+};

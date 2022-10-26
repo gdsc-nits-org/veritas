@@ -5,5 +5,6 @@ import Student from "./student";
 import Member from "./member";
 import Core from "./core";
 import Lead from "./lead";
+import Technology from "./technology";
 
-export { Person, Project, Event, Student, Member, Core, Lead };
+export { Person, Project, Event, Student, Member, Core, Lead, Technology };
