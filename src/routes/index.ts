@@ -6,5 +6,16 @@ import Member from "./member";
 import Core from "./core";
 import Lead from "./lead";
 import Session from "./session";
+import Application from "./application";
 
-export { Person, Project, Event, Student, Member, Core, Lead, Session };
+export {
+  Person,
+  Project,
+  Event,
+  Student,
+  Member,
+  Core,
+  Lead,
+  Session,
+  Application,
+};

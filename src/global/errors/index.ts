@@ -8,6 +8,7 @@ import * as Core from "./core";
 import * as Auth from "./auth";
 import * as Chapter from "./chapter";
 import * as Session from "./session";
+import * as Application from "./application";
 
 export {
   System,
@@ -20,4 +21,5 @@ export {
   Auth,
   Chapter,
   Session,
+  Application,
 };

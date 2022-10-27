@@ -7,5 +7,17 @@ import * as Member from "./member";
 import * as Core from "./core";
 import * as Lead from "./lead";
 import * as Session from "./session";
+import * as Application from "./application";
 
-export { Event, Project, Health, Person, Student, Member, Core, Lead, Session };
+export {
+  Event,
+  Project,
+  Health,
+  Person,
+  Student,
+  Member,
+  Core,
+  Lead,
+  Session,
+  Application,
+};
