@@ -5,5 +5,6 @@ import * as Core from "./core";
 import * as Auth from "./auth";
 import * as Event from "./event";
 import * as Session from "./session";
+import * as Application from "./application";
 
-export { Person, Student, Member, Core, Auth, Event, Session };
+export { Person, Student, Member, Core, Auth, Event, Session, Application };

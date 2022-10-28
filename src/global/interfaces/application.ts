@@ -1,4 +1,4 @@
-import { Domain } from "@prisma/client";
+import { Domain, InterviewApplicationStatus } from "@prisma/client";
 
 interface createApplicatonBody {
   applicantId: string;
@@ -8,4 +8,8 @@ interface createApplicatonBody {
   resume: string;
 }
 
-export { createApplicatonBody };
+interface updateApplicationBody {
+  applicationStatus: InterviewApplicationStatus;
+}
+
+export { createApplicatonBody, updateApplicationBody };

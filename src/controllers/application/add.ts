@@ -1,7 +1,6 @@
 import * as Interfaces from "@interfaces";
 import * as Errors from "@errors";
 import * as Success from "@success";
-import * as Utils from "@utils";
 import { prisma } from "@utils/prisma";
 import { Domain } from "@prisma/client";
 
@@ -14,19 +13,11 @@ const createApplicaton: Interfaces.Controller.Async = async (
 
   let { answers, domain, applicantId, message, resume } = applicationBody;
 
-  answers = answers?.trim();
-  domain = domain?.trim() as Domain;
-  applicantId = applicantId?.trim();
+  answers = answers.trim();
+  domain = domain.trim() as Domain;
+  applicantId = applicantId.trim();
   message = message?.trim();
-  resume = resume?.trim();
-
-  if (!Utils.ScholarId.validateScholarId(applicantId)) {
-    return next(Errors.Application.invalidResumeUrl);
-  }
-
-  if (!Utils.Url.urlValidate(resume)) {
-    return next(Errors.Application.invalidResumeUrl);
-  }
+  resume = resume.trim();
 
   const isStudent = await prisma.student.count({
     where: {
