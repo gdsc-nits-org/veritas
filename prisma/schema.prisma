@@ -306,8 +306,6 @@ enum InterviewApplicationStatus {
 model InterviewSession {
   id String @id @default(uuid())
 
-  purpose InterviewPurpose
-
   mode  Mode
   url   String?
   venue String
@@ -324,6 +322,8 @@ model Application {
   id String @id @default(uuid())
 
   interviews InterviewSession[]
+
+  purpose InterviewPurpose
 
   applicantId String
   applicant   Student @relation(fields: [applicantId], references: [scholarId])
