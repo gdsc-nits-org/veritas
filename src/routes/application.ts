@@ -25,4 +25,6 @@ router.patch(
   Controllers.Application.updateApplication
 );
 
+router.delete("/:applicationId", Controllers.Application.deleteApplication);
+
 export default router;

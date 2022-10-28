@@ -15,9 +15,12 @@ const sendOneApplication = (application: Application) => {
   return Utils.Response.Success<Application>(application);
 };
 
+const applicationDeleted = Utils.Response.Success("Application Deleted");
+
 export {
   applicationCreated,
   applicationUpdated,
   sendAllApplications,
   sendOneApplication,
+  applicationDeleted,
 };
