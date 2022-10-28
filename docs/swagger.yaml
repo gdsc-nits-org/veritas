@@ -9,6 +9,54 @@ servers:
   - url: http://localhost:5000/api/v1
     description: Localhost
 
+components:
+  schemas:
+    Project:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "haksgksjoiaosiois"
+        name:
+          type: string
+          example: "Very Good Project"
+        description:
+          type: string
+          example: "This is a very good project, I put my life into it. jk i don't have a life"
+        status:
+          type: string
+          example: "ONGOING"
+        tags:
+          type: array
+          items:
+            type: string
+            example: "web"
+        links:
+          type: array
+          items:
+            type: string
+            example: "https://www.youtube.com/watch?v=mhIrhcZ087c"
+        logoImageURL:
+          type: string
+          example: "https://i.kym-cdn.com/entries/icons/facebook/000/040/009/3dsaulcover.jpg"
+        bannerImageUrl:
+          type: string
+          example: "https://i.kym-cdn.com/entries/icons/facebook/000/040/009/3dsaulcover.jpg"
+        technologies:
+          type: array
+          items:
+            $ref: "#/components/schemas/Technology"
+    Technology:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Python"
+
+        iconUrl:
+          type: string
+          example: "https://i.kym-cdn.com/entries/icons/facebook/000/040/009/3dsaulcover.jpg"
+
 paths:
   /:
     get:
@@ -1969,7 +2017,6 @@ paths:
             example: "1Hiafahiaodklfj23"
           required: true
           description: The event for which you want the session
-
       responses:
         200:
           description: Successfull fetch.
@@ -2216,3 +2263,224 @@ paths:
                   msg:
                     type: string
                     example: "Already attendance marked for the session"
+  /project/create:
+    post:
+      summary: Create a project
+      tags:
+        - Project
+      requestBody:
+        description: A JSON object containing details for the project.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                adminScholarId:
+                  type: string
+                  example: "2012051"
+                adminPassword:
+                  type: string
+                  example: "Password@123"
+                name:
+                  type: string
+                  example: "Very Good Project"
+                description:
+                  type: string
+                  example: "This is a very good project, I put my life into it. jk i don't have a life"
+                status:
+                  type: string
+                  example: "ONGOING"
+                tags:
+                  type: array
+                  items:
+                    type: string
+                    example: "web"
+                links:
+                  type: array
+                  items:
+                    type: string
+                    example: "https://www.youtube.com/watch?v=mhIrhcZ087c"
+                logoImageUrl:
+                  type: string
+                  example: "https://i.kym-cdn.com/entries/icons/facebook/000/040/009/3dsaulcover.jpg"
+                bannerImageUrl:
+                  type: string
+                  example: "https://i.kym-cdn.com/entries/icons/facebook/000/040/009/3dsaulcover.jpg"
+                technologies:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        example: "python"
+      responses:
+        200:
+          description: A JSON object of the project.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    $ref: "#/components/schemas/Project"
+
+        403:
+          description: Project already exists.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 403
+                  msg:
+                    type: string
+                    example: "Project name already in use"
+        401:
+          description: User Created Error. Invalid details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 401
+                  msg:
+                    type: string
+                    example: "Invalid Project Description"
+        500:
+          description: Server Error. Invalid details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 500
+                  msg:
+                    type: string
+                    example: "Failed to Create Project"
+
+  /project/all:
+    get:
+      summary: Get an array of projects.
+      tags:
+        - Project
+      responses:
+        200:
+          description: An array of project objects, empty array if none.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: number
+                      example: 200
+                    msg:
+                      $ref: "#/components/schemas/Project"
+        500:
+          description: Server failed to fetch projects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: number
+                      example: 500
+                    msg:
+                      type: string
+                      example: "Error while fetching projects"
+  /project/{projectId}:
+    get:
+      summary: Get a project object.
+      tags:
+        - Project
+      parameters:
+        - in: path
+          name: projectId
+          schema:
+            type: string
+          required: true
+          description: Id of requested project.
+      responses:
+        200:
+          description: An object of request project.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: number
+                      example: 200
+                    msg:
+                      $ref: "#/components/schemas/Project"
+        500:
+          description: Server failed to fetch projects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: number
+                      example: 500
+                    msg:
+                      type: string
+                      example: "Error while fetching projects"
+
+  /project/{projectId}/applications:
+    post:
+      summary: Gett an array of applications for a project.
+      tags:
+        - Project
+      parameters:
+        - in: path
+          name: projectId
+          schema:
+            type: string
+          required: true
+          description: Id of requested project.
+      requestBody:
+        description: User Auth
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                scholarId:
+                  type: string
+                  example: "2012051"
+
+      responses:
+        200:
+          description: An array of project applications, empty if none.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: number
+                      example: 200
+                    msg:
+                      $ref: "#/components/schemas/Project"

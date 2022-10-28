@@ -9,7 +9,7 @@ export const updateProject: Interfaces.Controller.Async = async (
   res,
   next
 ) => {
-  const { id } = req.params;
+  const { projectId } = req.params;
   const {
     name,
     description,
@@ -28,7 +28,7 @@ export const updateProject: Interfaces.Controller.Async = async (
     return next(Errors.Project.projectNotFound);
 
   const project = await prisma.project.update({
-    where: { id },
+    where: { id: projectId },
     data: {
       name,
       description,
@@ -38,10 +38,10 @@ export const updateProject: Interfaces.Controller.Async = async (
       tags,
       links,
       contributors: {
-        connect: contributors,
+        set: contributors,
       },
       mentors: {
-        connect: mentors,
+        set: mentors,
       },
     },
   });
