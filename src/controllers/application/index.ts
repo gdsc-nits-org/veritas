@@ -3,6 +3,7 @@ import { updateApplication } from "./update";
 import { getallApplications } from "./get";
 import { getOneApplication } from "./get";
 import { deleteApplication } from "./delete";
+import { getLoggedInUsersApplication } from "./get";
 
 export {
   createApplicaton,
@@ -10,4 +11,5 @@ export {
   getallApplications,
   getOneApplication,
   deleteApplication,
+  getLoggedInUsersApplication,
 };

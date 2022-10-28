@@ -10,7 +10,7 @@ const getallApplications: Interfaces.Controller.Async = async (
 ) => {
   const applications = await prisma.application.findMany();
 
-  res.json(Success.Application.sendAllApplications(applications));
+  res.json(Success.Application.sendApplications(applications));
 };
 
 const getOneApplication: Interfaces.Controller.Async = async (
@@ -36,4 +36,20 @@ const getOneApplication: Interfaces.Controller.Async = async (
   res.json(Success.Application.sendOneApplication(application));
 };
 
-export { getallApplications, getOneApplication };
+const getLoggedInUsersApplication: Interfaces.Controller.Async = async (
+  req,
+  res,
+  _next
+) => {
+  const { adminScholarId } = req.body as Interfaces.Auth.SigninBody;
+
+  const applications = await prisma.application.findMany({
+    where: {
+      applicantId: adminScholarId,
+    },
+  });
+
+  res.json(Success.Application.sendApplications(applications));
+};
+
+export { getallApplications, getOneApplication, getLoggedInUsersApplication };

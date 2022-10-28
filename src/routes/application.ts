@@ -7,6 +7,11 @@ const router: Router = Router({ mergeParams: true });
 
 router.get("/", Controllers.Application.getallApplications);
 
+router.get(
+  "/myApplications",
+  Controllers.Application.getLoggedInUsersApplication
+);
+
 router.get("/:applicationId", Controllers.Application.getOneApplication);
 
 router.post(

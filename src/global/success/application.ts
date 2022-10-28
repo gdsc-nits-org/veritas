@@ -7,7 +7,7 @@ const applicationUpdated = (updatedApplication: Application) => {
   return Utils.Response.Success<Application>(updatedApplication);
 };
 
-const sendAllApplications = (applications: Application[]) => {
+const sendApplications = (applications: Application[]) => {
   return Utils.Response.Success<Application[]>(applications);
 };
 
@@ -20,7 +20,7 @@ const applicationDeleted = Utils.Response.Success("Application Deleted");
 export {
   applicationCreated,
   applicationUpdated,
-  sendAllApplications,
+  sendApplications,
   sendOneApplication,
   applicationDeleted,
 };
