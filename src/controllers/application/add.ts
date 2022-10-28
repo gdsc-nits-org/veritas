@@ -13,7 +13,8 @@ const createApplicaton: Interfaces.Controller.Async = async (
 
   let { answers, domain, applicantId, message, resume } = applicationBody;
 
-  answers = answers.trim();
+  answers = answers.map((answer) => answer.trim());
+
   domain = domain.trim() as Domain;
   applicantId = applicantId.trim();
   message = message?.trim();

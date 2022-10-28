@@ -51,13 +51,19 @@ const applicantIdCheck: Interfaces.Middleware.Async = async (
 };
 
 const applicantAnswersCheck: Interfaces.Middleware.Sync = (req, _res, next) => {
-  const answers = req.body.answers as string;
+  const answers = req.body.answers as string[];
 
-  if (answers && typeof answers === "string") {
-    return next();
+  if (typeof answers !== "object") {
+    return next(Errors.Application.invalidAnswers);
   }
 
-  return next(Errors.Application.invalidAnswers);
+  answers.forEach((answer) => {
+    if (!answer || typeof answer !== "string") {
+      return next(Errors.Application.invalidAnswers);
+    }
+  });
+
+  return next();
 };
 
 const resumeLinkCheck: Interfaces.Middleware.Sync = (req, _res, next) => {

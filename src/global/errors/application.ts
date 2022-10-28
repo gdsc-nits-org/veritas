@@ -12,7 +12,7 @@ const pendingApplicationExists = Utils.Response.Error(
 );
 
 const applicationNotFound = Utils.Response.Error(
-  "Application does not exist to update",
+  "Application does not exist with given application id",
   404
 );
 

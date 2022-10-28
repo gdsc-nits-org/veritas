@@ -5,6 +5,10 @@ import * as Middlewares from "@middlewares";
 
 const router: Router = Router({ mergeParams: true });
 
+router.get("/", Controllers.Application.getallApplications);
+
+router.get("/:applicationId", Controllers.Application.getOneApplication);
+
 router.post(
   "/new",
   Middlewares.Application.applicantIdCheck,

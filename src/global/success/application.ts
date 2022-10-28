@@ -7,4 +7,17 @@ const applicationUpdated = (updatedApplication: Application) => {
   return Utils.Response.Success<Application>(updatedApplication);
 };
 
-export { applicationCreated, applicationUpdated };
+const sendAllApplications = (applications: Application[]) => {
+  return Utils.Response.Success<Application[]>(applications);
+};
+
+const sendOneApplication = (application: Application) => {
+  return Utils.Response.Success<Application>(application);
+};
+
+export {
+  applicationCreated,
+  applicationUpdated,
+  sendAllApplications,
+  sendOneApplication,
+};

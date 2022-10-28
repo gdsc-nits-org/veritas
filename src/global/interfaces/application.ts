@@ -2,7 +2,7 @@ import { Domain, InterviewApplicationStatus } from "@prisma/client";
 
 interface createApplicatonBody {
   applicantId: string;
-  answers: string;
+  answers: string[];
   message: string | undefined | null;
   domain: Domain;
   resume: string;
