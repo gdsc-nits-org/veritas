@@ -9,7 +9,7 @@ const updateTechnology: Interfaces.Controller.Async = async (
   res,
   next
 ) => {
-  const { iconURL, name } = req.body as Technology;
+  const { iconUrl, name } = req.body as Technology;
 
   if (await prisma.technology.findFirst({ where: { name } })) {
     return next(Errors.Technology.technologyNotFound);
@@ -19,8 +19,8 @@ const updateTechnology: Interfaces.Controller.Async = async (
     return next(Errors.Technology.invalidName);
   }
   if (
-    iconURL &&
-    (typeof iconURL !== "string" || !Utils.Url.urlValidate(iconURL))
+    iconUrl &&
+    (typeof iconUrl !== "string" || !Utils.Url.urlValidate(iconUrl))
   ) {
     return next(Errors.Technology.invalidIcon);
   }
@@ -30,7 +30,7 @@ const updateTechnology: Interfaces.Controller.Async = async (
       name,
     },
     data: {
-      iconURL,
+      iconUrl,
     },
   });
 

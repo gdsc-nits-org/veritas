@@ -59,7 +59,7 @@ const createProject: Interfaces.Controller.Async = async (req, res, next) => {
     !tags.length ||
     tags.some((tag) => !Utils.Tag.tagValidate(tag))
   ) {
-    return next(Errors.Project.invalidLink);
+    return next(Errors.Project.invalidTag);
   }
   if (
     !links ||
@@ -69,7 +69,6 @@ const createProject: Interfaces.Controller.Async = async (req, res, next) => {
   ) {
     return next(Errors.Project.invalidLink);
   }
-
   if (
     technologies &&
     !(Array.isArray(technologies) && typeof technologies !== "string")
@@ -86,9 +85,11 @@ const createProject: Interfaces.Controller.Async = async (req, res, next) => {
   if (mentors && !(Array.isArray(mentors) && typeof mentors !== "string")) {
     return next(Errors.Project.invalidMentorList);
   }
-  for await (const mentor of mentors) {
-    if (!(await Utils.ClubMember.validateClubMember(mentor))) {
-      return next(Errors.Member.memberNotFound);
+  if (mentors) {
+    for await (const mentor of mentors) {
+      if (!(await Utils.ClubMember.validateClubMember(mentor))) {
+        return next(Errors.Member.memberNotFound);
+      }
     }
   }
 
@@ -98,9 +99,11 @@ const createProject: Interfaces.Controller.Async = async (req, res, next) => {
   ) {
     return next(Errors.Project.invalidContributorList);
   }
-  for await (const contributor of contributors) {
-    if (!(await Utils.ClubMember.validateClubMember(contributor))) {
-      return next(Errors.Member.memberNotFound);
+  if (contributors) {
+    for await (const contributor of contributors) {
+      if (!(await Utils.ClubMember.validateClubMember(contributor))) {
+        return next(Errors.Member.memberNotFound);
+      }
     }
   }
 

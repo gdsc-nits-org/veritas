@@ -9,15 +9,15 @@ const createTechnology: Interfaces.Controller.Async = async (
   res,
   next
 ) => {
-  const { iconURL, name } = req.body as Technology;
+  const { iconUrl, name } = req.body as Technology;
 
   if (!name || typeof name !== "string") {
     return next(Errors.Technology.invalidName);
   }
   if (
-    !iconURL ||
-    typeof iconURL !== "string" ||
-    !Utils.Url.urlValidate(iconURL)
+    !iconUrl ||
+    typeof iconUrl !== "string" ||
+    !Utils.Url.urlValidate(iconUrl)
   ) {
     return next(Errors.Technology.invalidIcon);
   }
@@ -28,7 +28,7 @@ const createTechnology: Interfaces.Controller.Async = async (
   const technology = await prisma.technology.create({
     data: {
       name,
-      iconURL,
+      iconUrl,
     },
   });
   if (!technology) {

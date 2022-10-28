@@ -6,18 +6,18 @@ const router: Router = Router({ mergeParams: true });
 
 router.get("/all", Controllers.Project.getAllProjects);
 router.get(
-  "/id/applications",
+  "/projectId/applications",
   Middlewares.Auth.checkAuth,
   Middlewares.Auth.minPermission("CORE_MEMBER", "ONLY"),
   Controllers.Project.getProjectApplications
 );
-router.get("/:id", Controllers.Project.getProject);
+router.get("/:projectId", Controllers.Project.getProject);
 
-router.put(
-  "/update/:id",
+router.patch(
+  "/:projectId",
   Middlewares.Auth.checkAuth,
   Middlewares.Auth.minPermission("MODERATOR"),
-  Controllers.Project.createProject
+  Controllers.Project.updateProject
 );
 
 router.post(
@@ -27,7 +27,7 @@ router.post(
   Controllers.Project.createProject
 );
 router.delete(
-  "/delete/:id",
+  "/:projectId",
   Middlewares.Auth.checkAuth,
   Middlewares.Auth.minPermission("MODERATOR"),
   Controllers.Project.deleteProject
