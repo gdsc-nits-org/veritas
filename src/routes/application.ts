@@ -20,6 +20,7 @@ router.post(
   Middlewares.Application.resumeLinkCheck,
   Middlewares.Application.DomainCheck,
   Middlewares.Application.applicantAnswersCheck,
+  Middlewares.Application.applicationPurposeCheck,
   Middlewares.Application.applicantMessageCheck,
   Controllers.Application.createApplicaton
 );

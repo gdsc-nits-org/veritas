@@ -14,6 +14,10 @@ const createApplicaton: Interfaces.Controller.Async = async (
   let { answers, purpose, domain, applicantId, message, resume } =
     applicationBody;
 
+  if (!answers || !purpose || !domain || !applicantId || !resume) {
+    return next(Errors.Application.missingFields);
+  }
+
   answers = answers.map((answer) => answer.trim());
 
   purpose = purpose.trim() as InterviewPurpose;

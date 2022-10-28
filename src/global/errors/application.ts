@@ -1,5 +1,10 @@
 import * as Utils from "@utils";
 
+const missingFields = Utils.Response.Error(
+  "one or multiple fields are missing to create an application",
+  400
+);
+
 const notAStudent = Utils.Response.Error("Not a Student of NIT Silchar", 403);
 
 const isClubMember = Utils.Response.Error("Already a club member", 403);
@@ -29,7 +34,10 @@ const invalidAnswers = Utils.Response.Error("Invalid Applicant answers", 406);
 
 const invalidMessage = Utils.Response.Error("Invalid Applicant message", 406);
 
+const invalidPurpose = Utils.Response.Error("Invalid Application purpose", 406);
+
 export {
+  missingFields,
   notAStudent,
   isClubMember,
   invalidResumeUrl,
@@ -40,4 +48,5 @@ export {
   invalidApplicantId,
   invalidAnswers,
   invalidMessage,
+  invalidPurpose,
 };

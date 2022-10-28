@@ -24,7 +24,7 @@ const updateApplication: Interfaces.Controller.Async = async (
 
   const applicationId = req.params.applicationId;
 
-  applicationStatus = applicationStatus.trim() as InterviewApplicationStatus;
+  applicationStatus = applicationStatus?.trim() as InterviewApplicationStatus;
 
   const application = await prisma.application.findFirst({
     where: {

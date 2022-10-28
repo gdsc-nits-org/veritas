@@ -3,11 +3,7 @@ import * as Success from "@success";
 import * as Errors from "@errors";
 import { prisma } from "@utils/prisma";
 
-const getallApplications: Interfaces.Controller.Async = async (
-  _req,
-  res,
-  _next
-) => {
+const getallApplications: Interfaces.Controller.Async = async (_req, res) => {
   const applications = await prisma.application.findMany();
 
   res.json(Success.Application.sendApplications(applications));
@@ -38,8 +34,7 @@ const getOneApplication: Interfaces.Controller.Async = async (
 
 const getLoggedInUsersApplication: Interfaces.Controller.Async = async (
   req,
-  res,
-  _next
+  res
 ) => {
   const { adminScholarId } = req.body as Interfaces.Auth.SigninBody;
 

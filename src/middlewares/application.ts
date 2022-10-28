@@ -1,16 +1,24 @@
 import * as Interfaces from "@interfaces";
 import * as Errors from "@errors";
 import * as Utils from "@utils";
-import { Domain, InterviewApplicationStatus } from "@prisma/client";
+import {
+  Domain,
+  InterviewApplicationStatus,
+  InterviewPurpose,
+} from "@prisma/client";
 
 const DomainCheck: Interfaces.Middleware.Sync = (req, _res, next) => {
   const domain = req.body?.domain as Domain;
 
-  if (!domain || typeof domain !== "string" || !(domain.trim() in Domain)) {
-    return next(Errors.Application.invalidDomain);
+  if (!domain) {
+    return next();
   }
 
-  return next();
+  if (domain && typeof domain === "string" && domain.trim() in Domain) {
+    return next();
+  }
+
+  return next(Errors.Application.invalidDomain);
 };
 
 const applicationStatusCheck: Interfaces.Middleware.Sync = (
@@ -21,15 +29,19 @@ const applicationStatusCheck: Interfaces.Middleware.Sync = (
   const applicationStatus = req.body
     .applicationStatus as InterviewApplicationStatus;
 
-  if (
-    !applicationStatus ||
-    typeof applicationStatus !== "string" ||
-    !(applicationStatus.trim() in InterviewApplicationStatus)
-  ) {
-    return next(Errors.Application.invalidApplicationStatus);
+  if (!applicationStatus) {
+    return next();
   }
 
-  return next();
+  if (
+    applicationStatus &&
+    typeof applicationStatus === "string" &&
+    applicationStatus.trim() in InterviewApplicationStatus
+  ) {
+    return next();
+  }
+
+  return next(Errors.Application.invalidApplicationStatus);
 };
 
 const applicantIdCheck: Interfaces.Middleware.Async = async (
@@ -39,19 +51,27 @@ const applicantIdCheck: Interfaces.Middleware.Async = async (
 ) => {
   const applicantId = req.body.applicantId as string;
 
-  if (
-    !applicantId ||
-    typeof applicantId !== "string" ||
-    !Utils.ScholarId.validateScholarId(applicantId.trim())
-  ) {
-    return next(Errors.Application.invalidApplicantId);
+  if (!applicantId) {
+    return next();
   }
 
-  return next();
+  if (
+    applicantId &&
+    typeof applicantId === "string" &&
+    Utils.ScholarId.validateScholarId(applicantId.trim())
+  ) {
+    return next();
+  }
+
+  return next(Errors.Application.invalidApplicantId);
 };
 
 const applicantAnswersCheck: Interfaces.Middleware.Sync = (req, _res, next) => {
   const answers = req.body.answers as string[];
+
+  if (!answers) {
+    return next();
+  }
 
   if (typeof answers !== "object") {
     return next(Errors.Application.invalidAnswers);
@@ -68,6 +88,10 @@ const applicantAnswersCheck: Interfaces.Middleware.Sync = (req, _res, next) => {
 
 const resumeLinkCheck: Interfaces.Middleware.Sync = (req, _res, next) => {
   const resume = req.body.resume as string;
+
+  if (!resume) {
+    return next();
+  }
 
   if (
     resume &&
@@ -93,6 +117,27 @@ const applicantMessageCheck: Interfaces.Middleware.Sync = (req, _res, next) => {
   return next(Errors.Application.invalidMessage);
 };
 
+const applicationPurposeCheck: Interfaces.Middleware.Sync = (
+  req,
+  _res,
+  next
+) => {
+  const purpose = req.body.purpose as InterviewPurpose;
+  if (!purpose) {
+    return next();
+  }
+
+  if (
+    purpose &&
+    typeof purpose === "string" &&
+    purpose.trim() in InterviewPurpose
+  ) {
+    return next();
+  }
+
+  return next(Errors.Application.invalidPurpose);
+};
+
 export {
   DomainCheck,
   applicationStatusCheck,
@@ -100,4 +145,5 @@ export {
   applicantAnswersCheck,
   resumeLinkCheck,
   applicantMessageCheck,
+  applicationPurposeCheck,
 };
