@@ -17,4 +17,14 @@ router.post(
   Controllers.InterviewSession.createInterviewSession
 );
 
+router.patch(
+  "/:interviewSessionId",
+  Middlewares.InterviewSession.interviewModeCheck,
+  Middlewares.InterviewSession.interviewDateCheck,
+  Middlewares.InterviewSession.interviewQuestionsCheck,
+  Middlewares.InterviewSession.interviewUrlCheck,
+  Middlewares.InterviewSession.interviewVenueCheck,
+  Controllers.InterviewSession.updateInterviewSession
+);
+
 export default router;

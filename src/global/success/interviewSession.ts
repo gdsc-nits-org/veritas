@@ -1,7 +1,12 @@
+import { InterviewSession } from "@prisma/client";
 import * as Utils from "@utils";
 
 const sessionCreated = Utils.Response.Success(
   "Interview session is created successfully"
 );
 
-export { sessionCreated };
+const sendOneSession = (msg: InterviewSession) => {
+  return Utils.Response.Success<InterviewSession>(msg);
+};
+
+export { sessionCreated, sendOneSession };

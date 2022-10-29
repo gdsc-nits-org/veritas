@@ -8,4 +8,12 @@ interface createInterviewSessionBody {
   questions: string[];
 }
 
-export { createInterviewSessionBody };
+interface updateInterviewSessionBody {
+  mode: Mode | undefined;
+  url: string | undefined;
+  interviewDate: Date | undefined;
+  venue: string | undefined;
+  questions: string[] | undefined;
+}
+
+export { createInterviewSessionBody, updateInterviewSessionBody };
