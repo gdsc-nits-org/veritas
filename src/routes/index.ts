@@ -7,6 +7,7 @@ import Core from "./core";
 import Lead from "./lead";
 import Session from "./session";
 import Application from "./application";
+import InterviewSession from "./interviewSession";
 
 export {
   Person,
@@ -18,4 +19,5 @@ export {
   Lead,
   Session,
   Application,
+  InterviewSession,
 };

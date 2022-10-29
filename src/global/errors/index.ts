@@ -9,6 +9,7 @@ import * as Auth from "./auth";
 import * as Chapter from "./chapter";
 import * as Session from "./session";
 import * as Application from "./application";
+import * as InterviewSession from "./interviewSession";
 
 export {
   System,
@@ -22,4 +23,5 @@ export {
   Chapter,
   Session,
   Application,
+  InterviewSession,
 };
