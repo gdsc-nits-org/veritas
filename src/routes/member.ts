@@ -12,7 +12,7 @@ router.post(
   Middlewares.Student.checkExists,
   Middlewares.Member.checkNotExists,
   Middlewares.Auth.checkAuth,
-  Middlewares.Auth.minPermission("MODERATOR"),
+  Middlewares.Auth.minPermission("HEAD"),
   Controllers.Member.register
 );
 
