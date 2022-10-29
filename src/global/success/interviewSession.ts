@@ -13,4 +13,8 @@ const sendManySessions = (msg: InterviewSession[]) => {
   return Utils.Response.Success<InterviewSession[]>(msg);
 };
 
-export { sessionCreated, sendOneSession, sendManySessions };
+const sessionDeleted = Utils.Response.Success(
+  "Interview session with given id is deleted"
+);
+
+export { sessionCreated, sendOneSession, sendManySessions, sessionDeleted };

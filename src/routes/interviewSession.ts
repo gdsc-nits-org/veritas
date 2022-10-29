@@ -34,4 +34,9 @@ router.patch(
   Controllers.InterviewSession.updateInterviewSession
 );
 
+router.delete(
+  "/:interviewSessionId",
+  Controllers.InterviewSession.deleteInterviewSession
+);
+
 export default router;
