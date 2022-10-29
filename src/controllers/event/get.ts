@@ -13,6 +13,7 @@ const getEvent: Interfaces.Controller.Async = async (req, res) => {
     include: {
       organizers: {
         select: {
+          scholarId: true,
           facebookUrl: true,
           githubUrl: true,
           linkedInUrl: true,
@@ -44,9 +45,11 @@ const getEvent: Interfaces.Controller.Async = async (req, res) => {
 const getAllEvents: Interfaces.Controller.Async = async (req, res) => {
   const { page, amount } = req.query;
 
+  const totalEvents = await prisma.event.count();
+
   const events = await prisma.event.findMany({
     skip: page ? parseInt(amount as string) * parseInt(page as string) : 0,
-    take: amount ? parseInt(amount as string) : 0,
+    take: amount ? parseInt(amount as string) : totalEvents,
     include: {
       registrations: {
         select: {
@@ -68,6 +71,8 @@ const getAllEvents: Interfaces.Controller.Async = async (req, res) => {
       },
     },
   });
+
+  console.log(events);
 
   return res.json(Utils.Response.Success(events));
 };
