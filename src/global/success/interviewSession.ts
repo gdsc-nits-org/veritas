@@ -9,4 +9,8 @@ const sendOneSession = (msg: InterviewSession) => {
   return Utils.Response.Success<InterviewSession>(msg);
 };
 
-export { sessionCreated, sendOneSession };
+const sendManySessions = (msg: InterviewSession[]) => {
+  return Utils.Response.Success<InterviewSession[]>(msg);
+};
+
+export { sessionCreated, sendOneSession, sendManySessions };

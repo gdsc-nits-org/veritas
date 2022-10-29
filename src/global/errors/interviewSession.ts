@@ -35,6 +35,11 @@ const invalidQuestions = Utils.Response.Error(
   406
 );
 
+const interviewSessionNotFound = Utils.Response.Error(
+  "Interview session with given id not found",
+  404
+);
+
 export {
   missingFields,
   invalidMode,
@@ -43,4 +48,5 @@ export {
   invalidDate,
   invalidQuestions,
   applicationNotFound,
+  interviewSessionNotFound,
 };

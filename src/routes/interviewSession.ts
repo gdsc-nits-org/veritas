@@ -7,6 +7,13 @@ const router: Router = Router({ mergeParams: true });
 
 // ROOT = application/:applicationId/interviewSession
 
+router.get("/", Controllers.InterviewSession.getAllInterviewSessions);
+
+router.get(
+  "/:interviewSessionId",
+  Controllers.InterviewSession.getOneInterviewSession
+);
+
 router.post(
   "/new",
   Middlewares.InterviewSession.interviewModeCheck,
