@@ -1,7 +1,6 @@
 import * as Utils from "@utils";
 import { prisma } from "@utils/prisma";
 import * as Errors from "@errors";
-import { Technology } from "@prisma/client";
 import * as Interfaces from "@interfaces";
 
 const deleteTechnology: Interfaces.Controller.Async = async (
@@ -9,18 +8,26 @@ const deleteTechnology: Interfaces.Controller.Async = async (
   res,
   next
 ) => {
-  const { name } = req.body as Technology;
-
-  if (await prisma.technology.findFirst({ where: { name } })) {
-    return next(Errors.Technology.technologyNotFound);
-  }
-
-  if (!name || typeof name !== "string") {
+  const { technologyNameOrId: nameOrId } = req.params;
+  if (!nameOrId) {
     return next(Errors.Technology.invalidName);
   }
 
+  if (
+    !(await prisma.technology.findFirst({
+      where: {
+        name: nameOrId,
+        OR: {
+          id: nameOrId,
+        },
+      },
+    }))
+  ) {
+    return next(Errors.Technology.technologyNotFound);
+  }
+
   const technology = await prisma.technology.delete({
-    where: { name },
+    where: { name: nameOrId },
   });
 
   if (!technology) {

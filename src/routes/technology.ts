@@ -5,10 +5,13 @@ import { Router } from "express";
 const router: Router = Router({ mergeParams: true });
 
 router.get("/all", Controllers.Technology.getAllTechnologies);
-router.get("/:name", Controllers.Technology.getTechnologyByName);
+router.get(
+  "/:technologyNameOrId",
+  Controllers.Technology.getTechnologyByNameOrId
+);
 
-router.put(
-  "/update/:id",
+router.patch(
+  "/:technologyNameOrId",
   Middlewares.Auth.checkAuth,
   Middlewares.Auth.minPermission("MODERATOR"),
   Controllers.Technology.updateTechnology
@@ -17,11 +20,11 @@ router.put(
 router.post(
   "/create",
   Middlewares.Auth.checkAuth,
-  Middlewares.Auth.minPermission("MODERATOR", "PREV_AND_CURR"),
+  Middlewares.Auth.minPermission("MODERATOR"),
   Controllers.Technology.createTechnology
 );
 router.delete(
-  "/delete/:id",
+  "/:technologyId",
   Middlewares.Auth.checkAuth,
   Middlewares.Auth.minPermission("MODERATOR"),
   Controllers.Technology.deleteTechnology

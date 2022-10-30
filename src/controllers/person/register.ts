@@ -34,7 +34,6 @@ const register: Interfaces.Controller.Async = async (req, res, next) => {
 
   // Date Of Birth
   if (!dateOfBirth || !Utils.Date.checkDateValidity(dateOfBirth)) {
-    console.log(dateOfBirth);
     return next(Errors.Person.invalidDOB);
   }
 

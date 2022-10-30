@@ -186,8 +186,9 @@ enum ProjectStatus {
 }
 
 model Technology {
-  name    String @id @unique
-  iconURL String @default("")
+  id      String @id @default(uuid())
+  name    String @unique @default("")
+  iconUrl String @default("")
 
   projects Project[]
 }

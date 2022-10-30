@@ -5,14 +5,20 @@ import { prisma } from "@utils/prisma";
 import { Interview } from "@prisma/client";
 
 const getAllProjects: Interfaces.Controller.Async = async (_req, res, next) => {
-  const projects = await prisma.project.findMany();
+  const projects = await prisma.project.findMany({
+    include: {
+      technologies: true,
+      mentors: true,
+      contributors: true,
+    },
+  });
   if (!projects) return next(Errors.Project.projectsFetchFail);
   return res.json(Utils.Response.Success(projects));
 };
 
 const getProject: Interfaces.Controller.Async = async (req, res, next) => {
   const { projectId } = req.params;
-  console.log(req.path);
+
   if (!projectId) {
     return next(Errors.Project.invalidProjectId);
   }

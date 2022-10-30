@@ -25,6 +25,7 @@ const createProject: Interfaces.Controller.Async = async (req, res, next) => {
     technologies: Technology[];
   } = req.body;
 
+  // --- checks----
   if (!name || typeof name !== "string") {
     return next(Errors.Project.invalidName);
   }
@@ -52,6 +53,7 @@ const createProject: Interfaces.Controller.Async = async (req, res, next) => {
   ) {
     return next(Errors.Project.invalidStatus);
   }
+  // ---- array checks ---
   if (
     !tags ||
     !Array.isArray(links) ||
@@ -69,6 +71,7 @@ const createProject: Interfaces.Controller.Async = async (req, res, next) => {
   ) {
     return next(Errors.Project.invalidLink);
   }
+  // ---- relations check -----
   if (
     technologies &&
     !(Array.isArray(technologies) && typeof technologies !== "string")
@@ -76,9 +79,11 @@ const createProject: Interfaces.Controller.Async = async (req, res, next) => {
     return next(Errors.Project.invalidTechnology);
   }
 
-  for await (const technology of technologies) {
-    if (!(await Utils.Technology.validateTechnology(technology))) {
-      return next(Errors.Technology.technologyNotFound);
+  if (technologies) {
+    for await (const technology of technologies) {
+      if (!(await Utils.Technology.validateTechnology(technology))) {
+        return next(Errors.Technology.technologyNotFound);
+      }
     }
   }
 

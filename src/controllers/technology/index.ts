@@ -3,7 +3,7 @@ import { updateTechnology } from "./update";
 import { deleteTechnology } from "./delete";
 import {
   getAllTechnologies,
-  getTechnologyByName,
+  getTechnologyByNameOrId,
   getTechnologyByProjectId,
 } from "./get";
 
@@ -13,5 +13,5 @@ export {
   deleteTechnology,
   getAllTechnologies,
   getTechnologyByProjectId,
-  getTechnologyByName,
+  getTechnologyByNameOrId,
 };

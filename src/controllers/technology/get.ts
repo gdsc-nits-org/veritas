@@ -1,7 +1,6 @@
 import * as Utils from "@utils";
 import { prisma } from "@utils/prisma";
 import * as Errors from "@errors";
-import { Technology } from "@prisma/client";
 import * as Interfaces from "@interfaces";
 
 const getAllTechnologies: Interfaces.Controller.Async = async (
@@ -17,18 +16,21 @@ const getAllTechnologies: Interfaces.Controller.Async = async (
   return res.json(Utils.Response.Success(technologies));
 };
 
-const getTechnologyByName: Interfaces.Controller.Async = async (
+const getTechnologyByNameOrId: Interfaces.Controller.Async = async (
   req,
   res,
   next
 ) => {
-  const { name } = req.body as Technology;
-
-  if (!name || typeof name !== "string") {
+  const { technologyNameOrId: nameOrId } = req.params;
+  if (!nameOrId) {
     return next(Errors.Technology.invalidName);
   }
 
-  const technology = await prisma.technology.findFirst({ where: { name } });
+  const technology = await prisma.technology.findFirst({
+    where: {
+      OR: [{ id: nameOrId }, { name: nameOrId }],
+    },
+  });
 
   if (!technology) {
     return next(Errors.Technology.technologyNotFound);
@@ -63,4 +65,8 @@ const getTechnologyByProjectId: Interfaces.Controller.Async = async (
   return res.json(Utils.Response.Success(technologies));
 };
 
-export { getAllTechnologies, getTechnologyByName, getTechnologyByProjectId };
+export {
+  getAllTechnologies,
+  getTechnologyByNameOrId,
+  getTechnologyByProjectId,
+};

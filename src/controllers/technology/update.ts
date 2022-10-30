@@ -9,14 +9,12 @@ const updateTechnology: Interfaces.Controller.Async = async (
   res,
   next
 ) => {
+  const { technologyNameOrId: nameOrId } = req.params;
   const { iconUrl, name } = req.body as Technology;
 
-  if (await prisma.technology.findFirst({ where: { name } })) {
-    return next(Errors.Technology.technologyNotFound);
-  }
-
-  if (!name || typeof name !== "string") {
-    return next(Errors.Technology.invalidName);
+  // ---- checks -----
+  if (!nameOrId) {
+    return next(Errors.Technology.invalidId);
   }
   if (
     iconUrl &&
@@ -25,11 +23,29 @@ const updateTechnology: Interfaces.Controller.Async = async (
     return next(Errors.Technology.invalidIcon);
   }
 
+  if (!name || typeof name !== "string") {
+    return next(Errors.Technology.invalidName);
+  }
+  if (await prisma.technology.findFirst({ where: { name } })) {
+    return next(Errors.Technology.technologyAlreadyExists);
+  }
+
+  // ---update---
+  const oldTechnology = await prisma.technology.findFirst({
+    where: {
+      OR: [{ id: nameOrId }, { name: nameOrId }],
+    },
+  });
+  if (!oldTechnology) {
+    return next(Errors.Technology.technologyNotFound);
+  }
+
   const technology = await prisma.technology.update({
     where: {
-      name,
+      id: oldTechnology.id,
     },
     data: {
+      name,
       iconUrl,
     },
   });

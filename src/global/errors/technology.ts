@@ -20,6 +20,7 @@ const technologyNotDeleted = Utils.Response.Error(
 
 const invalidName = Utils.Response.Error("Incorrect Name Value", 401);
 const invalidIcon = Utils.Response.Error("Incorrect Icon Value", 401);
+const invalidId = Utils.Response.Error("Invalid id", 401);
 
 export {
   technologyAlreadyExists,
@@ -29,4 +30,5 @@ export {
   technologyNotDeleted,
   invalidIcon,
   invalidName,
+  invalidId,
 };
