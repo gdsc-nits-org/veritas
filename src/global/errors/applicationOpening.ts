@@ -25,10 +25,22 @@ const invalidDomain = Utils.Response.Error(
   406
 );
 
+const applicationOpeningNotFound = Utils.Response.Error(
+  "Application opening with given id is not found",
+  404
+);
+
+const invalidStatus = Utils.Response.Error(
+  "Invalid Application opening status",
+  406
+);
+
 export {
   missingFields,
   invalidPurpose,
   invalidTitle,
   invalidDescription,
   invalidDomain,
+  applicationOpeningNotFound,
+  invalidStatus,
 };

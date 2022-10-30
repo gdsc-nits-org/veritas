@@ -1,4 +1,8 @@
-import { ApplicationPurpose, Domain } from "@prisma/client";
+import {
+  ApplicationOpeningStatus,
+  ApplicationPurpose,
+  Domain,
+} from "@prisma/client";
 
 interface createApplicationOpeningBody {
   domain: Domain;
@@ -7,4 +11,12 @@ interface createApplicationOpeningBody {
   description: string[];
 }
 
-export { createApplicationOpeningBody };
+interface updateApplicationOpeningBody {
+  domain: Domain | undefined;
+  purpose: ApplicationPurpose | undefined;
+  title: string | undefined;
+  description: string[] | undefined;
+  status: ApplicationOpeningStatus | undefined;
+}
+
+export { createApplicationOpeningBody, updateApplicationOpeningBody };

@@ -1,6 +1,10 @@
 import * as Interfaces from "@interfaces";
 import * as Errors from "@errors";
-import { ApplicationPurpose, Domain } from "@prisma/client";
+import {
+  ApplicationOpeningStatus,
+  ApplicationPurpose,
+  Domain,
+} from "@prisma/client";
 
 const DomainCheck: Interfaces.Middleware.Sync = (req, _res, next) => {
   const domain = req.body?.domain as Domain;
@@ -79,9 +83,32 @@ const applicationOpeningDescriptionCheck: Interfaces.Middleware.Sync = (
   return next();
 };
 
+const applicationOpeningStatusCheck: Interfaces.Middleware.Sync = (
+  req,
+  _res,
+  next
+) => {
+  const status = req.body.status as ApplicationOpeningStatus;
+
+  if (!status) {
+    return next();
+  }
+
+  if (
+    status &&
+    typeof status === "string" &&
+    status in ApplicationOpeningStatus
+  ) {
+    return next();
+  }
+
+  return next(Errors.ApplicationOpening.invalidStatus);
+};
+
 export {
   DomainCheck,
   applicationOpeningPurposeCheck,
   applicationOpeningTitleCheck,
   applicationOpeningDescriptionCheck,
+  applicationOpeningStatusCheck,
 };
