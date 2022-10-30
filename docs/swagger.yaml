@@ -2445,6 +2445,169 @@ paths:
                     msg:
                       type: string
                       example: "Error while fetching projects"
+    patch:
+      summary: Update a project.
+      tags:
+        - Project
+      parameters:
+        - in: path
+          name: projectId
+          schema:
+            type: string
+          required: true
+          description: Id of requested project.
+      requestBody:
+        description: A JSON object containing details for the project.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                adminScholarId:
+                  type: string
+                  example: "2012051"
+                adminPassword:
+                  type: string
+                  example: "Password@123"
+                name:
+                  type: string
+                  example: "Very Good Project"
+                description:
+                  type: string
+                  example: "This is a very good project, I put my life into it. jk i don't have a life"
+                status:
+                  type: string
+                  example: "ONGOING"
+                tags:
+                  type: array
+                  items:
+                    type: string
+                    example: "web"
+                links:
+                  type: array
+                  items:
+                    type: string
+                    example: "https://www.youtube.com/watch?v=mhIrhcZ087c"
+                logoImageUrl:
+                  type: string
+                  example: "https://i.kym-cdn.com/entries/icons/facebook/000/040/009/3dsaulcover.jpg"
+                bannerImageUrl:
+                  type: string
+                  example: "https://i.kym-cdn.com/entries/icons/facebook/000/040/009/3dsaulcover.jpg"
+                technologies:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        example: "python"
+      responses:
+        200:
+          description: A JSON object of the project updated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    $ref: "#/components/schemas/Project"
+        401:
+          description: User Created Error. Invalid details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 401
+                  msg:
+                    type: string
+                    example: "Invalid Project Description"
+        404:
+          description: If project Does not exist.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: string
+                    example: "Project does not exist."
+        500:
+          description: If server fails to update project.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: string
+                    example: "Failed to update project."
+    delete:
+      summary: Gett an array of applications for a project.
+      tags:
+        - Project
+      parameters:
+        - in: path
+          name: projectId
+          schema:
+            type: string
+          required: true
+          description: Id of requested project.
+      responses:
+        200:
+          description: An object of request project.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: number
+                      example: 200
+                    msg:
+                      $ref: "#/components/schemas/Project"
+        401:
+          description: User Created Error. Invalid projectId.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 401
+                  msg:
+                    type: string
+                    example: "Invalid ProjectId"
+        500:
+          description: Server failed to fetch projects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: number
+                      example: 500
+                    msg:
+                      type: string
+                      example: "Error while fetching projects"
 
   /project/{projectId}/applications:
     post:
@@ -2484,3 +2647,233 @@ paths:
                       example: 200
                     msg:
                       $ref: "#/components/schemas/Project"
+  /technology/create:
+    post:
+      summary: Create a Technology
+      tags:
+        - Technology
+      requestBody:
+        description: A JSON object containing details for the project.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                adminScholarId:
+                  type: string
+                  example: "2012051"
+                adminPassword:
+                  type: string
+                  example: "Password@123"
+                name:
+                  type: string
+                  example: "python"
+                iconUrl:
+                  type: string
+                  example: "https://i.kym-cdn.com/entries/icons/facebook/000/040/009/3dsaulcover.jpg"
+      responses:
+        200:
+          description: A JSON object of the technology created.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    $ref: "#/components/schemas/Technology"
+
+        403:
+          description: Technology already exists.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 403
+                  msg:
+                    type: string
+                    example: "Technology name already in use"
+        401:
+          description: User Created Error. Invalid details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 401
+                  msg:
+                    type: string
+                    example: "Invalid icon url"
+        500:
+          description: Server Error. Invalid details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 500
+                  msg:
+                    type: string
+                    example: "Failed to Create Technology"
+  /technology/all:
+    get:
+      summary: Get an array of Technologies.
+      tags:
+        - Technology
+      responses:
+        200:
+          description: An array of Technology objects, empty array if none.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: number
+                      example: 200
+                    msg:
+                      $ref: "#/components/schemas/Technology"
+        500:
+          description: Server failed to fetch technologies.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: number
+                      example: 500
+                    msg:
+                      type: string
+                      example: "Error while fetching technologies"
+  /technology/{technologyNameOrId}:
+    get:
+      summary: Get an array of Technologies.
+      tags:
+        - Technology
+      parameters:
+        - in: path
+          name: technologyNameOrId
+          schema:
+            type: string
+          required: true
+          description: Id or name of requested technology.
+      responses:
+        200:
+          description: An array of Technology objects, empty array if none.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: number
+                      example: 200
+                    msg:
+                      $ref: "#/components/schemas/Technology"
+        500:
+          description: Server failed to fetch technologies.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: number
+                      example: 500
+                    msg:
+                      type: string
+                      example: "Error while fetching technologies"
+    patch:
+      summary: Update a technology.
+      tags:
+        - Technology
+      parameters:
+        - in: path
+          name: technologyNameOrId
+          schema:
+            type: string
+          required: true
+          description: Id or name of requested technology.
+      requestBody:
+        description: A JSON object containing details for the project.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                adminScholarId:
+                  type: string
+                  example: "2012051"
+                adminPassword:
+                  type: string
+                  example: "Password@123"
+                name:
+                  type: string
+                  example: "python"
+                iconUrl:
+                  type: string
+                  example: "https://i.kym-cdn.com/entries/icons/facebook/000/040/009/3dsaulcover.jpg"
+      responses:
+        200:
+          description: A Technology object.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: number
+                      example: 200
+                    msg:
+                      $ref: "#/components/schemas/Technology"
+        404:
+          description: Technology with name or id does not exist.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: number
+                      example: 404
+                    msg:
+                      type: string
+                      example: "Technology does not exist"
+
+        500:
+          description: Server failed to fetch technologies.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: number
+                      example: 500
+                    msg:
+                      type: string
+                      example: "Error while fetching technologies"
