@@ -56,7 +56,7 @@ app.use(`${Constants.Server.ROOT}/student`, Routers.Student);
 app.use(`${Constants.Server.ROOT}/member`, Routers.Member);
 app.use(`${Constants.Server.ROOT}/core`, Routers.Core);
 app.use(`${Constants.Server.ROOT}/lead`, Routers.Lead);
-app.use(`${Constants.Server.ROOT}/application`, Routers.Application);
+// app.use(`${Constants.Server.ROOT}/application`, Routers.Application);
 
 // ======================== ERROR HANDLERS ====================
 

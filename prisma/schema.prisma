@@ -288,7 +288,7 @@ model Session {
   @@unique([name, eventId, year])
 }
 
-enum InterviewPurpose {
+enum ApplicationPurpose {
   MEMBER_RECRUITMENT
   CORE_MEMBER_RECRUITMENT
   EVENT
@@ -301,6 +301,11 @@ enum InterviewApplicationStatus {
   PENDING
   REJECTED
   ERROR
+}
+
+enum ApplicationOpeningStatus {
+  OPEN
+  CLOSED
 }
 
 model InterviewSession {
@@ -323,10 +328,11 @@ model Application {
 
   interviews InterviewSession[]
 
-  purpose InterviewPurpose
-
   applicantId String
   applicant   Student @relation(fields: [applicantId], references: [scholarId])
+
+  applicationOpeningId String
+  applicationOpening   ApplicationOpening @relation(fields: [applicationOpeningId], references: [id])
 
   applicationStatus InterviewApplicationStatus
   applicationDate   DateTime
@@ -335,8 +341,23 @@ model Application {
 
   message String?
 
-  domain Domain
   resume String
 
   @@unique([applicantId])
+}
+
+model ApplicationOpening {
+  id String @id @default(uuid())
+
+  purpose ApplicationPurpose
+
+  domain Domain
+
+  status ApplicationOpeningStatus
+
+  title String
+
+  description String[]
+
+  applications Application[]
 }
