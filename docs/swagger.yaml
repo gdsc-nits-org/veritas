@@ -1,0 +1,2879 @@
+openapi: 3.0.0
+
+info:
+  title: Veritas API
+  version: 0.1.0
+  description: The Central API for Google Developer Student Clubs, National Institute of Technology, Silchar. The name is derived from Veritas, the Roman Goddess of Truth.
+
+servers:
+  - url: http://localhost:5000/api/v1
+    description: Localhost
+
+components:
+  schemas:
+    Project:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "haksgksjoiaosiois"
+        name:
+          type: string
+          example: "Very Good Project"
+        description:
+          type: string
+          example: "This is a very good project, I put my life into it. jk i don't have a life"
+        status:
+          type: string
+          example: "ONGOING"
+        tags:
+          type: array
+          items:
+            type: string
+            example: "web"
+        links:
+          type: array
+          items:
+            type: string
+            example: "https://www.youtube.com/watch?v=mhIrhcZ087c"
+        logoImageURL:
+          type: string
+          example: "https://i.kym-cdn.com/entries/icons/facebook/000/040/009/3dsaulcover.jpg"
+        bannerImageUrl:
+          type: string
+          example: "https://i.kym-cdn.com/entries/icons/facebook/000/040/009/3dsaulcover.jpg"
+        technologies:
+          type: array
+          items:
+            $ref: "#/components/schemas/Technology"
+    Technology:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Python"
+
+        iconUrl:
+          type: string
+          example: "https://i.kym-cdn.com/entries/icons/facebook/000/040/009/3dsaulcover.jpg"
+
+paths:
+  /:
+    get:
+      description: Health Check for API
+      tags:
+        - Health
+      responses:
+        200:
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: string
+                    example: Health Check OK!
+
+  /person/register:
+    post:
+      description: Register a Person
+      tags:
+        - Person
+
+      requestBody:
+        description: A JSON object containing person information
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                [personalEmailId, gender, firstName, dateOfBirth, phoneNumber]
+              properties:
+                personalEmailId:
+                  type: string
+                  example: hello@world.com
+                gender:
+                  type: string
+                  enum: [MALE, FEMALE, OTHERS]
+                  example: MALE
+                firstName:
+                  type: string
+                  example: Harry
+                middleName:
+                  type: string
+                  example: James
+                lastName:
+                  type: string
+                  example: Potter
+                dateOfBirth:
+                  oneOf:
+                    - type: string
+                    - type: number
+                  description: The Date String or Date Epoch
+                  example: Fri Oct 07 2022 08:15:15 GMT+0530 (India Standard Time)
+                phoneNumber:
+                  type: array
+                  items:
+                    type: string
+                  example: ["9152539529", "09152539529", "+919152539529"]
+
+      responses:
+        200:
+          description: Registered Successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: string
+                    example: Registration Successfully.
+        401:
+          description: Incorrect Credentials.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 401
+                  msg:
+                    type: string
+                    example: Incorrect Credentials.
+        404:
+          description: Not Found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 401
+                  msg:
+                    type: string
+                    example: Not Found.
+
+  /person/check:
+    get:
+      description: Check Existence of Person
+      tags:
+        - Person
+
+      parameters:
+        - in: query
+          name: email
+          required: true
+          schema:
+            type: string
+            example: hello@world.com
+
+      responses:
+        200:
+          description: Boolean depending on whether person is registered or not.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: boolean
+                    example: true
+
+  /person/search:
+    get:
+      description: Get Details of Person
+      tags:
+        - Person
+
+      parameters:
+        - in: query
+          name: email
+          required: true
+          schema:
+            type: string
+            example: hello@world.com
+
+      responses:
+        200:
+          description: Boolean depending on whether person is registered or not.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: object
+                    properties:
+                      personalEmailId:
+                        type: string
+                        example: hello.world@gmail.com
+                      firstName:
+                        type: string
+                        example: Harry
+                      middleName:
+                        type: string
+                        example: James
+                      lastName:
+                        type: string
+                        example: Potter
+                      gender:
+                        type: string
+                        enum: [MALE, FEMALE, OTHERS]
+                        example: MALE
+                      dateOfBirth:
+                        oneOf:
+                          - type: string
+                          - type: number
+                        description: The Date String or Date Epoch
+                        example: Fri Oct 07 2022 08:15:15 GMT+0530 (India Standard Time)
+                      phoneNumber:
+                        type: array
+                        items:
+                          type: string
+                        example: ["9152539529", "09152539529", "+919152539529"]
+                      attendedSessions:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                            example: Web Blitz Day 1
+                          event:
+                            type: object
+                            properties:
+                              name:
+                                type: string
+                                example: Web Blitz
+                          startTime:
+                            type: string
+                            example: Sat Oct 08 2022 21:19:19 GMT+0530 (India Standard Time)
+                          endTime:
+                            type: string
+                            example: Sat Oct 08 2022 21:19:19 GMT+0530 (India Standard Time)
+                      speakerForSession:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                            example: Web Blitz Day 1
+                          event:
+                            type: object
+                            properties:
+                              name:
+                                type: string
+                                example: Web Blitz
+                          startTime:
+                            type: string
+                            example: Sat Oct 08 2022 21:19:19 GMT+0530 (India Standard Time)
+                          endTime:
+                            type: string
+                            example: Sat Oct 08 2022 21:19:19 GMT+0530 (India Standard Time)
+
+  /student/register:
+    post:
+      description: Register a Student
+      tags:
+        - Student
+
+      requestBody:
+        description: A JSON object containing student information
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                [scholarId, personalEmailId, instituteEmailId, degree, branch]
+              properties:
+                scholarId:
+                  type: string
+                  example: "2012039"
+                personalEmailId:
+                  type: string
+                  example: hello@world.com
+                instituteEmailId:
+                  type: string
+                  example: hello@world.com
+                branch:
+                  type: string
+                  enum:
+                    - CHEMISTRY
+                    - COMPUTER_SCIENCE_AND_ENGINEERING
+                    - ELECTRICAL_ENGINEERING
+                    - ELECTRONICS_AND_COMMUNICATION_ENGINEERING
+                    - ELECTRONICS_AND_INSTRUMENTATION_ENGINEERING
+                    - HISTORY
+                    - HUMANITIES_AND_SOCIAL_SCIENCES
+                    - MANAGEMENT_STUDIES
+                    - MATHEMATICS
+                    - MECHANICAL_ENGINEERING
+                    - PHYISCS
+                  example: COMPUTER_SCIENCE_AND_ENGINEERING
+                degree:
+                  type: string
+                  enum:
+                    - BACHELORS
+                    - MASTERS
+                    - DOCTORATE
+                  example: BACHELORS
+      responses:
+        200:
+          description: Registered Successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: string
+                    example: Registration Successfully.
+        401:
+          description: Incorrect Credentials.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 401
+                  msg:
+                    type: string
+                    example: Incorrect Credentials.
+        404:
+          description: Not Found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 401
+                  msg:
+                    type: string
+                    example: Not Found.
+
+  /student/check:
+    get:
+      description: Check Existence of Student
+      tags:
+        - Student
+
+      parameters:
+        - in: query
+          name: scholarId
+          required: true
+          schema:
+            type: string
+            example: "2012039"
+
+      responses:
+        200:
+          description: Boolean depending on whether student is registered or not.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: boolean
+                    example: true
+
+  /student/search:
+    get:
+      description: Get Details of Student
+      tags:
+        - Student
+
+      parameters:
+        - in: query
+          name: scholarId
+          required: true
+          schema:
+            type: string
+            example: "2012039"
+
+      responses:
+        200:
+          description: Boolean depending on whether student is registered or not.
+          content:
+            application/json:
+              schema:
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: object
+                    properties:
+                      status:
+                        type: number
+                        example: 200
+                      msg:
+                        type: object
+                        properties:
+                          scholarId:
+                            type: string
+                            example: "2012039"
+                          person:
+                            type: object
+                            properties:
+                              personalEmailId:
+                                type: string
+                                example: hello.world@gmail.com
+                              firstName:
+                                type: string
+                                example: Harry
+                              middleName:
+                                type: string
+                                example: James
+                              lastName:
+                                type: string
+                                example: Potter
+                              gender:
+                                type: string
+                                enum: [MALE, FEMALE, OTHERS]
+                                example: MALE
+                              dateOfBirth:
+                                oneOf:
+                                  - type: string
+                                  - type: number
+                                description: The Date String or Date Epoch
+                                example: Fri Oct 07 2022 08:15:15 GMT+0530 (India Standard Time)
+                              phoneNumber:
+                                type: array
+                                items:
+                                  type: string
+                                example:
+                                  ["9152539529", "09152539529", "+919152539529"]
+                              attendedSessions:
+                                type: object
+                                properties:
+                                  name:
+                                    type: string
+                                    example: Web Blitz Day 1
+                                  event:
+                                    type: object
+                                    properties:
+                                      name:
+                                        type: string
+                                        example: Web Blitz
+                                  startTime:
+                                    type: string
+                                    example: Sat Oct 08 2022 21:19:19 GMT+0530 (India Standard Time)
+                                  endTime:
+                                    type: string
+                                    example: Sat Oct 08 2022 21:19:19 GMT+0530 (India Standard Time)
+                              speakerForSession:
+                                type: object
+                                properties:
+                                  name:
+                                    type: string
+                                    example: Web Blitz Day 1
+                                  event:
+                                    type: object
+                                    properties:
+                                      name:
+                                        type: string
+                                        example: Web Blitz
+                                  startTime:
+                                    type: string
+                                    example: Sat Oct 08 2022 21:19:19 GMT+0530 (India Standard Time)
+                                  endTime:
+                                    type: string
+                                    example: Sat Oct 08 2022 21:19:19 GMT+0530 (India Standard Time)
+                          branch:
+                            type: string
+                            enum:
+                              - CHEMISTRY
+                              - COMPUTER_SCIENCE_AND_ENGINEERING
+                              - ELECTRICAL_ENGINEERING
+                              - ELECTRONICS_AND_COMMUNICATION_ENGINEERING
+                              - ELECTRONICS_AND_INSTRUMENTATION_ENGINEERING
+                              - HISTORY
+                              - HUMANITIES_AND_SOCIAL_SCIENCES
+                              - MANAGEMENT_STUDIES
+                              - MATHEMATICS
+                              - MECHANICAL_ENGINEERING
+                              - PHYISCS
+                            example: COMPUTER_SCIENCE_AND_ENGINEERING
+                          degree:
+                            type: string
+                            enum:
+                              - BACHELORS
+                              - MASTERS
+                              - DOCTORATE
+                            example: BACHELORS
+
+  /member/register:
+    post:
+      description: Register a Member
+      tags:
+        - Member
+
+      requestBody:
+        description: A JSON object containing member information
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                [
+                  adminScholarId,
+                  adminPassword,
+                  scholarId,
+                  password,
+                  domain,
+                  role,
+                  image,
+                  linkedInUrl,
+                  githubUrl,
+                ]
+              properties:
+                adminScholarId:
+                  type: string
+                  example: "2012039"
+                adminPassword:
+                  type: string
+                  example: Hello@World123
+                scholarId:
+                  type: string
+                  example: "2012039"
+                password:
+                  type: string
+                  example: Hello@World123
+                image:
+                  type: string
+                  example: https://avatars.githubusercontent.com/u/74897009
+                domain:
+                  type: string
+                  enum:
+                    - ANDROID
+                    - FLUTTER
+                    - UI_UX
+                    - WEB
+                  example: WEB
+                role:
+                  type: string
+                  enum:
+                    - EDITORIAL
+                    - MANAGEMENT
+                    - OUTREACH
+                    - MARKETING
+                  example: MANAGEMENT
+                linkedInUrl:
+                  type: string
+                  example: https://www.linkedin.com/in/helloworld
+                githubUrl:
+                  type: string
+                  example: https://github.com/helloworld
+                facebookUrl:
+                  type: string
+                  example: https://www.facebook.com/helloworld
+                discordId:
+                  type: string
+                  example: "123456789012345678"
+                year:
+                  type: number
+                  example: 2022
+
+      responses:
+        200:
+          description: Registered Successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: string
+                    example: Registration Successfully.
+        401:
+          description: Incorrect Credentials.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 401
+                  msg:
+                    type: string
+                    example: Incorrect Credentials.
+        404:
+          description: Not Found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 404
+                  msg:
+                    type: string
+                    example: Not Found.
+
+  /member/check:
+    get:
+      description: Check Existence of Member
+      tags:
+        - Member
+
+      parameters:
+        - in: query
+          name: scholarId
+          required: true
+          schema:
+            type: string
+            example: "2012039"
+
+      responses:
+        200:
+          description: Boolean depending on whether member is registered or not.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: boolean
+                    example: true
+
+  /member/search:
+    get:
+      description: Get Details of Member
+      tags:
+        - Member
+
+      parameters:
+        - in: query
+          name: scholarId
+          required: true
+          schema:
+            type: string
+            example: "2012039"
+
+      responses:
+        200:
+          description: Boolean depending on whether student is registered or not.
+          content:
+            application/json:
+              schema:
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: object
+                    properties:
+                      status:
+                        type: number
+                        example: 200
+                      msg:
+                        type: object
+                        properties:
+                          scholarId:
+                            type: string
+                            example: "2012039"
+                          branch:
+                            type: string
+                            enum:
+                              - CHEMISTRY
+                              - COMPUTER_SCIENCE_AND_ENGINEERING
+                              - ELECTRICAL_ENGINEERING
+                              - ELECTRONICS_AND_COMMUNICATION_ENGINEERING
+                              - ELECTRONICS_AND_INSTRUMENTATION_ENGINEERING
+                              - HISTORY
+                              - HUMANITIES_AND_SOCIAL_SCIENCES
+                              - MANAGEMENT_STUDIES
+                              - MATHEMATICS
+                              - MECHANICAL_ENGINEERING
+                              - PHYISCS
+                            example: COMPUTER_SCIENCE_AND_ENGINEERING
+                          degree:
+                            type: string
+                            enum:
+                              - BACHELORS
+                              - MASTERS
+                              - DOCTORATE
+                            example: BACHELORS
+                          person:
+                            type: object
+                            properties:
+                              personalEmailId:
+                                type: string
+                                example: hello.world@gmail.com
+                              firstName:
+                                type: string
+                                example: Harry
+                              middleName:
+                                type: string
+                                example: James
+                              lastName:
+                                type: string
+                                example: Potter
+                              gender:
+                                type: string
+                                enum: [MALE, FEMALE, OTHERS]
+                                example: MALE
+                              dateOfBirth:
+                                oneOf:
+                                  - type: string
+                                  - type: number
+                                description: The Date String or Date Epoch
+                                example: Fri Oct 07 2022 08:15:15 GMT+0530 (India Standard Time)
+                              phoneNumber:
+                                type: array
+                                items:
+                                  type: string
+                                example:
+                                  ["9152539529", "09152539529", "+919152539529"]
+                              attendedSessions:
+                                type: object
+                                properties:
+                                  name:
+                                    type: string
+                                    example: Web Blitz Day 1
+                                  event:
+                                    type: object
+                                    properties:
+                                      name:
+                                        type: string
+                                        example: Web Blitz
+                                  startTime:
+                                    type: string
+                                    example: Sat Oct 08 2022 21:19:19 GMT+0530 (India Standard Time)
+                                  endTime:
+                                    type: string
+                                    example: Sat Oct 08 2022 21:19:19 GMT+0530 (India Standard Time)
+                              speakerForSession:
+                                type: object
+                                properties:
+                                  name:
+                                    type: string
+                                    example: Web Blitz Day 1
+                                  event:
+                                    type: object
+                                    properties:
+                                      name:
+                                        type: string
+                                        example: Web Blitz
+                                  startTime:
+                                    type: string
+                                    example: Sat Oct 08 2022 21:19:19 GMT+0530 (India Standard Time)
+                                  endTime:
+                                    type: string
+                                    example: Sat Oct 08 2022 21:19:19 GMT+0530 (India Standard Time)
+                          instituteEmailId:
+                            type: string
+                            example: helloworld20_ug@cse.nits.ac.in
+                          contributions:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                name:
+                                  type: string
+                            example:
+                              [{ name: "AttendO" }, { name: "Resource Hub" }]
+                          image:
+                            type: string
+                            example: https://avatars.githubusercontent.com/u/74897009
+                          linkedInUrl:
+                            type: string
+                            example: https://www.linkedin.com/in/helloworld
+                          githubUrl:
+                            type: string
+                            example: https://github.com/helloworld
+                          facebookUrl:
+                            type: string
+                            example: https://www.facebook.com/helloworld
+                          tenures:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                role:
+                                  type: string
+                                  enum:
+                                    - EDITORIAL
+                                    - MANAGEMENT
+                                    - OUTREACH
+                                    - MARKETING
+                                  example: MANAGEMENT
+                                startYear:
+                                  type: number
+                                  example: 2022
+                                isHead:
+                                  type: boolean
+                                  example: false
+                                isModerator:
+                                  type: boolean
+                                  example: true
+                                position:
+                                  type: string
+                                  enum:
+                                    - MEMBER
+                                    - CORE_MEMBER
+                                    - LEAD
+                                  example: CORE_MEMBER
+
+  /core/new:
+    post:
+      description: Promote Member to Core Member or Lead
+      tags:
+        - Core
+
+      requestBody:
+        description: A JSON object containing member information
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [adminScholarId, adminPassword, scholarId, domain, role]
+              properties:
+                adminScholarId:
+                  type: string
+                  example: "2012039"
+                adminPassword:
+                  type: string
+                  example: Hello@World123
+                scholarId:
+                  type: string
+                  example: "2012039"
+                domain:
+                  type: string
+                  enum:
+                    - ANDROID
+                    - CLOUD_AND_DEVOPS
+                    - FLUTTER
+                    - UI_UX
+                    - WEB
+                  example: CLOUD_AND_DEVOPS
+                role:
+                  type: string
+                  enum:
+                    - EDITORIAL
+                    - MANAGEMENT
+                    - OUTREACH
+                    - MARKETING
+                  example: MANAGEMENT
+                year:
+                  type: number
+                  example: 2022
+                isHead:
+                  type: boolean
+                  example: false
+                isModerator:
+                  type: boolean
+                  example: true
+                position:
+                  type: string
+                  enum:
+                    - MEMBER
+                    - CORE_MEMBER
+                    - LEAD
+                  example: CORE_MEMBER
+
+      responses:
+        200:
+          description: Promotion Successful.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: boolean
+                    example: Promotion Successful.
+        401:
+          description: Invalid Credentials.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 401
+                  msg:
+                    type: boolean
+                    example: Invalid Credentials.
+
+  /lead/chapter/declare:
+    post:
+      description: Declare a chapter as transitioned.
+      tags:
+        - Lead
+
+      requestBody:
+        description: A JSON object containing credentials
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [adminScholarId, adminPassword]
+              properties:
+                adminScholarId:
+                  type: string
+                  example: "2012039"
+                adminPassword:
+                  type: string
+                  example: Hello@World123
+
+      responses:
+        200:
+          description: Declaration Successful.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: boolean
+                    example: Promotion Successful.
+        401:
+          description: Invalid Credentials.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 401
+                  msg:
+                    type: boolean
+                    example: Invalid Credentials.
+
+  /event:
+    get:
+      description: Get all the events under GDSC
+      tags:
+        - Event
+
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            example: 3
+          description: The page number for pagination of events
+        - in: query
+          name: amount
+          schema:
+            type: integer
+            example: 10
+          description: The numbers of events to return in one page
+
+      responses:
+        200:
+          description: Successfull fetch.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: "7HudsjakjfUdafG"
+                        name:
+                          type: string
+                          example: "Intro to Git and Github"
+                        year:
+                          type: number
+                          example: 2022
+                        level:
+                          type: string
+                          example: "GDSC"
+                        type:
+                          type: string
+                          example: "INFO_SESSION"
+                        domain:
+                          type: array
+                          items:
+                            type: string
+                            example: ["WEB", "FLUTTER", "ANDROID"]
+                        mode:
+                          type: string
+                          example: "ONLINE"
+                        url:
+                          type: string
+                          example: "https://gdsc.community.dev/events/details/developer-student-clubs-national-institute-of-technology-nit-silchar-presents-intro-to-git-and-github-2022/"
+
+                        description:
+                          type: string
+                          example: "On this two-day event, expect to learn some exciting and neat Git and Github tips and tricks to better your development process!"
+                        tags:
+                          type: array
+                          items:
+                            type: string
+                            example: ["Virtual Event", "Career Development"]
+
+                        registrations:
+                          type: object
+                          properties:
+                            _count:
+                              type: number
+                              example: 53
+
+                        organizers:
+                          type: object
+                          properties:
+                            student:
+                              type: object
+                              properties:
+                                person:
+                                  type: object
+                                  properties:
+                                    firstName:
+                                      type: string
+                                      example: "Pratik"
+
+  /event/{eventId}/registrations:
+    get:
+      description: Get all the registrations of the event with given eventId under GDSC
+      tags:
+        - Event
+      parameters:
+        - in: path
+          name: eventId
+          schema:
+            type: string
+            example: "1Hiafahiaodklfj23"
+          required: true
+          description: The event for which you need the registrations
+
+      responses:
+        200:
+          description: Successfull fetch.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: "7HudsjakjfUdafG"
+                        name:
+                          type: string
+                          example: "Intro to Git and Github"
+                        type:
+                          type: string
+                          example: "INFO_SESSION"
+                        description:
+                          type: string
+                          example: "On this two-day event, expect to learn some exciting and neat Git and Github tips and tricks to better your development process!"
+                        registrations:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              firstName:
+                                type: string
+                                example: "Pratik"
+                              lastName:
+                                type: string
+                                example: "Majumdar"
+                              middleName:
+                                type: string
+                                example: ""
+                              personalEmailId:
+                                type: string
+                                example: "majumderpratik15@gmail.com"
+                              phoneNumber:
+                                type: string
+                                example: "9101453497"
+        403:
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 403
+                  msg:
+                    type: string
+                    example: "Invalid credential"
+
+        404:
+          description: Event not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 404
+                  msg:
+                    type: string
+                    example: "Event not found"
+
+  /event/{eventId}:
+    get:
+      description: Get event detail for a given id
+      tags:
+        - Event
+      parameters:
+        - in: path
+          name: eventId
+          schema:
+            type: string
+            example: "1Hiafahiaodklfj23"
+          required: true
+          description: The event for which you need the registrations, need request body for authentication, but swagger 3.0 removed requestBody for GET
+
+      responses:
+        200:
+          description: Successfull fetch.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: "7HudsjakjfUdafG"
+                        name:
+                          type: string
+                          example: "Intro to Git and Github"
+                        year:
+                          type: number
+                          example: 2022
+                        level:
+                          type: string
+                          example: "GDSC"
+                        type:
+                          type: string
+                          example: "INFO_SESSION"
+                        domain:
+                          type: array
+                          items:
+                            type: string
+                            example: ["WEB", "FLUTTER", "ANDROID"]
+                        mode:
+                          type: string
+                          example: "ONLINE"
+                        url:
+                          type: string
+                          example: "https://gdsc.community.dev/events/details/developer-student-clubs-national-institute-of-technology-nit-silchar-presents-intro-to-git-and-github-2022/"
+
+                        description:
+                          type: string
+                          example: "On this two-day event, expect to learn some exciting and neat Git and Github tips and tricks to better your development process!"
+                        tags:
+                          type: array
+                          items:
+                            type: string
+                            example: ["Virtual Event", "Career Development"]
+
+                        organizers:
+                          type: object
+                          properties:
+                            facebookUrl:
+                              type: string
+                              example: "http://facebook.com"
+                            githubUrl:
+                              type: string
+                              example: "http://www.github.com"
+                            linkedInUrl:
+                              type: string
+                              example: "http://linkedin.com"
+                            discordId:
+                              type: string
+                              example: "codadept"
+                            image:
+                              type: string
+                              example: "https://via.placeholder.com/150"
+                            student:
+                              type: object
+                              properties:
+                                person:
+                                  type: object
+                                  properties:
+                                    firstName:
+                                      type: string
+                                      example: "Pratik"
+                                    lastName:
+                                      type: string
+                                      example: "Majumdar"
+                                    middleName:
+                                      type: string
+                                      example: ""
+                                    personalEmailId:
+                                      type: string
+                                      example: "majumderpratik15@gmail.com"
+                                    phoneNumber:
+                                      type: string
+                                      example: "9101453497"
+                                    gender:
+                                      type: string
+                                      example: MALE
+                                    dateOfBirth:
+                                      type: string
+                                      example: "07/07/2002"
+
+        404:
+          description: Event not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 404
+                  msg:
+                    type: string
+                    example: "Event not found"
+    patch:
+      description: Update the given event
+      tags:
+        - Event
+      parameters:
+        - in: path
+          name: eventId
+          schema:
+            type: string
+            example: "1Hiafahiaodklfj23"
+          required: true
+          description: The event id you want to update
+
+      requestBody:
+        description: A JSON object containing credentials and update details
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [adminScholarId, adminPassword]
+              properties:
+                adminScholarId:
+                  type: string
+                  example: "2012039"
+                adminPassword:
+                  type: string
+                  example: Hello@World123
+                personalEmailId:
+                  type: string
+                  example: "majumderpratik15@gmail.com"
+                description:
+                  type: string
+                  example: "Description for event"
+                domain:
+                  type: string
+                  enum: [ANDROID, CLOUD_AND_DEVOPS, FLUTTER, UI_UX, WEB, OTHERS]
+                  example: WEB
+                mode:
+                  type: string
+                  enum: [OFFLINE, ONLINE]
+                tags:
+                  type: array
+                  items:
+                    type: string
+                    example: ["Virtual Event", "Career Development"]
+                venue:
+                  type: string
+                  example: New Gallery
+                organizers:
+                  type: array
+                  items:
+                    type: string
+                    example: ["2012005", "2012058"]
+
+      responses:
+        200:
+          description: Event updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: string
+                    example: "Event updated successfully."
+
+        403:
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 403
+                  msg:
+                    type: string
+                    example: "Invalid credential"
+
+        404:
+          description: Event not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 404
+                  msg:
+                    type: string
+                    example: "Event not found"
+
+    delete:
+      description: Delete the given event
+      tags:
+        - Event
+      parameters:
+        - in: path
+          name: eventId
+          schema:
+            type: string
+            example: "1Hiafahiaodklfj23"
+          required: true
+          description: The event id you want to update
+
+      responses:
+        200:
+          description: Event deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: string
+                    example: "Event deleted successfully."
+
+        403:
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 403
+                  msg:
+                    type: string
+                    example: "Invalid credential"
+
+        404:
+          description: Event not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 404
+                  msg:
+                    type: string
+                    example: "Event not found"
+
+  /event/new:
+    post:
+      description: Create a new event
+      tags:
+        - Event
+
+      requestBody:
+        description: A JSON object containing credentials and other details regarding creating event
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [adminScholarId, adminPassword]
+              properties:
+                adminScholarId:
+                  type: string
+                  example: "2012039"
+                adminPassword:
+                  type: string
+                  example: Hello@World123
+                description:
+                  type: string
+                  example: "Description for event"
+                domain:
+                  type: string
+                  enum: [ANDROID, CLOUD_AND_DEVOPS, FLUTTER, UI_UX, WEB, OTHERS]
+                  example: WEB
+                level:
+                  type: string
+                  enum: [GDSC, NITS]
+                mode:
+                  type: string
+                  enum: [OFFLINE, ONLINE]
+                name:
+                  type: string
+                  example: "Introduction to Git and Github"
+                tags:
+                  type: array
+                  items:
+                    type: string
+                    example: ["Virtual Event", "Career Development"]
+                type:
+                  type: string
+                  enum:
+                    [
+                      BOOTCAMP,
+                      FIRESIDE_CHAT,
+                      STUDY_JAM,
+                      HANDS_ON_WORKSHOP,
+                      SPEAKER_SESSION,
+                      INFO_SESSION,
+                      HACKATHON,
+                      DEMO_DAY,
+                      EXPLORE_WORKSHOP,
+                    ]
+                year:
+                  type: number
+                  example: 2022
+                venue:
+                  type: string
+                  example: New Gallery
+                organizers:
+                  type: array
+                  items:
+                    type: string
+                    example: ["2012005", "2012058"]
+
+      responses:
+        200:
+          description: Event created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: string
+                    example: "Event created successfully."
+
+        403:
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 403
+                  msg:
+                    type: string
+                    example: "Invalid credential"
+
+        409:
+          description: Event with same name already exist in this GDSC Chapter.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 404
+                  msg:
+                    type: string
+                    example: "Event with same name already exist in this GDSC Chapter."
+
+  /event/{eventId}/rsvp:
+    post:
+      description: RSVP for the given event with eventId
+      tags:
+        - Event
+      parameters:
+        - in: path
+          name: eventId
+          schema:
+            type: string
+            example: "1Hiafahiaodklfj23"
+          required: true
+          description: The event for which you need to RSVP.
+
+      requestBody:
+        description: A JSON object containing personal email id
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [personalEmailId]
+              properties:
+                personalEmailId:
+                  type: string
+                  example: "majumderpratik15@gmail.com"
+
+      responses:
+        200:
+          description: Event created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: string
+                    example: "Event RSVP successful."
+
+        403:
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 403
+                  msg:
+                    type: string
+                    example: "Invalid credential"
+
+        409:
+          description: Already RSVP'd.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 404
+                  msg:
+                    type: string
+                    example: "Already RSVP'd for the event"
+
+  /event/{eventId}/session:
+    get:
+      description: Get all sessions for the given event ID
+      tags:
+        - Session
+      parameters:
+        - in: path
+          name: eventId
+          schema:
+            type: string
+            example: "1Hiafahiaodklfj23"
+          required: true
+          description: The event for which you want the session
+
+      responses:
+        200:
+          description: Sessions fetched
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: "7hadfHakf9f9dfa7"
+                        name:
+                          type: string
+                          example: "Day 1"
+                        eventId:
+                          type: string
+                          example: "89HYfak97fadf"
+                        event:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                              example: "Introduction to Git and Github"
+                            description:
+                              type: string
+                              example: "On this two-day event, expect to learn some exciting and neat Git and Github tips and tricks to better your development process!"
+                            chapter:
+                              type: object
+                              properties:
+                                year:
+                                  type: number
+                                  example: 2022
+                        topics:
+                          type: array
+                          items:
+                            type: string
+                            example: ["git", "github"]
+                        status:
+                          type: string
+                          example: "ONGOING"
+                        startTime:
+                          type: string
+                          example: "Thu Oct 20 2022 18:00:00 GMT+0530 (India Standard Time)"
+                        endTime:
+                          type: string
+                          example: "Thu Oct 21 2022 18:00:00 GMT+0530 (India Standard Time)"
+                        year:
+                          type: number
+                          example: 2022
+                        attendees:
+                          type: object
+                          properties:
+                            _count:
+                              type: number
+                              example: 100
+                        speakers:
+                          type: object
+                          properties:
+                            _count:
+                              type: number
+                              example: 100
+
+  /event/{eventId}/session/{sessionId}:
+    get:
+      description: Get session with given event and session id
+      tags:
+        - Session
+      parameters:
+        - in: path
+          name: sessionId
+          schema:
+            type: string
+            example: "1Hiafdfaf565655j23"
+          required: true
+          description: The session of the event
+        - in: path
+          name: eventId
+          schema:
+            type: string
+            example: "1Hiafahiaodklfj23"
+          required: true
+          description: The event for which you want the session
+
+      responses:
+        200:
+          description: Successfull fetch.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: "7hadfHakf9f9dfa7"
+                        name:
+                          type: string
+                          example: "Day 1"
+                        eventId:
+                          type: string
+                          example: "89HYfak97fadf"
+                        event:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                              example: "Introduction to Git and Github"
+                            description:
+                              type: string
+                              example: "On this two-day event, expect to learn some exciting and neat Git and Github tips and tricks to better your development process!"
+                            chapter:
+                              type: object
+                              properties:
+                                year:
+                                  type: number
+                                  example: 2022
+                            domain:
+                              type: array
+                              items:
+                                type: string
+                                example: ["WEB", "FLUTTER", "ANDROID"]
+                            level:
+                              type: string
+                              example: "GDSC"
+                            mode:
+                              type: string
+                              example: "ONLINE"
+                            url:
+                              type: string
+                              example: "https://www.google.com"
+                        topics:
+                          type: array
+                          items:
+                            type: string
+                            example: ["git", "github"]
+                        status:
+                          type: string
+                          example: "ONGOING"
+                        startTime:
+                          type: string
+                          example: "Thu Oct 20 2022 18:00:00 GMT+0530 (India Standard Time)"
+                        endTime:
+                          type: string
+                          example: "Thu Oct 21 2022 18:00:00 GMT+0530 (India Standard Time)"
+                        year:
+                          type: number
+                          example: 2022
+                        speakers:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              firstName:
+                                type: string
+                                example: "Pratik"
+                              lastName:
+                                type: string
+                                example: "Majumdar"
+                              middleName:
+                                type: string
+                                example: ""
+                              personalEmailId:
+                                type: string
+                                example: "majumderpratik15@gmail.com"
+                              phoneNumber:
+                                type: string
+                                example: "9101453497"
+                              gender:
+                                type: string
+                                example: MALE
+                        attendees:
+                          type: object
+                          properties:
+                            _count:
+                              type: number
+                              example: 100
+        404:
+          description: No session found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 404
+                  msg:
+                    type: string
+                    example: "No session with the given id found."
+    patch:
+      description: Update a new session under a given event
+      tags:
+        - Session
+      parameters:
+        - in: path
+          name: sessionId
+          schema:
+            type: string
+            example: "1Hiafdfaf565655j23"
+          required: true
+          description: The session of the event
+        - in: path
+          name: eventId
+          schema:
+            type: string
+            example: "1Hiafahiaodklfj23"
+          required: true
+          description: The event for which you want the session
+
+      requestBody:
+        description: A JSON object containing credentials and update details
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [adminScholarId, adminPassword]
+              properties:
+                adminScholarId:
+                  type: string
+                  example: "2012039"
+                adminPassword:
+                  type: string
+                  example: Hello@World123
+                topics:
+                  type: array
+                  items:
+                    type: string
+                    example: ["git", "github"]
+                startTime:
+                  type: string
+                  example: "Thu Oct 20 2022 18:00:00 GMT+0530 (India Standard Time)"
+                endTime:
+                  type: string
+                  example: "Thu Oct 21 2022 18:00:00 GMT+0530 (India Standard Time)"
+                year:
+                  type: number
+                  example: 2022
+                status:
+                  type: string
+                  example: "ONGOING"
+                speakers:
+                  type: array
+                  items:
+                    type: string
+                    example:
+                      ["majumderpratik15@gmail.com", "resyfer.dev@gmail.com"]
+
+      responses:
+        200:
+          description: Successful updation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: string
+                    example: "Event updation successful."
+        403:
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 403
+                  msg:
+                    type: string
+                    example: "Invalid credential"
+        404:
+          description: No session found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 404
+                  msg:
+                    type: string
+                    example: "No session with the given id found."
+
+    delete:
+      description: Delete a given session under a given event
+      tags:
+        - Session
+      parameters:
+        - in: path
+          name: sessionId
+          schema:
+            type: string
+            example: "1Hiafdfaf565655j23"
+          required: true
+          description: The session of the event
+        - in: path
+          name: eventId
+          schema:
+            type: string
+            example: "1Hiafahiaodklfj23"
+          required: true
+          description: The event for which you want the session
+
+      responses:
+        200:
+          description: Successful deletion
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: string
+                    example: "Event deletion successful."
+        403:
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 403
+                  msg:
+                    type: string
+                    example: "Invalid credential"
+        404:
+          description: No session found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 404
+                  msg:
+                    type: string
+                    example: "No session with the given id found."
+
+  /event/{eventId}/session/{sessionId}/attendance:
+    get:
+      description: Get attendance of the session with given event and session id, provided the request body with proper authentication
+      tags:
+        - Session
+      parameters:
+        - in: path
+          name: sessionId
+          schema:
+            type: string
+            example: "1Hiafdfaf565655j23"
+          required: true
+          description: The session of the event
+        - in: path
+          name: eventId
+          schema:
+            type: string
+            example: "1Hiafahiaodklfj23"
+          required: true
+          description: The event for which you want the session
+      responses:
+        200:
+          description: Successfull fetch.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: "7hadfHakf9f9dfa7"
+                        name:
+                          type: string
+                          example: "Day 1"
+                        status:
+                          type: string
+                          example: "ONGOING"
+                        attendees:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              firstName:
+                                type: string
+                                example: "Pratik"
+                              lastName:
+                                type: string
+                                example: "Majumdar"
+                              middleName:
+                                type: string
+                                example: ""
+                              personalEmailId:
+                                type: string
+                                example: "majumderpratik15@gmail.com"
+                              phoneNumber:
+                                type: string
+                                example: "9101453497"
+                              gender:
+                                type: string
+                                example: MALE
+        403:
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 403
+                  msg:
+                    type: string
+                    example: "Invalid credential"
+        404:
+          description: No session found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 404
+                  msg:
+                    type: string
+                    example: "No session with the given id found."
+
+  /event/{eventId}/session/new:
+    post:
+      description: Create a new session under a given event
+      tags:
+        - Session
+      parameters:
+        - in: path
+          name: eventId
+          schema:
+            type: string
+            example: "1Hiafahiaodklfj23"
+          required: true
+          description: The event for which you want the session
+
+      requestBody:
+        description: A JSON object containing credentials and create details
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [adminScholarId, adminPassword]
+              properties:
+                adminScholarId:
+                  type: string
+                  example: "2012039"
+                adminPassword:
+                  type: string
+                  example: Hello@World123
+                name:
+                  type: string
+                  example: "Day 1"
+                topics:
+                  type: array
+                  items:
+                    type: string
+                    example: ["git", "github"]
+                startTime:
+                  type: string
+                  example: "Thu Oct 20 2022 18:00:00 GMT+0530 (India Standard Time)"
+                endTime:
+                  type: string
+                  example: "Thu Oct 21 2022 18:00:00 GMT+0530 (India Standard Time)"
+                year:
+                  type: number
+                  example: 2022
+                status:
+                  type: string
+                  example: "ONGOING"
+                speakers:
+                  type: array
+                  items:
+                    type: string
+                    example:
+                      ["majumderpratik15@gmail.com", "resyfer.dev@gmail.com"]
+
+      responses:
+        200:
+          description: Successful creation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: string
+                    example: "Event creation successful."
+        403:
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 403
+                  msg:
+                    type: string
+                    example: "Invalid credential"
+        404:
+          description: No session found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 404
+                  msg:
+                    type: string
+                    example: "No session with the given id found."
+
+  /event/{eventId}/session/{sessionId}/attend:
+    post:
+      description: Attend the given session
+      tags:
+        - Session
+      parameters:
+        - in: path
+          name: sessionId
+          schema:
+            type: string
+            example: "1Hiafdfaf565655j23"
+          required: true
+          description: The session of the event
+        - in: path
+          name: eventId
+          schema:
+            type: string
+            example: "1Hiafahiaodklfj23"
+          required: true
+          description: The event for which you want the session
+
+      requestBody:
+        description: A JSON object containing personal email id
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [personalEmailId]
+              properties:
+                personalEmailId:
+                  type: string
+                  example: "majumderpratik15@gmail.com"
+
+      responses:
+        200:
+          description: Event created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: string
+                    example: "Session attendance successful."
+
+        403:
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 403
+                  msg:
+                    type: string
+                    example: "Invalid credential"
+
+        409:
+          description: Already RSVP'd.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 404
+                  msg:
+                    type: string
+                    example: "Already attendance marked for the session"
+  /project/create:
+    post:
+      summary: Create a project
+      tags:
+        - Project
+      requestBody:
+        description: A JSON object containing details for the project.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                adminScholarId:
+                  type: string
+                  example: "2012051"
+                adminPassword:
+                  type: string
+                  example: "Password@123"
+                name:
+                  type: string
+                  example: "Very Good Project"
+                description:
+                  type: string
+                  example: "This is a very good project, I put my life into it. jk i don't have a life"
+                status:
+                  type: string
+                  example: "ONGOING"
+                tags:
+                  type: array
+                  items:
+                    type: string
+                    example: "web"
+                links:
+                  type: array
+                  items:
+                    type: string
+                    example: "https://www.youtube.com/watch?v=mhIrhcZ087c"
+                logoImageUrl:
+                  type: string
+                  example: "https://i.kym-cdn.com/entries/icons/facebook/000/040/009/3dsaulcover.jpg"
+                bannerImageUrl:
+                  type: string
+                  example: "https://i.kym-cdn.com/entries/icons/facebook/000/040/009/3dsaulcover.jpg"
+                technologies:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        example: "python"
+      responses:
+        200:
+          description: A JSON object of the project.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    $ref: "#/components/schemas/Project"
+
+        403:
+          description: Project already exists.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 403
+                  msg:
+                    type: string
+                    example: "Project name already in use"
+        401:
+          description: User Created Error. Invalid details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 401
+                  msg:
+                    type: string
+                    example: "Invalid Project Description"
+        500:
+          description: Server Error. Invalid details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 500
+                  msg:
+                    type: string
+                    example: "Failed to Create Project"
+
+  /project/all:
+    get:
+      summary: Get an array of projects.
+      tags:
+        - Project
+      responses:
+        200:
+          description: An array of project objects, empty array if none.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: number
+                      example: 200
+                    msg:
+                      $ref: "#/components/schemas/Project"
+        500:
+          description: Server failed to fetch projects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: number
+                      example: 500
+                    msg:
+                      type: string
+                      example: "Error while fetching projects"
+  /project/{projectId}:
+    get:
+      summary: Get a project object.
+      tags:
+        - Project
+      parameters:
+        - in: path
+          name: projectId
+          schema:
+            type: string
+          required: true
+          description: Id of requested project.
+      responses:
+        200:
+          description: An object of request project.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: number
+                      example: 200
+                    msg:
+                      $ref: "#/components/schemas/Project"
+        500:
+          description: Server failed to fetch projects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: number
+                      example: 500
+                    msg:
+                      type: string
+                      example: "Error while fetching projects"
+    patch:
+      summary: Update a project.
+      tags:
+        - Project
+      parameters:
+        - in: path
+          name: projectId
+          schema:
+            type: string
+          required: true
+          description: Id of requested project.
+      requestBody:
+        description: A JSON object containing details for the project.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                adminScholarId:
+                  type: string
+                  example: "2012051"
+                adminPassword:
+                  type: string
+                  example: "Password@123"
+                name:
+                  type: string
+                  example: "Very Good Project"
+                description:
+                  type: string
+                  example: "This is a very good project, I put my life into it. jk i don't have a life"
+                status:
+                  type: string
+                  example: "ONGOING"
+                tags:
+                  type: array
+                  items:
+                    type: string
+                    example: "web"
+                links:
+                  type: array
+                  items:
+                    type: string
+                    example: "https://www.youtube.com/watch?v=mhIrhcZ087c"
+                logoImageUrl:
+                  type: string
+                  example: "https://i.kym-cdn.com/entries/icons/facebook/000/040/009/3dsaulcover.jpg"
+                bannerImageUrl:
+                  type: string
+                  example: "https://i.kym-cdn.com/entries/icons/facebook/000/040/009/3dsaulcover.jpg"
+                technologies:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        example: "python"
+      responses:
+        200:
+          description: A JSON object of the project updated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    $ref: "#/components/schemas/Project"
+        401:
+          description: User Created Error. Invalid details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 401
+                  msg:
+                    type: string
+                    example: "Invalid Project Description"
+        404:
+          description: If project Does not exist.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: string
+                    example: "Project does not exist."
+        500:
+          description: If server fails to update project.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    type: string
+                    example: "Failed to update project."
+    delete:
+      summary: Gett an array of applications for a project.
+      tags:
+        - Project
+      parameters:
+        - in: path
+          name: projectId
+          schema:
+            type: string
+          required: true
+          description: Id of requested project.
+      responses:
+        200:
+          description: An object of request project.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: number
+                      example: 200
+                    msg:
+                      $ref: "#/components/schemas/Project"
+        401:
+          description: User Created Error. Invalid projectId.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 401
+                  msg:
+                    type: string
+                    example: "Invalid ProjectId"
+        500:
+          description: Server failed to fetch projects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: number
+                      example: 500
+                    msg:
+                      type: string
+                      example: "Error while fetching projects"
+
+  /project/{projectId}/applications:
+    post:
+      summary: Gett an array of applications for a project.
+      tags:
+        - Project
+      parameters:
+        - in: path
+          name: projectId
+          schema:
+            type: string
+          required: true
+          description: Id of requested project.
+      requestBody:
+        description: User Auth
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                scholarId:
+                  type: string
+                  example: "2012051"
+
+      responses:
+        200:
+          description: An array of project applications, empty if none.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: number
+                      example: 200
+                    msg:
+                      $ref: "#/components/schemas/Project"
+  /technology/create:
+    post:
+      summary: Create a Technology
+      tags:
+        - Technology
+      requestBody:
+        description: A JSON object containing details for the project.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                adminScholarId:
+                  type: string
+                  example: "2012051"
+                adminPassword:
+                  type: string
+                  example: "Password@123"
+                name:
+                  type: string
+                  example: "python"
+                iconUrl:
+                  type: string
+                  example: "https://i.kym-cdn.com/entries/icons/facebook/000/040/009/3dsaulcover.jpg"
+      responses:
+        200:
+          description: A JSON object of the technology created.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  msg:
+                    $ref: "#/components/schemas/Technology"
+
+        403:
+          description: Technology already exists.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 403
+                  msg:
+                    type: string
+                    example: "Technology name already in use"
+        401:
+          description: User Created Error. Invalid details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 401
+                  msg:
+                    type: string
+                    example: "Invalid icon url"
+        500:
+          description: Server Error. Invalid details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 500
+                  msg:
+                    type: string
+                    example: "Failed to Create Technology"
+  /technology/all:
+    get:
+      summary: Get an array of Technologies.
+      tags:
+        - Technology
+      responses:
+        200:
+          description: An array of Technology objects, empty array if none.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: number
+                      example: 200
+                    msg:
+                      $ref: "#/components/schemas/Technology"
+        500:
+          description: Server failed to fetch technologies.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: number
+                      example: 500
+                    msg:
+                      type: string
+                      example: "Error while fetching technologies"
+  /technology/{technologyNameOrId}:
+    get:
+      summary: Get an array of Technologies.
+      tags:
+        - Technology
+      parameters:
+        - in: path
+          name: technologyNameOrId
+          schema:
+            type: string
+          required: true
+          description: Id or name of requested technology.
+      responses:
+        200:
+          description: An array of Technology objects, empty array if none.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: number
+                      example: 200
+                    msg:
+                      $ref: "#/components/schemas/Technology"
+        500:
+          description: Server failed to fetch technologies.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: number
+                      example: 500
+                    msg:
+                      type: string
+                      example: "Error while fetching technologies"
+    patch:
+      summary: Update a technology.
+      tags:
+        - Technology
+      parameters:
+        - in: path
+          name: technologyNameOrId
+          schema:
+            type: string
+          required: true
+          description: Id or name of requested technology.
+      requestBody:
+        description: A JSON object containing details for the project.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                adminScholarId:
+                  type: string
+                  example: "2012051"
+                adminPassword:
+                  type: string
+                  example: "Password@123"
+                name:
+                  type: string
+                  example: "python"
+                iconUrl:
+                  type: string
+                  example: "https://i.kym-cdn.com/entries/icons/facebook/000/040/009/3dsaulcover.jpg"
+      responses:
+        200:
+          description: A Technology object.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: number
+                      example: 200
+                    msg:
+                      $ref: "#/components/schemas/Technology"
+        404:
+          description: Technology with name or id does not exist.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: number
+                      example: 404
+                    msg:
+                      type: string
+                      example: "Technology does not exist"
+
+        500:
+          description: Server failed to fetch technologies.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: number
+                      example: 500
+                    msg:
+                      type: string
+                      example: "Error while fetching technologies"

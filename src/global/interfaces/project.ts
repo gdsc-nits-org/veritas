@@ -1,0 +1,3 @@
+interface ProjectApplication {
+  resume: string;
+}

@@ -1,0 +1,351 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["interactiveTransactions"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Person {
+  personalEmailId String @id @unique
+
+  gender Gender
+
+  firstName  String
+  middleName String?
+  lastName   String?
+
+  phoneNumber String[]
+
+  dateOfBirth DateTime
+
+  attendedSessions  Session[] @relation("speaks")
+  speakerForSession Session[] @relation("attends")
+
+  registeredEvents Event[]
+
+  student Student?
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHERS
+}
+
+model Student {
+  scholarId String @id @unique
+
+  personalEmailId String @unique
+  person          Person @relation(fields: [personalEmailId], references: [personalEmailId])
+
+  instituteEmailId String @unique
+
+  branch Branch
+
+  degree Degree
+
+  interviewApplications Interview[]
+
+  clubMember ClubMember?
+}
+
+enum Degree {
+  BACHELORS
+  MASTERS
+  DOCTORATE
+}
+
+enum Branch {
+  CHEMISTRY
+  CIVIL_ENGINEERING
+  COMPUTER_SCIENCE_AND_ENGINEERING
+  ELECTRICAL_ENGINEERING
+  ELECTRONICS_AND_COMMUNICATION_ENGINEERING
+  ELECTRONICS_AND_INSTRUMENTATION_ENGINEERING
+  HISTORY
+  HUMANITIES_AND_SOCIAL_SCIENCES
+  MANAGEMENT_STUDIES
+  MATHEMATICS
+  MECHANICAL_ENGINEERING
+  PHYSICS
+}
+
+model ClubMember {
+  scholarId String  @id @unique
+  student   Student @relation(fields: [scholarId], references: [scholarId])
+
+  password String
+
+  image String
+
+  linkedInUrl String
+  githubUrl   String
+  facebookUrl String?
+  discordId   String?
+
+  tenure Tenure[]
+
+  contributions Project[] @relation("contribution")
+  mentorships   Project[] @relation("mentoring")
+
+  eventsOrganized Event[]
+
+  attendance MeetingAttendance[]
+}
+
+model Chapter {
+  year       Int     @id
+  transition Boolean @default(true) // For handover transition
+
+  tenures Tenure[]
+  events  Event[]
+}
+
+model Tenure {
+  id String @id @default(uuid())
+
+  scholarId String
+  member    ClubMember @relation(fields: [scholarId], references: [scholarId])
+
+  startYear Int
+  chapter   Chapter @relation(fields: [startYear], references: [year])
+
+  domain MemberDomain
+
+  isModerator Boolean
+  isHead      Boolean
+  position    ClubPosition
+
+  role Role
+
+  @@unique([scholarId, startYear, position])
+}
+
+enum MemberDomain {
+  ANDROID
+  CLOUD_AND_DEVOPS
+  FLUTTER
+  UI_UX
+  WEB
+}
+
+enum Domain {
+  ANDROID
+  CLOUD_AND_DEVOPS
+  FLUTTER
+  UI_UX
+  WEB
+  OTHERS
+}
+
+enum ClubPosition {
+  MEMBER
+  CORE_MEMBER
+  LEAD
+}
+
+enum Role {
+  EDITORIAL
+  MANAGEMENT
+  OUTREACH
+  MARKETING
+}
+
+model Project {
+  id String @id @default(uuid())
+
+  name   String        @unique
+  status ProjectStatus
+
+  tags String[]
+
+  domains Domain[]
+
+  logoImageUrl   String
+  bannerImageUrl String
+
+  description String
+
+  links String[]
+
+  contributors ClubMember[] @relation("contribution")
+  mentors      ClubMember[] @relation("mentoring")
+
+  technologies     Technology[]
+  InterviewSession InterviewSession[]
+}
+
+enum ProjectStatus {
+  UPCOMING
+  ONGOING
+  COMPLETED
+  DROPPED
+}
+
+model Technology {
+  id      String @id @default(uuid())
+  name    String @unique
+  iconUrl String @default("")
+
+  projects Project[]
+}
+
+model Meeting {
+  id String @id @default(uuid())
+
+  topic String
+  time  DateTime
+  venue String
+  links String[]
+
+  mode Mode
+
+  attendance MeetingAttendance[]
+}
+
+enum Mode {
+  OFFLINE
+  ONLINE
+}
+
+model MeetingAttendance {
+  id String @id @default(uuid())
+
+  meetingId String
+  meeting   Meeting @relation(fields: [meetingId], references: [id])
+
+  scholarId String
+  member    ClubMember @relation(fields: [scholarId], references: [scholarId])
+
+  reason String?
+}
+
+enum EventLevel {
+  GDSC
+  NITS
+}
+
+enum EventType {
+  BOOTCAMP
+  FIRESIDE_CHAT
+  STUDY_JAM
+  HANDS_ON_WORKSHOP
+  SPEAKER_SESSION
+  INFO_SESSION
+  HACKATHON
+  DEMO_DAY
+  EXPLORE_WORKSHOP
+}
+
+enum SessionStatus {
+  UPCOMING
+  ONGOING
+  COMPLETED
+  DROPPED
+}
+
+model Event {
+  id   String @id @default(uuid())
+  name String
+
+  sessions Session[]
+
+  year    Int
+  chapter Chapter @relation(fields: [year], references: [year])
+
+  level EventLevel
+  type  EventType
+
+  domain Domain[]
+
+  mode  Mode
+  venue String
+  url   String
+
+  description String
+  tags        String[]
+
+  organizers ClubMember[]
+
+  registrations Person[]
+}
+
+model Session {
+  id   String @id @default(uuid())
+  name String
+
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  topics String[]
+
+  status SessionStatus
+
+  startTime DateTime
+  endTime   DateTime
+
+  year Int
+
+  attendees Person[] @relation("attends")
+  speakers  Person[] @relation("speaks")
+
+  resources Json[]
+
+  @@unique([name, eventId, year])
+}
+
+enum InterviewPurpose {
+  MEMBER_RECRUITMENT
+  CORE_MEMBER_RECRUITMENT
+  EVENT
+  PROJECT
+  OTHERS
+}
+
+enum InterviewApplicationStatus {
+  ACCEPTED
+  PENDING
+  REJECTED
+  ERROR
+}
+
+model InterviewSession {
+  id String @id @default(uuid())
+
+  purpose InterviewPurpose
+
+  mode  Mode
+  url   String?
+  venue String
+
+  interviewDate DateTime
+
+  questions String[]
+
+  interviewApplications Interview[]
+  Project               Project?    @relation(fields: [projectId], references: [id])
+  projectId             String?
+}
+
+model Interview {
+  interviewSessionId String
+  interview          InterviewSession @relation(fields: [interviewSessionId], references: [id])
+
+  applicantId String
+  applicant   Student @relation(fields: [applicantId], references: [scholarId])
+
+  applicationStatus InterviewApplicationStatus
+  applicationDate   DateTime
+
+  answers String[]
+
+  message String?
+
+  domain Domain
+  resume String
+
+  @@unique([interviewSessionId, applicantId])
+}
