@@ -12,6 +12,7 @@ import * as Auth from "./auth";
 import * as Project from "./project";
 import * as Technology from "./technology";
 import * as ClubMember from "./clubMember";
+import * as Domain from "./domain";
 import * as Tags from "./tags";
 
 export {
@@ -30,4 +31,5 @@ export {
   Technology,
   ClubMember,
   Tags,
+  Domain,
 };

@@ -13,6 +13,7 @@ const createProject: Interfaces.Controller.Async = async (req, res, next) => {
     status,
     tags,
     links,
+    domains,
   } = req.body as Project;
 
   const {
@@ -53,9 +54,11 @@ const createProject: Interfaces.Controller.Async = async (req, res, next) => {
   ) {
     return next(Errors.Project.invalidStatus);
   }
+
   // ---- array checks ---
   if (
     !tags ||
+    !tags.length ||
     !Array.isArray(links) ||
     typeof links === "string" ||
     !tags.length ||
@@ -66,10 +69,20 @@ const createProject: Interfaces.Controller.Async = async (req, res, next) => {
   if (
     !links ||
     !Array.isArray(links) ||
+    !links.length ||
     typeof links === "string" ||
     links.some((link) => !Utils.Url.urlValidate(link))
   ) {
     return next(Errors.Project.invalidLink);
+  }
+  if (
+    !domains ||
+    !Array.isArray(domains) ||
+    !domains.length ||
+    typeof domains === "string" ||
+    links.some((domain) => !Utils.Domain.validateDomain(domain))
+  ) {
+    return next(Errors.Domain.invalidDomain);
   }
   // ---- relations check -----
   if (
