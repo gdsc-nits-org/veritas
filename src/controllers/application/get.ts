@@ -22,6 +22,7 @@ const getOneApplication: Interfaces.Controller.Async = async (
     },
     include: {
       interviews: true,
+      applicationOpening: true,
     },
   });
 
@@ -41,6 +42,9 @@ const getLoggedInUsersApplication: Interfaces.Controller.Async = async (
   const applications = await prisma.application.findMany({
     where: {
       applicantId: adminScholarId,
+    },
+    include: {
+      interviews: true,
     },
   });
 

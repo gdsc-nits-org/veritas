@@ -1,25 +1,7 @@
 import * as Interfaces from "@interfaces";
 import * as Errors from "@errors";
 import * as Utils from "@utils";
-import {
-  Domain,
-  InterviewApplicationStatus,
-  InterviewPurpose,
-} from "@prisma/client";
-
-const DomainCheck: Interfaces.Middleware.Sync = (req, _res, next) => {
-  const domain = req.body?.domain as Domain;
-
-  if (!domain) {
-    return next();
-  }
-
-  if (domain && typeof domain === "string" && domain.trim() in Domain) {
-    return next();
-  }
-
-  return next(Errors.Application.invalidDomain);
-};
+import { InterviewApplicationStatus } from "@prisma/client";
 
 const applicationStatusCheck: Interfaces.Middleware.Sync = (
   req,
@@ -66,6 +48,24 @@ const applicantIdCheck: Interfaces.Middleware.Async = async (
   return next(Errors.Application.invalidApplicantId);
 };
 
+const applicationOpeningIdCheck: Interfaces.Middleware.Sync = (
+  req,
+  _res,
+  next
+) => {
+  const applicationOpeningId = req.body.applicationOpeningId as string;
+
+  if (!applicationOpeningId) {
+    return next();
+  }
+
+  if (applicationOpeningId && typeof applicationOpeningId === "string") {
+    return next();
+  }
+
+  return next(Errors.Application.invalidApplicationOpeningId);
+};
+
 const applicantAnswersCheck: Interfaces.Middleware.Sync = (req, _res, next) => {
   const answers = req.body.answers as string[];
 
@@ -73,7 +73,7 @@ const applicantAnswersCheck: Interfaces.Middleware.Sync = (req, _res, next) => {
     return next();
   }
 
-  if (typeof answers !== "object") {
+  if (!(answers instanceof Array)) {
     return next(Errors.Application.invalidAnswers);
   }
 
@@ -117,33 +117,11 @@ const applicantMessageCheck: Interfaces.Middleware.Sync = (req, _res, next) => {
   return next(Errors.Application.invalidMessage);
 };
 
-const applicationPurposeCheck: Interfaces.Middleware.Sync = (
-  req,
-  _res,
-  next
-) => {
-  const purpose = req.body.purpose as InterviewPurpose;
-  if (!purpose) {
-    return next();
-  }
-
-  if (
-    purpose &&
-    typeof purpose === "string" &&
-    purpose.trim() in InterviewPurpose
-  ) {
-    return next();
-  }
-
-  return next(Errors.Application.invalidPurpose);
-};
-
 export {
-  DomainCheck,
   applicationStatusCheck,
   applicantIdCheck,
+  applicationOpeningIdCheck,
   applicantAnswersCheck,
   resumeLinkCheck,
   applicantMessageCheck,
-  applicationPurposeCheck,
 };

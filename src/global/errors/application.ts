@@ -7,6 +7,11 @@ const missingFields = Utils.Response.Error(
 
 const notAStudent = Utils.Response.Error("Not a Student of NIT Silchar", 403);
 
+const applicationOpeningNotFound = Utils.Response.Error(
+  "application opening with given id not found",
+  404
+);
+
 const isClubMember = Utils.Response.Error("Already a club member", 403);
 
 const invalidResumeUrl = Utils.Response.Error("Invalid resume link", 406);
@@ -21,8 +26,6 @@ const applicationNotFound = Utils.Response.Error(
   404
 );
 
-const invalidDomain = Utils.Response.Error("Invalid Domain", 406);
-
 const invalidApplicationStatus = Utils.Response.Error(
   "Invalid Application status",
   406
@@ -34,19 +37,22 @@ const invalidAnswers = Utils.Response.Error("Invalid Applicant answers", 406);
 
 const invalidMessage = Utils.Response.Error("Invalid Applicant message", 406);
 
-const invalidPurpose = Utils.Response.Error("Invalid Application purpose", 406);
+const invalidApplicationOpeningId = Utils.Response.Error(
+  "Invalid Application opening id",
+  406
+);
 
 export {
   missingFields,
   notAStudent,
+  applicationOpeningNotFound,
   isClubMember,
   invalidResumeUrl,
   pendingApplicationExists,
   applicationNotFound,
-  invalidDomain,
   invalidApplicationStatus,
   invalidApplicantId,
   invalidAnswers,
   invalidMessage,
-  invalidPurpose,
+  invalidApplicationOpeningId,
 };

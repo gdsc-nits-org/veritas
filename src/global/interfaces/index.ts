@@ -10,6 +10,7 @@ import * as Event from "./event";
 import * as Session from "./session";
 import * as Application from "./application";
 import * as InterviewSession from "./interviewSession";
+import * as ApplicationOpening from "./applicationOpening";
 
 export {
   Controller,
@@ -24,4 +25,5 @@ export {
   Session,
   Application,
   InterviewSession,
+  ApplicationOpening,
 };

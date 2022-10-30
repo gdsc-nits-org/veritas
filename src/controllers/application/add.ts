@@ -2,7 +2,6 @@ import * as Interfaces from "@interfaces";
 import * as Errors from "@errors";
 import * as Success from "@success";
 import { prisma } from "@utils/prisma";
-import { Domain, InterviewPurpose } from "@prisma/client";
 
 const createApplicaton: Interfaces.Controller.Async = async (
   req,
@@ -11,18 +10,17 @@ const createApplicaton: Interfaces.Controller.Async = async (
 ) => {
   const applicationBody: Interfaces.Application.createApplicatonBody = req.body;
 
-  let { answers, purpose, domain, applicantId, message, resume } =
+  let { answers, applicationOpeningId, applicantId, message, resume } =
     applicationBody;
 
-  if (!answers || !purpose || !domain || !applicantId || !resume) {
+  if (!answers || !applicationOpeningId || !applicantId || !resume) {
     return next(Errors.Application.missingFields);
   }
 
   answers = answers.map((answer) => answer.trim());
 
-  purpose = purpose.trim() as InterviewPurpose;
-  domain = domain.trim() as Domain;
   applicantId = applicantId.trim();
+  applicationOpeningId = applicationOpeningId.trim();
   message = message?.trim();
   resume = resume.trim();
 
@@ -34,6 +32,16 @@ const createApplicaton: Interfaces.Controller.Async = async (
 
   if (!isStudent) {
     return next(Errors.Application.notAStudent);
+  }
+
+  const applicationOpeningExists = await prisma.applicationOpening.count({
+    where: {
+      id: applicationOpeningId,
+    },
+  });
+
+  if (!applicationOpeningExists) {
+    return next(Errors.Application.applicationOpeningNotFound);
   }
 
   const isClubMember = await prisma.clubMember.count({
@@ -66,15 +74,18 @@ const createApplicaton: Interfaces.Controller.Async = async (
   await prisma.application.create({
     data: {
       answers: answers,
-      domain: domain,
       message: message,
       resume: resume,
       applicationStatus: "PENDING",
       applicationDate: new Date(),
-      purpose: purpose,
       applicant: {
         connect: {
           scholarId: applicantId,
+        },
+      },
+      applicationOpening: {
+        connect: {
+          id: applicationOpeningId,
         },
       },
     },

@@ -9,6 +9,7 @@ import * as Lead from "./lead";
 import * as Session from "./session";
 import * as Application from "./application";
 import * as InterviewSession from "./interviewSession";
+import * as ApplicationOpening from "./applicationOpening";
 
 export {
   Event,
@@ -22,4 +23,5 @@ export {
   Session,
   Application,
   InterviewSession,
+  ApplicationOpening,
 };

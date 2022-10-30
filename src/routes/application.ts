@@ -18,10 +18,9 @@ router.get("/:applicationId", Controllers.Application.getOneApplication);
 router.post(
   "/new",
   Middlewares.Application.applicantIdCheck,
+  Middlewares.Application.applicationOpeningIdCheck,
   Middlewares.Application.resumeLinkCheck,
-  Middlewares.Application.DomainCheck,
   Middlewares.Application.applicantAnswersCheck,
-  Middlewares.Application.applicationPurposeCheck,
   Middlewares.Application.applicantMessageCheck,
   Controllers.Application.createApplicaton
 );
