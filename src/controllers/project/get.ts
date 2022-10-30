@@ -8,8 +8,8 @@ const getAllProjects: Interfaces.Controller.Async = async (_req, res, next) => {
   const projects = await prisma.project.findMany({
     include: {
       technologies: true,
-      mentors: true,
-      contributors: true,
+      mentors: Utils.Project.displayableMemberDetails,
+      contributors: Utils.Project.displayableMemberDetails,
     },
   });
   if (!projects) return next(Errors.Project.projectsFetchFail);
@@ -22,7 +22,14 @@ const getProject: Interfaces.Controller.Async = async (req, res, next) => {
   if (!projectId) {
     return next(Errors.Project.invalidProjectId);
   }
-  const project = await prisma.project.findUnique({ where: { id: projectId } });
+  const project = await prisma.project.findFirst({
+    where: { id: projectId },
+    include: {
+      technologies: true,
+      mentors: Utils.Project.displayableMemberDetails,
+      contributors: Utils.Project.displayableMemberDetails,
+    },
+  });
   if (!project) {
     return next(Errors.Project.projectNotFound);
   }
@@ -41,7 +48,7 @@ const getProjectApplications: Interfaces.Controller.Async = async (
     return next(Errors.Project.invalidProjectId);
   }
 
-  const project = await prisma.project.findUnique({ where: { id: projectId } });
+  const project = await prisma.project.findFirst({ where: { id: projectId } });
   if (!project) return next(Errors.Project.projectNotFound);
 
   const sessions = await prisma.interviewSession.findMany({
@@ -50,7 +57,7 @@ const getProjectApplications: Interfaces.Controller.Async = async (
       interviewApplications: true,
     },
   });
-  //TODO: replace with sessesion error
+
   if (!sessions) return next(Errors.Session.sessionNotFound);
 
   sessions.forEach((session) => {

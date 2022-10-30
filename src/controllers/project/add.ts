@@ -13,6 +13,7 @@ const createProject: Interfaces.Controller.Async = async (req, res, next) => {
     status,
     tags,
     links,
+    domains,
   } = req.body as Project;
 
   const {
@@ -46,16 +47,14 @@ const createProject: Interfaces.Controller.Async = async (req, res, next) => {
   ) {
     return next(Errors.Project.invalidBannerImageURL);
   }
-  if (
-    !status ||
-    typeof status !== "string" ||
-    !Utils.Project.validateProjectStatus(status)
-  ) {
+  if (!status || !Utils.Project.validateProjectStatus(status)) {
     return next(Errors.Project.invalidStatus);
   }
+
   // ---- array checks ---
   if (
     !tags ||
+    !tags.length ||
     !Array.isArray(links) ||
     typeof links === "string" ||
     !tags.length ||
@@ -66,14 +65,24 @@ const createProject: Interfaces.Controller.Async = async (req, res, next) => {
   if (
     !links ||
     !Array.isArray(links) ||
+    !links.length ||
     typeof links === "string" ||
     links.some((link) => !Utils.Url.urlValidate(link))
   ) {
     return next(Errors.Project.invalidLink);
   }
+  if (
+    !domains ||
+    !Array.isArray(domains) ||
+    !domains.length ||
+    typeof domains === "string" ||
+    links.some((domain) => !Utils.Domain.validateDomain(domain))
+  ) {
+    return next(Errors.Domain.invalidDomain);
+  }
   // ---- relations check -----
   if (
-    technologies &&
+    technologies !== undefined &&
     !(Array.isArray(technologies) && typeof technologies !== "string")
   ) {
     return next(Errors.Project.invalidTechnology);
@@ -87,7 +96,10 @@ const createProject: Interfaces.Controller.Async = async (req, res, next) => {
     }
   }
 
-  if (mentors && !(Array.isArray(mentors) && typeof mentors !== "string")) {
+  if (
+    mentors !== undefined &&
+    !(Array.isArray(mentors) && typeof mentors !== "string")
+  ) {
     return next(Errors.Project.invalidMentorList);
   }
   if (mentors) {
@@ -99,7 +111,7 @@ const createProject: Interfaces.Controller.Async = async (req, res, next) => {
   }
 
   if (
-    contributors &&
+    contributors !== undefined &&
     !(Array.isArray(contributors) && typeof contributors !== "string")
   ) {
     return next(Errors.Project.invalidContributorList);
@@ -122,8 +134,9 @@ const createProject: Interfaces.Controller.Async = async (req, res, next) => {
       bannerImageUrl,
       logoImageUrl,
       status,
-      tags: tags.map((t) => t.toLowerCase()),
+      tags,
       links,
+      domains,
       contributors: {
         connect: contributors,
       },

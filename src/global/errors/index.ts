@@ -9,6 +9,7 @@ import * as Auth from "./auth";
 import * as Chapter from "./chapter";
 import * as Technology from "./technology";
 import * as Session from "./session";
+import * as Domain from "./domain";
 
 export {
   System,
@@ -22,4 +23,5 @@ export {
   Chapter,
   Technology,
   Session,
+  Domain,
 };
