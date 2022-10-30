@@ -47,11 +47,7 @@ const createProject: Interfaces.Controller.Async = async (req, res, next) => {
   ) {
     return next(Errors.Project.invalidBannerImageURL);
   }
-  if (
-    !status ||
-    typeof status !== "string" ||
-    !Utils.Project.validateProjectStatus(status)
-  ) {
+  if (!status || !Utils.Project.validateProjectStatus(status)) {
     return next(Errors.Project.invalidStatus);
   }
 
@@ -86,7 +82,7 @@ const createProject: Interfaces.Controller.Async = async (req, res, next) => {
   }
   // ---- relations check -----
   if (
-    technologies &&
+    technologies !== undefined &&
     !(Array.isArray(technologies) && typeof technologies !== "string")
   ) {
     return next(Errors.Project.invalidTechnology);
@@ -100,7 +96,10 @@ const createProject: Interfaces.Controller.Async = async (req, res, next) => {
     }
   }
 
-  if (mentors && !(Array.isArray(mentors) && typeof mentors !== "string")) {
+  if (
+    mentors !== undefined &&
+    !(Array.isArray(mentors) && typeof mentors !== "string")
+  ) {
     return next(Errors.Project.invalidMentorList);
   }
   if (mentors) {
@@ -112,7 +111,7 @@ const createProject: Interfaces.Controller.Async = async (req, res, next) => {
   }
 
   if (
-    contributors &&
+    contributors !== undefined &&
     !(Array.isArray(contributors) && typeof contributors !== "string")
   ) {
     return next(Errors.Project.invalidContributorList);
@@ -135,8 +134,9 @@ const createProject: Interfaces.Controller.Async = async (req, res, next) => {
       bannerImageUrl,
       logoImageUrl,
       status,
-      tags: tags.map((t) => t.toLowerCase()),
+      tags,
       links,
+      domains,
       contributors: {
         connect: contributors,
       },

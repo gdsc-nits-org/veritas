@@ -1,7 +1,10 @@
 import { ProjectStatus } from "@prisma/client";
 
 const validateProjectStatus = (status: ProjectStatus) => {
-  return Object.values(ProjectStatus).some((s) => s == status);
+  return (
+    typeof status !== "string" ||
+    Object.values(ProjectStatus).some((s) => s == status)
+  );
 };
 
 const displayableMemberDetails = {
