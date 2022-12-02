@@ -4,14 +4,28 @@ import * as Interfaces from "@interfaces";
 import { prisma } from "@utils/prisma";
 import { Interview } from "@prisma/client";
 
-const getAllProjects: Interfaces.Controller.Async = async (_req, res, next) => {
-  const projects = await prisma.project.findMany({
-    include: {
-      technologies: true,
-      mentors: Utils.Project.displayableMemberDetails,
-      contributors: Utils.Project.displayableMemberDetails,
-    },
-  });
+const getAllProjects: Interfaces.Controller.Async = async (req, res, next) => {
+  const { minimal } = req.query;
+  let projects;
+
+  if (typeof minimal === "string") {
+    projects = await prisma.project.findMany({
+      select: {
+        id: true,
+        name: true,
+        logoImageUrl: true,
+      },
+    });
+  } else {
+    projects = await prisma.project.findMany({
+      include: {
+        technologies: true,
+        mentors: Utils.Project.displayableMemberDetails,
+        contributors: Utils.Project.displayableMemberDetails,
+      },
+    });
+  }
+
   if (!projects) return next(Errors.Project.projectsFetchFail);
   return res.json(Utils.Response.Success(projects));
 };

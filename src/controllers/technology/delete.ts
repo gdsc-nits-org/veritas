@@ -16,10 +16,7 @@ const deleteTechnology: Interfaces.Controller.Async = async (
   if (
     !(await prisma.technology.findFirst({
       where: {
-        name: nameOrId,
-        OR: {
-          id: nameOrId,
-        },
+        OR: [{ id: nameOrId }, { name: nameOrId }],
       },
     }))
   ) {

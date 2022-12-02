@@ -14,6 +14,7 @@ import * as Technology from "./technology";
 import * as ClubMember from "./clubMember";
 import * as Domain from "./domain";
 import * as Tags from "./tags";
+import * as String from "./string";
 
 export {
   Response,
@@ -32,4 +33,5 @@ export {
   ClubMember,
   Tags,
   Domain,
+  String,
 };

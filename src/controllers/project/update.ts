@@ -30,7 +30,7 @@ export const updateProject: Interfaces.Controller.Async = async (
     mentors: ClubMember;
   } = req.body;
 
-  if (!(await prisma.project.findFirst({ where: { name } })))
+  if (!(await prisma.project.findFirst({ where: { id: projectId } })))
     return next(Errors.Project.projectNotFound);
   // --- checks----
   if (name !== undefined && (typeof name !== "string" || !name.length)) {

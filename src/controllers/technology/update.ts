@@ -18,16 +18,23 @@ const updateTechnology: Interfaces.Controller.Async = async (
   }
   if (
     iconUrl &&
-    (typeof iconUrl !== "string" || !Utils.Url.urlValidate(iconUrl))
+    (typeof iconUrl !== "string" ||
+      !Utils.Url.urlValidate(iconUrl) ||
+      !Utils.Url.urlValidate(iconUrl))
   ) {
     return next(Errors.Technology.invalidIcon);
   }
 
-  if (!name || typeof name !== "string") {
+  if (!name && typeof name === "string") {
     return next(Errors.Technology.invalidName);
   }
-  if (await prisma.technology.findFirst({ where: { name } })) {
-    return next(Errors.Technology.technologyAlreadyExists);
+  if (name) {
+    if (typeof name !== "string" || !Utils.String.stringValidate(name)) {
+      return next(Errors.Technology.invalidName);
+    }
+    if (await prisma.technology.findFirst({ where: { name } })) {
+      return next(Errors.Technology.technologyAlreadyExists);
+    }
   }
 
   // ---update---

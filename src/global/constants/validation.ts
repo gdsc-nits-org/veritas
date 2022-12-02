@@ -23,6 +23,8 @@ const url =
 // 18 digit discord ID unique for everyone, and can't change for account.
 const discord = /^[0-9]{18}$/;
 
+const string = /^[^\s](.*[^\s])?$/;
+
 export {
   email,
   name,
@@ -32,4 +34,5 @@ export {
   password,
   url,
   discord,
+  string,
 };
