@@ -7,6 +7,7 @@ const validateDomain = (domain: string): boolean => {
   if (typeof domain !== "string") {
     return false;
   }
+
   if (!Object.values(Prisma.Domain).some((d) => d === domain)) {
     return false;
   }
