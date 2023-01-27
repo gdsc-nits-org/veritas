@@ -11,7 +11,7 @@ const createTechnology: Interfaces.Controller.Async = async (
 ) => {
   const { iconUrl, name } = req.body as Technology;
 
-  if (!name || typeof name !== "string") {
+  if (!name || typeof name !== "string" || !Utils.String.stringValidate(name)) {
     return next(Errors.Technology.invalidName);
   }
   if (

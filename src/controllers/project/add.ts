@@ -71,12 +71,13 @@ const createProject: Interfaces.Controller.Async = async (req, res, next) => {
   ) {
     return next(Errors.Project.invalidLink);
   }
+
   if (
     !domains ||
     !Array.isArray(domains) ||
     !domains.length ||
     typeof domains === "string" ||
-    links.some((domain) => !Utils.Domain.validateDomain(domain))
+    domains.some((domain) => !Utils.Domain.validateDomain(domain))
   ) {
     return next(Errors.Domain.invalidDomain);
   }

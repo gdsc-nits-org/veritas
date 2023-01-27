@@ -1,4 +1,4 @@
-import { ProjectStatus } from "@prisma/client";
+import { Prisma, ProjectStatus } from "@prisma/client";
 
 const validateProjectStatus = (status: ProjectStatus) => {
   return (
@@ -7,7 +7,7 @@ const validateProjectStatus = (status: ProjectStatus) => {
   );
 };
 
-const displayableMemberDetails = {
+const displayableMemberDetails: Prisma.ClubMemberArgs = {
   select: {
     scholarId: true,
     image: true,

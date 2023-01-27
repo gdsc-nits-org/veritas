@@ -24,7 +24,7 @@ router.post(
   Controllers.Technology.createTechnology
 );
 router.delete(
-  "/:technologyId",
+  "/:technologyNameOrId",
   Middlewares.Auth.checkAuth,
   Middlewares.Auth.minPermission("MODERATOR"),
   Controllers.Technology.deleteTechnology
